@@ -34,7 +34,9 @@ export function NavBar() {
             Shop
           </LinkElement>
         </div>
-        <SvgStoreBag width={40} height={40} className="mr-10 sm:mr-25" />
+        <button>
+          <SvgStoreBag width={40} height={40} className="mr-10 sm:mr-25" />
+        </button>
       </div>
       <Menu isMenuOpen={isMenuOpen} />
     </div>
