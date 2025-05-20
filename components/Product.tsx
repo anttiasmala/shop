@@ -16,6 +16,7 @@ export function Product({
       <div className="m-3 mr-5 ml-5 flex flex-col items-center rounded border border-gray-100 bg-gray-100">
         <div className="m-5">
           <Image
+            priority={true}
             alt="SSD"
             src={image}
             width={1920}
