@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Container } from '~/components/Container';
 import { Footer } from '~/components/Footer';
@@ -9,6 +10,23 @@ import SvgStoreBag from '~/icons/store_bag';
 import { arrayOfProducts } from '~/utils/debug';
 
 export default function Products() {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchedProducts, setSearchedProducts] = useState<
+    typeof arrayOfProducts
+  >([]);
+
+  useEffect(() => {
+    setSearchedProducts(
+      arrayOfProducts.filter((product) => {
+        const matchedSearch =
+          product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          product.description?.toLowerCase().includes(searchTerm.toLowerCase());
+
+        return matchedSearch;
+      }),
+    );
+  }, [searchTerm]);
+
   return (
     <main className="h-screen w-full bg-white">
       <div className="w-full">
@@ -23,19 +41,31 @@ export default function Products() {
               type="text"
               placeholder="Search products..."
               className="w-max p-3 pr-0"
+              onChange={(e) => setSearchTerm(e.currentTarget.value)}
             />
           </div>
           <div className="flex flex-wrap justify-center">
-            {arrayOfProducts.map((value, index) => {
-              return (
-                <Product
-                  image={value.image}
-                  price={value.price}
-                  title={value.title}
-                  key={`product_${index}`}
-                />
-              );
-            })}
+            {searchTerm.length === 0
+              ? arrayOfProducts.map((product, index) => {
+                  return (
+                    <Product
+                      id={product.id}
+                      image={product.image}
+                      price={product.price}
+                      title={product.title}
+                      key={`product_${index}`}
+                    />
+                  );
+                })
+              : searchedProducts.map((product, index) => (
+                  <Product
+                    id={product.id}
+                    image={product.image}
+                    price={product.price}
+                    title={product.title}
+                    key={`product_${index}`}
+                  />
+                ))}
           </div>
         </div>
       </div>
@@ -48,23 +78,27 @@ function Product({
   image,
   price,
   title,
+  id,
 }: {
   image: string;
   title: string;
   price: string;
+  id: number;
 }) {
   return (
     <div className="mt-8 flex justify-center">
       <div className="m-3 mr-5 ml-5 flex flex-col items-center rounded border border-gray-100 bg-gray-100">
         <div className="m-5">
-          <Image
-            priority={true}
-            alt="SSD"
-            src={image}
-            width={1920}
-            height={1080}
-            className="w-48 rounded-md"
-          />
+          <button>
+            <Image
+              priority={true}
+              alt="SSD"
+              src={image}
+              width={1920}
+              height={1080}
+              className="w-48 rounded-md"
+            />
+          </button>
         </div>
         <div className="w-full bg-white">
           <div className="m-3 mr-5 ml-5 flex flex-col items-center text-sm text-gray-500">
