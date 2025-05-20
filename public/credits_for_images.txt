@@ -1,4 +1,5 @@
 coffee_beans_and_coffee_cup.jpg = https://www.freepik.com/free-ai-image/view-3d-coffee-cup-with-roasted-beans_94522070.htm
 logo.svg = https://www.svgrepo.com/svg/70977/coffee
 menu.svg = https://www.svgrepo.com/svg/532195/menu
-Samsung_T5_SSD.png = https://unsplash.com/photos/black-box-on-black-wooden-table-ndgy5oZwdUY
+Samsung_T5_SSD.png = https://unsplash.com/photos/black-box-on-black-wooden-table-ndgy5oZwdU
+arrow-right.svg = https://heroicons.com/
