@@ -12,8 +12,10 @@ export function NavBar() {
 
   return (
     <div>
-      <div className="flex h-16 w-full items-center justify-between bg-gray-100 shadow-lg">
-        <p className="ml-1 text-lg font-bold sm:ml-24 sm:text-xl">MINIMONEY</p>
+      <div className="flex h-16 w-full items-center justify-between bg-white shadow-lg">
+        <p className="ml-1 text-lg font-bold sm:ml-[15%] sm:text-xl">
+          MINIMONEY
+        </p>
         <div className="mr-3 flex sm:left-1/2">
           <button onClick={() => setIsMenuOpen((prevValue) => !prevValue)}>
             {isMenuOpen ? (
@@ -28,7 +30,7 @@ export function NavBar() {
           >
             Home
           </LinkElement>
-          <LinkElement href={'/shop/shop'} className="hidden sm:inline">
+          <LinkElement href={'/shop/products'} className="hidden sm:inline">
             Shop
           </LinkElement>
         </div>
@@ -47,7 +49,7 @@ function Menu({ isMenuOpen }: { isMenuOpen: boolean }) {
         <LinkElement href={'/shop'} className="block p-3">
           Home
         </LinkElement>
-        <LinkElement href={'/shop/shop'} className="block p-3 pt-0">
+        <LinkElement href={'/shop/products'} className="block p-3 pt-0">
           Shop
         </LinkElement>
       </div>
