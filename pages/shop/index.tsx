@@ -58,7 +58,7 @@ function FeaturedProducts() {
           </span>
         </button>
       </div>
-      <div className="flex">
+      <div className="flex flex-wrap justify-center">
         {arrayOfProducts.map((product, index) => (
           <FeatureProduct
             image={product.image}
@@ -82,7 +82,7 @@ function FeatureProduct({
   title: string;
 }) {
   return (
-    <div className="mt-8 flex w-full justify-center">
+    <div className="mt-8 flex justify-center">
       <div className="m-3 mr-5 ml-5 flex flex-col items-center rounded border border-gray-100 bg-gray-100">
         <div className="m-5">
           <Image
@@ -164,12 +164,12 @@ function WhyChooseUs() {
 
 function ContactInfo() {
   return (
-    <Container>
+    <Container className="mr-3" parentDivClassName="mt-8">
       <TextCard
-        parentDivClassName="w-full"
-        className="flex flex-col items-center"
+        parentDivClassName="mt-5 w-full m-4 rounded"
+        className="flex flex-col rounded"
       >
-        <div className="pr-32 wrap-anywhere">
+        <div className="wrap-anywhere">
           <p className="ml-4 font-bold">Contact</p>
 
           <div className="ml-4 text-sm">
