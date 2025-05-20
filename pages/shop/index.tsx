@@ -6,6 +6,7 @@ import SvgArrowRight from '~/icons/arrow_right';
 import SvgStoreBag from '~/icons/store_bag';
 import { Container } from '../../components/Container';
 import { TextCard } from '~/components/TextCard';
+import { toast } from 'react-toastify';
 
 export default function Shop() {
   return (
@@ -84,7 +85,13 @@ function FeatureProduct() {
             <p className="flex items-center">
               Samsung T5 SSD 1TB{' '}
               <span className="ml-3">
-                <button>
+                <button
+                  onClick={() => {
+                    toast('Test', {
+                      theme: 'light',
+                    });
+                  }}
+                >
                   <SvgStoreBag className="w-6" />
                 </button>
               </span>
