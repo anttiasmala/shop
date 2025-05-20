@@ -7,6 +7,7 @@ import SvgStoreBag from '~/icons/store_bag';
 import { Container } from '../../components/Container';
 import { TextCard } from '~/components/TextCard';
 import { toast } from 'react-toastify';
+import { arrayOfProducts } from '~/utils/debug';
 
 export default function Shop() {
   return (
@@ -58,23 +59,35 @@ function FeaturedProducts() {
         </button>
       </div>
       <div className="flex">
-        <FeatureProduct />
-        <FeatureProduct />
-        <FeatureProduct />
-        <FeatureProduct />
+        {arrayOfProducts.map((product, index) => (
+          <FeatureProduct
+            image={product.image}
+            price={product.price}
+            title={product.title}
+            key={`product_${index}`}
+          />
+        ))}
       </div>
     </div>
   );
 }
 
-function FeatureProduct() {
+function FeatureProduct({
+  image,
+  price,
+  title,
+}: {
+  price: string;
+  image: string;
+  title: string;
+}) {
   return (
     <div className="mt-8 flex w-full justify-center">
       <div className="m-3 mr-5 ml-5 flex flex-col items-center rounded border border-gray-100 bg-gray-100">
         <div className="m-5">
           <Image
             alt="SSD"
-            src={'/Samsung_T5_SSD.png'}
+            src={image}
             width={1920}
             height={1080}
             className="w-48 rounded-md"
@@ -83,7 +96,7 @@ function FeatureProduct() {
         <div className="w-full bg-white">
           <div className="m-3 mr-5 ml-5 flex flex-col items-center text-sm text-gray-500">
             <p className="flex items-center">
-              Samsung T5 SSD 1TB{' '}
+              {title}
               <span className="ml-3">
                 <button
                   onClick={() => {
@@ -96,7 +109,7 @@ function FeatureProduct() {
                 </button>
               </span>
             </p>
-            <p>$169.99</p>
+            <p>{price}</p>
           </div>
         </div>
       </div>
