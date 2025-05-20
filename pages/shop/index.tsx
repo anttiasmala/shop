@@ -49,7 +49,7 @@ function MainInformation() {
 function FeaturedProducts() {
   return (
     <div>
-      <div className="mt-12 ml-[15%] flex">
+      <div className="mt-12 ml-4 flex sm:ml-[15%]">
         <p className="text-2xl font-bold">Featured Products</p>
         <button className="ml-4 flex items-center">
           View All
