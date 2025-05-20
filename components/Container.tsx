@@ -12,7 +12,7 @@ export function Container({
     <div className={parentDivClassName}>
       <div
         className={twMerge(
-          'mr-5 ml-5 flex justify-center rounded bg-gray-100',
+          'mr-5 ml-5 flex justify-center rounded bg-gray-200',
           className,
         )}
       >
