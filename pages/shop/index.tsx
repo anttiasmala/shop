@@ -9,6 +9,7 @@ import { TextCard } from '~/components/TextCard';
 import { toast } from 'react-toastify';
 import { arrayOfProducts } from '~/utils/debug';
 import { Product } from '~/components/Product';
+import { useGetProducts } from '~/utils/apiRequests';
 
 export default function Shop() {
   return (
@@ -48,6 +49,8 @@ function MainInformation() {
 }
 
 function FeaturedProducts() {
+  const { data: products } = useGetProducts();
+
   return (
     <div>
       <div className="mt-12 ml-4 flex sm:ml-[15%]">
@@ -60,7 +63,7 @@ function FeaturedProducts() {
         </button>
       </div>
       <div className="flex flex-wrap justify-center">
-        {arrayOfProducts.map((product, index) => (
+        {products?.map((product, index) => (
           <Product
             id={product.id}
             image={product.image}
