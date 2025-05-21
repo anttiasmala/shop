@@ -1,6 +1,6 @@
 export function Footer() {
   return (
-    <footer className="bottom-0 mt-10 h-8 w-full">
+    <footer className="mt-10 h-8 w-full">
       <div className="flex flex-col items-center">
         <p className="text-xs text-gray-600">
           © MINIMONEY Shop. All rights reserverd.
