@@ -20,6 +20,10 @@ export default async function Handler(
 
   const product = await prisma.product.findUnique({
     where: { id: numberQueryId },
+    omit: {
+      createdAt: true,
+      updatedAt: true,
+    },
   });
 
   res.status(200).json(product);
