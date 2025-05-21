@@ -2,22 +2,16 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { Footer } from '~/components/Footer';
+import { NavBar } from '~/components/NavBar';
+import { useGetProduct } from '~/utils/apiRequests';
 
 export default function HandleProduct() {
   const [productId, setProductId] = useState('');
 
   const router = useRouter();
 
-  const { refetch } = useQuery({
-    queryKey: ['product'],
-    queryFn: async () => {
-      return (await axios.get(`/api/products/${productId}`)).data;
-    },
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    retry: false,
-    enabled: false,
-  });
+  const { refetch } = useGetProduct(productId);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -32,19 +26,25 @@ export default function HandleProduct() {
   }, [productId]);
 
   return (
-    <div>
-      <p>Hello: {productId}</p>
-      <button
-        onClick={() => {
-          try {
-            refetch();
-          } catch (e) {
-            console.error(e);
-          }
-        }}
-      >
-        Click
-      </button>
-    </div>
+    <main className="h-screen w-full bg-white">
+      <div className="w-full">
+        <NavBar />
+      </div>
+      <div>
+        <p>Hello: {productId}</p>
+        <button
+          onClick={() => {
+            try {
+              refetch();
+            } catch (e) {
+              console.error(e);
+            }
+          }}
+        >
+          Click
+        </button>
+      </div>
+      <Footer />
+    </main>
   );
 }
