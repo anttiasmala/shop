@@ -8,23 +8,32 @@ import { TextCard } from '~/components/TextCard';
 import SvgMagnifyingGlass from '~/icons/magnifying_glass';
 import SvgStoreBag from '~/icons/store_bag';
 import { Product } from '~/shared/types';
+import { useGetProducts } from '~/utils/apiRequests';
 import { arrayOfProducts } from '~/utils/debug';
 
 export default function Products() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchedProducts, setSearchedProducts] = useState<Product[]>([]);
 
-  useEffect(() => {
-    setSearchedProducts(
-      arrayOfProducts.filter((product) => {
-        const matchedSearch =
-          product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          product.description?.toLowerCase().includes(searchTerm.toLowerCase());
+  const { data: products } = useGetProducts();
 
-        return matchedSearch;
-      }),
-    );
-  }, [searchTerm]);
+  useEffect(() => {
+    console.log(products);
+  }, [products]);
+
+  useEffect(() => {
+    if (!products) {
+      setSearchedProducts([]);
+      return;
+    }
+    const filtered = products.filter((product) => {
+      const matchedSearch =
+        product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.description?.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchedSearch;
+    });
+    setSearchedProducts(filtered);
+  }, [searchTerm, products]);
 
   return (
     <main className="h-screen w-full bg-white">
@@ -45,7 +54,7 @@ export default function Products() {
           </div>
           <div className="flex flex-wrap justify-center">
             {searchTerm.length === 0
-              ? arrayOfProducts.map((product, index) => {
+              ? products?.map((product, index) => {
                   return (
                     <ProductBlock
                       id={product.id}
@@ -115,7 +124,7 @@ function ProductBlock({
                 </button>
               </span>
             </p>
-            <p>{price}</p>
+            <p>${price}</p>
           </div>
         </div>
       </div>
