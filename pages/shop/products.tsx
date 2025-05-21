@@ -7,13 +7,12 @@ import { NavBar } from '~/components/NavBar';
 import { TextCard } from '~/components/TextCard';
 import SvgMagnifyingGlass from '~/icons/magnifying_glass';
 import SvgStoreBag from '~/icons/store_bag';
+import { Product } from '~/shared/types';
 import { arrayOfProducts } from '~/utils/debug';
 
 export default function Products() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchedProducts, setSearchedProducts] = useState<
-    typeof arrayOfProducts
-  >([]);
+  const [searchedProducts, setSearchedProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     setSearchedProducts(
@@ -48,7 +47,7 @@ export default function Products() {
             {searchTerm.length === 0
               ? arrayOfProducts.map((product, index) => {
                   return (
-                    <Product
+                    <ProductBlock
                       id={product.id}
                       image={product.image}
                       price={product.price}
@@ -58,7 +57,7 @@ export default function Products() {
                   );
                 })
               : searchedProducts.map((product, index) => (
-                  <Product
+                  <ProductBlock
                     id={product.id}
                     image={product.image}
                     price={product.price}
@@ -74,7 +73,7 @@ export default function Products() {
   );
 }
 
-function Product({
+function ProductBlock({
   image,
   price,
   title,
