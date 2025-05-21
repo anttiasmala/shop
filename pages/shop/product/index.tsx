@@ -1,34 +1,26 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { Footer } from '~/components/Footer';
+import { NavBar } from '~/components/NavBar';
 
 export default function HandleProduct() {
-  const { refetch } = useQuery({
-    queryKey: ['product'],
-    queryFn: async () => {
-      return (await axios.get(`/api/products`)).data;
-    },
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    retry: false,
-    enabled: false,
-  });
-
   return (
-    <div>
-      <p>Hello</p>
-      <button
-        onClick={() => {
-          try {
-            refetch();
-          } catch (e) {
-            console.error(e);
-          }
-        }}
-      >
-        Click
-      </button>
-    </div>
+    <main className="h-screen w-full bg-white">
+      <div className="w-full">
+        <NavBar />
+      </div>
+      <div className="flex w-full justify-center">
+        <Link
+          href={'/shop'}
+          className="rounded-md border-4 border-black p-4 text-5xl font-bold"
+        >
+          Whoops! Nothing found!
+        </Link>
+      </div>
+      <Footer />
+    </main>
   );
 }
