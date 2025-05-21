@@ -65,7 +65,7 @@ const eslintConfig = [
             'plugin:@typescript-eslint/recommended',
             'plugin:@typescript-eslint/recommended-requiring-type-checking',
             'plugin:import/typescript',
-            //'plugin:@tanstack/eslint-plugin-query/recommended',
+            'plugin:@tanstack/eslint-plugin-query/recommended',
           ],
 
           rules: {
