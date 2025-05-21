@@ -1,7 +1,4 @@
-export type Product = {
-  id: number;
-  title: string;
-  price: string;
-  image: string;
-  description?: string;
-};
+import { z } from 'zod';
+import { productSchema } from './zodSchemas';
+
+export type Product = z.infer<typeof productSchema>;
