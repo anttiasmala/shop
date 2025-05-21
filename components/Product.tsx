@@ -10,6 +10,7 @@ export function Product({
   image: string;
   title: string;
   price: string;
+  id: number;
 }) {
   return (
     <div className="mt-8 flex justify-center">

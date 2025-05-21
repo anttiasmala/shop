@@ -62,6 +62,7 @@ function FeaturedProducts() {
       <div className="flex flex-wrap justify-center">
         {arrayOfProducts.map((product, index) => (
           <Product
+            id={product.id}
             image={product.image}
             price={product.price}
             title={product.title}
