@@ -3,6 +3,7 @@ logo.svg = https://www.svgrepo.com/svg/70977/coffee
 menu.svg = https://www.svgrepo.com/svg/532195/menu
 Samsung_T5_SSD.png = https://unsplash.com/photos/black-box-on-black-wooden-table-ndgy5oZwdU
 arrow-right.svg = https://heroicons.com/
+arrow-left.svg = https://heroicons.com/
 magnifying-glass.svg = https://heroicons.com/
 ai_gaming_monitor.png = https://www.freepik.com/free-ai-image/view-computer-video-display-monitor_65161126.htm
 Razer_gaming_mouse.png = https://commons.wikimedia.org/wiki/File:Razer_DeathAdder_Elite-front_oblique-ar_16to10-fs_PNr%C2%B00465.jpg
