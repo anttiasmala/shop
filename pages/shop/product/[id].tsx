@@ -11,7 +11,7 @@ export default function HandleProduct() {
   const { refetch } = useQuery({
     queryKey: ['product'],
     queryFn: async () => {
-      return (await axios.get(`/api/product/${productId}`)).data;
+      return (await axios.get(`/api/products/${productId}`)).data;
     },
     refetchOnWindowFocus: false,
     refetchOnMount: false,

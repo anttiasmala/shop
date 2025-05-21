@@ -5,7 +5,7 @@ export function getProducts() {
   useQuery({
     queryKey: ['products'],
     queryFn: async () => {
-      return (await axios.get(`/api/product}`)).data;
+      return (await axios.get(`/api/products`)).data;
     },
     refetchOnWindowFocus: false,
     refetchOnMount: false,
