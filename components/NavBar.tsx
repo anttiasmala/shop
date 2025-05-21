@@ -13,7 +13,7 @@ export function NavBar() {
   return (
     <div>
       <div className="flex h-16 w-full items-center justify-between bg-white shadow-lg">
-        <p className="ml-1 text-lg font-bold sm:ml-[15%] sm:text-xl">
+        <p className="ml-4 text-lg font-bold sm:ml-[15%] sm:text-xl">
           MINIMONEY
         </p>
         <div className="mr-3 flex sm:left-1/2">
