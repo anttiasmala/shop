@@ -5,7 +5,6 @@ export default async function Handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  console.log('ASD');
   if (req.method !== 'GET') {
     return res.status(405).send('GET request is the only allowed method');
   }
