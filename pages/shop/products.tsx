@@ -1,4 +1,7 @@
+import { QueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Container } from '~/components/Container';
@@ -93,11 +96,18 @@ function ProductBlock({
   price: string;
   id: number;
 }) {
+  const queryClient = new QueryClient();
+
   return (
     <div className="mt-8 flex justify-center">
       <div className="m-3 mr-5 ml-5 flex flex-col items-center rounded border border-gray-100 bg-gray-100">
         <div className="m-5">
-          <button>
+          <Link
+            href={`/shop/product/${id}`}
+            onClick={() => {
+              queryClient.clear();
+            }}
+          >
             <Image
               priority={true}
               alt="SSD"
@@ -106,7 +116,7 @@ function ProductBlock({
               height={1080}
               className="w-48 rounded-md"
             />
-          </button>
+          </Link>
         </div>
         <div className="w-full bg-white">
           <div className="m-3 mr-5 ml-5 flex flex-col items-center text-sm text-gray-500">
