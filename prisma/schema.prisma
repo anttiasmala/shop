@@ -7,9 +7,31 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+model User {
+    id        Int       @id @default(autoincrement())
+    uuid      String    @unique @default(uuid())
+    firstName String
+    lastName  String
+    email     String    @unique
+    password  String
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    Session   Session[]
+}
+
+model Session {
+    uuid       String   @id @default(uuid())
+    userUUID   String
+    expiresAt  DateTime
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+    isLoggedIn Boolean  @default(false)
+    User       User?    @relation(fields: [userUUID], references: [uuid], onDelete: Cascade)
+}
+
 model Product {
     id          Int      @id @default(autoincrement())
-    uuid        String   @default(uuid())
+    uuid        String   @unique @default(uuid())
     title       String
     description String
     price       String
@@ -17,12 +39,31 @@ model Product {
     category    String
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
-    Cart        Cart?    @relation(fields: [uuid], references: [productUUID])
+
+    Cart     Cart[]
+    CartItem CartItem[]
 }
 
 model Cart {
-    id          Int       @id @default(autoincrement())
-    uuid        String    @default(uuid())
-    productUUID String    @unique
-    Product     Product[]
+    id          Int      @id @default(autoincrement())
+    uuid        String   @unique @default(uuid())
+    productUUID String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    Product  Product?   @relation(fields: [productUUID], references: [uuid])
+    CartItem CartItem[]
+}
+
+model CartItem {
+    id          Int      @id @default(autoincrement())
+    uuid        String   @unique @default(uuid())
+    cartUUID    String
+    productUUID String
+    quantity    Int
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    Product Product? @relation(fields: [productUUID], references: [uuid])
+    Cart    Cart?    @relation(fields: [cartUUID], references: [uuid])
 }
