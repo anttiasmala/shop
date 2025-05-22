@@ -8,3 +8,9 @@ export const productSchema = z.object({
   description: z.string(),
   category: z.string(),
 });
+
+export const cartSchema = productSchema
+  .extend({
+    amount: z.number(),
+  })
+  .array();
