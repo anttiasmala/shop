@@ -46,3 +46,26 @@ type validSessionResult = z.infer<typeof validSessionResultSchema>;
 type invalidSessionResult = z.infer<typeof invalidSessionResultSchema>;
 
 export type GetUserAndSessionResult = validSessionResult | invalidSessionResult;
+
+// DATABASE
+
+export type DatabaseAdapter = {
+  createSession: (sessionData: CreateSession) => Promise<Session | null>;
+  deleteSession: (sessionUUID: string) => Promise<void>;
+
+  //prettier-ignore
+
+  /* No use for these? */
+  //getSession: (sessionUUID: string) => Promise<Session | null>;
+  //getUserFromSession: (sessionUUID: string) => Promise<User | null>; // potentially a dangerous function
+  //getUserAndSessions: (userUUID: string) => Promise<[Session[], User] | null>; // gets the user and ALL the sessions
+
+  // prettier-ignore
+  //prettier-ignore
+  getUserAndSession: (sessionUUID: string) => Promise<GetUserAndSessionResult>; // gets the user and ONLY ONE session
+  getUserSessions: (userUUID: string) => Promise<Session[]>; // gets all the sessions belonging to a ONE user
+  // prettier-ignore
+  updateSessionExpirationDate: (sessionUUID: string, newSessionExpirationDate: Date) => Promise<void>;
+  deleteUserSessions: (userUUID: string) => Promise<void>; // deletes all the sessions belonging to a user
+  deleteExpiredSessions: () => Promise<void>;
+};
