@@ -40,18 +40,15 @@ model Product {
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
 
-    Cart     Cart[]
     CartItem CartItem[]
 }
 
 model Cart {
-    id          Int      @id @default(autoincrement())
-    uuid        String   @unique @default(uuid())
-    productUUID String
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
+    id        Int      @id @default(autoincrement())
+    uuid      String   @unique @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-    Product  Product?   @relation(fields: [productUUID], references: [uuid])
     CartItem CartItem[]
 }
 
@@ -60,7 +57,7 @@ model CartItem {
     uuid        String   @unique @default(uuid())
     cartUUID    String
     productUUID String
-    quantity    Int
+    amount      Int
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
 
