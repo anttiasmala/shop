@@ -1,14 +1,45 @@
 import Link from 'next/link';
-import { AnchorHTMLAttributes, HTMLAttributes, useState } from 'react';
+import {
+  AnchorHTMLAttributes,
+  HTMLAttributes,
+  useEffect,
+  useState,
+} from 'react';
 import { useIsPhoneUser } from '~/hooks/useIsPhoneUser';
 import SvgMenu from '~/icons/menu';
 import SvgStoreBag from '~/icons/store_bag';
 import { twMerge } from 'tailwind-merge';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
+import { GetCart } from '~/shared/types';
 
 export function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [productAmount, setProductAmount] = useState(0);
 
-  const isPhoneUser = useIsPhoneUser();
+  const { data: products } = useQuery({
+    queryKey: ['products'],
+    queryFn: async () => {
+      return (await axios.get('/api/cart')).data as GetCart[];
+    },
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    retry: false,
+  });
+
+  useEffect(() => {
+    async function runThis() {
+      console.log(products);
+      let amountOfItems = 0;
+      for (const item of products || []) {
+        if (item.amount) {
+          amountOfItems += item.amount;
+        }
+      }
+      setProductAmount(amountOfItems);
+    }
+    runThis();
+  }, [products]);
 
   return (
     <div>
@@ -34,7 +65,10 @@ export function NavBar() {
             Shop
           </LinkElement>
         </div>
-        <button>
+        <button className="relative">
+          <span className="absolute top-1 left-0 flex rounded-full bg-red-500 p-1 pt-0 pb-0 text-xs text-white">
+            <p>{productAmount}</p>
+          </span>
           <SvgStoreBag width={40} height={40} className="mr-10 sm:mr-25" />
         </button>
       </div>
