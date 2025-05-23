@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { ArrowLeft, Minus, Plus, ShoppingBagIcon } from 'lucide-react';
 import Image from 'next/image';
@@ -16,6 +16,7 @@ export default function HandleProduct() {
   const [selectedAmount, setSelectedAmount] = useState(0);
 
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { refetch, data: product } = useGetProduct(productId);
 
@@ -96,19 +97,28 @@ export default function HandleProduct() {
                       <Minus className="w-4" />
                     </button>
                     <p className="p-6 pt-2 pb-2">{selectedAmount}</p>
-                    <button>
-                      <Plus
-                        className="w-4"
-                        onClick={() =>
-                          setSelectedAmount((prevValue) => prevValue + 1)
-                        }
-                      />
+                    <button
+                      onClick={() =>
+                        setSelectedAmount((prevValue) => prevValue + 1)
+                      }
+                    >
+                      <Plus className="w-4" />
                     </button>
                   </div>
                   <button
                     className="ml-16 flex items-center rounded-2xl bg-black p-2 text-white"
-                    onClick={() => {
+                    onClick={async () => {
                       try {
+                        if (selectedAmount === 0) return;
+
+                        await axios.post('/api/cart', {
+                          ...product,
+                          amount: selectedAmount,
+                        });
+
+                        await queryClient.invalidateQueries({
+                          queryKey: ['products'],
+                        });
                       } catch (e) {
                         console.error(e);
                       }
