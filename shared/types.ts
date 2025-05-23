@@ -19,6 +19,8 @@ export type Product = z.infer<typeof productSchema>;
 
 export type Cart = z.infer<typeof cartSchema>;
 
+export type GetCart = Product & { amount: number };
+
 // USER
 
 export type FullUser = z.infer<typeof fullUserSchema>;

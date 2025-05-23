@@ -125,3 +125,27 @@ export const invalidSessionResultSchema = z.object({
   databaseSession: z.null(),
   databaseUser: z.null(),
 });
+
+// CART ITEM
+
+export const fullCartItemSchema = z.object({
+  id: z.number().min(1, 'ID is mandatory!'),
+  uuid: uuidSchema,
+  productUUID: z.number().min(1, 'Product UUID is mandatory!'),
+  cartUUID: z.number().min(1, 'Cart UUID is mandatory!'),
+  amount: z.number().min(1, 'Amount is mandatory!'),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+
+export const cartItemSchema = fullCartItemSchema.pick({
+  id: true,
+  uuid: true,
+  productUUID: true,
+  amount: true,
+});
+
+export const createCartItemSchema = cartItemSchema.pick({
+  id: true,
+  amount: true,
+});
