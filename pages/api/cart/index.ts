@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { handleError } from '~/backend/handleError';
 import { HttpError } from '~/backend/HttpError';
 import prisma from '~/prisma';
-import { createCartItemSchema } from '~/shared/zodSchemas';
+import { createCartItemSchema, patchCartItemSchema } from '~/shared/zodSchemas';
 
 export default async function Handler(
   req: NextApiRequest,
@@ -17,6 +17,10 @@ export default async function Handler(
 
     if (requestMethod === 'POST') {
       return await handlePOST(req, res);
+    }
+
+    if (requestMethod === 'PATCH') {
+      return await handlePATCH(req, res);
     }
     res.status(200).end();
   } catch (e) {
@@ -88,6 +92,38 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
     },
   });
   return res.status(200).json(createdItem);
+}
+
+async function handlePATCH(req: NextApiRequest, res: NextApiResponse) {
+  const requestBodyParse = patchCartItemSchema.safeParse(req.body);
+
+  if (requestBodyParse.success === false) {
+    throw new HttpError('Invalid request body', 400);
+  }
+  const cartItem = requestBodyParse.data;
+
+  const product = await prisma.product.findFirstOrThrow({
+    where: {
+      id: cartItem.id,
+    },
+  });
+
+  const cartItemFromDatabase = await prisma.cartItem.findFirstOrThrow({
+    where: {
+      productUUID: product.uuid,
+    },
+  });
+
+  const updatedCartItem = await prisma.cartItem.update({
+    where: {
+      id: cartItemFromDatabase.id,
+    },
+    data: {
+      amount: cartItem.amount,
+    },
+  });
+
+  return res.status(200).json(updatedCartItem);
 }
 
 async function updateExistingCartItem(

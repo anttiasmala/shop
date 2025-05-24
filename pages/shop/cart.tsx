@@ -1,4 +1,4 @@
-import { QueryClient, useQuery } from '@tanstack/react-query';
+import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { Minus, Plus, ShoppingBag } from 'lucide-react';
 import Image from 'next/image';
@@ -8,7 +8,7 @@ import { Footer } from '~/components/Footer';
 import { NavBar } from '~/components/NavBar';
 import SvgStoreBag from '~/icons/store_bag';
 import { GetCart, Product, QueryAndMutationKeys } from '~/shared/types';
-import { useGetProducts } from '~/utils/apiRequests';
+import { useChangeProductAmount, useGetProducts } from '~/utils/apiRequests';
 
 export default function Cart() {
   const { data: products } = useQuery({
@@ -82,6 +82,13 @@ function ProductBlock({ product }: { product: GetCart }) {
   const [amountOfProduct, setAmountOfProduct] = useState(product.amount);
   const { image, title, price } = product.Product;
 
+  const queryClient = useQueryClient();
+
+  const { mutateAsync } = useChangeProductAmount(
+    product.Product.id,
+    amountOfProduct,
+  );
+
   return (
     <div className="mt-8 flex justify-center">
       <div className="m-3 mr-5 ml-5 flex flex-col items-center rounded bg-gray-100">
@@ -101,18 +108,36 @@ function ProductBlock({ product }: { product: GetCart }) {
             </div>
             <div className="flex">
               <button
-                onClick={() =>
-                  setAmountOfProduct((prevValue) =>
-                    prevValue === 0 ? 0 : prevValue - 1,
-                  )
-                }
+                onClick={async () => {
+                  try {
+                    setAmountOfProduct((prevValue) =>
+                      prevValue === 0 ? 0 : prevValue - 1,
+                    );
+                    await mutateAsync();
+                    await queryClient.invalidateQueries({
+                      queryKey: QueryAndMutationKeys.NavBarProducts,
+                    });
+                  } catch (e) {
+                    console.error(e);
+                  }
+                }}
                 className="border border-gray-100"
               >
                 <Minus className="w-4" />
               </button>
               <p className="p-6 pt-2 pb-2">{amountOfProduct}</p>
               <button
-                onClick={() => setAmountOfProduct((prevValue) => prevValue + 1)}
+                onClick={async () => {
+                  try {
+                    setAmountOfProduct((prevValue) => prevValue + 1);
+                    await mutateAsync();
+                    await queryClient.invalidateQueries({
+                      queryKey: QueryAndMutationKeys.NavBarProducts,
+                    });
+                  } catch (e) {
+                    console.error(e);
+                  }
+                }}
                 className="border border-gray-100"
               >
                 <Plus className="w-4" />

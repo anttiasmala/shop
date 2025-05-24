@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { Product, QueryAndMutationKeys } from '~/shared/types';
+import { PatchCartItem, Product, QueryAndMutationKeys } from '~/shared/types';
 
 export function useGetProducts() {
   return useQuery({
@@ -24,5 +24,18 @@ export function useGetProduct(id: string) {
     refetchOnMount: false,
     retry: false,
     enabled: false,
+  });
+}
+
+export function useChangeProductAmount(productId: number, newAmount: number) {
+  const data: PatchCartItem = {
+    id: productId,
+    amount: newAmount,
+  };
+  return useMutation({
+    mutationKey: QueryAndMutationKeys.ReduceProductAmount,
+    mutationFn: async () => {
+      return (await axios.patch(`/api/cart/`, data)).data as Product;
+    },
   });
 }
