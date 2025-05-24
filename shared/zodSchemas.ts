@@ -149,3 +149,5 @@ export const createCartItemSchema = cartItemSchema.pick({
   id: true,
   amount: true,
 });
+
+export const patchCartItemSchema = createCartItemSchema;

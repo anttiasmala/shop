@@ -9,17 +9,25 @@ import {
   getSessionSchema,
   getUserSchema,
   invalidSessionResultSchema,
+  patchCartItemSchema,
   productSchema,
   sessionSchema,
   userSchema,
   validSessionResultSchema,
 } from './zodSchemas';
 
+// PRODUCT
 export type Product = z.infer<typeof productSchema>;
+
+// CART
 
 export type Cart = z.infer<typeof cartSchema>;
 
 export type GetCart = { amount: number } & { Product: Product };
+
+// CART ITEM
+
+export type PatchCartItem = z.infer<typeof patchCartItemSchema>;
 
 // USER
 
@@ -75,6 +83,7 @@ export type DatabaseAdapter = {
 export const QueryAndMutationKeys = {
   NavBarProducts: ['NavBarProducts'],
   CartProducts: ['CartProducts'],
+  ReduceProductAmount: ['ReduceProductAmount'],
   Products: ['products'],
   Product: ['product'],
 };
