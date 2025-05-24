@@ -11,14 +11,14 @@ import SvgStoreBag from '~/icons/store_bag';
 import { twMerge } from 'tailwind-merge';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { GetCart } from '~/shared/types';
+import { GetCart, QueryAndMutationKeys } from '~/shared/types';
 
 export function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [productAmount, setProductAmount] = useState(0);
 
   const { data: products } = useQuery({
-    queryKey: ['products'],
+    queryKey: QueryAndMutationKeys.NavBarProducts,
     queryFn: async () => {
       return (await axios.get('/api/cart')).data as GetCart[];
     },
@@ -29,7 +29,6 @@ export function NavBar() {
 
   useEffect(() => {
     async function runThis() {
-      console.log(products);
       let amountOfItems = 0;
       for (const item of products || []) {
         if (item.amount) {

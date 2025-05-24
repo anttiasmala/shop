@@ -117,7 +117,7 @@ export default function HandleProduct() {
                         });
 
                         await queryClient.invalidateQueries({
-                          queryKey: ['products'],
+                          queryKey: ['NavBarProducts'],
                         });
                       } catch (e) {
                         console.error(e);

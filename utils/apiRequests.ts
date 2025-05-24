@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { Product } from '~/shared/types';
+import { Product, QueryAndMutationKeys } from '~/shared/types';
 
 export function useGetProducts() {
   return useQuery({
-    queryKey: ['products'],
+    queryKey: QueryAndMutationKeys.Products,
     queryFn: async () => {
       return (await axios.get(`/api/products`)).data as Product[];
     },
@@ -16,7 +16,7 @@ export function useGetProducts() {
 
 export function useGetProduct(id: string) {
   return useQuery({
-    queryKey: ['product'],
+    queryKey: QueryAndMutationKeys.Product,
     queryFn: async () => {
       return (await axios.get(`/api/products/${id}`)).data as Product;
     },

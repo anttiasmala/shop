@@ -71,3 +71,9 @@ export type DatabaseAdapter = {
   deleteUserSessions: (userUUID: string) => Promise<void>; // deletes all the sessions belonging to a user
   deleteExpiredSessions: () => Promise<void>;
 };
+
+export const QueryAndMutationKeys = {
+  NavBarProducts: ['NavBarProducts'],
+  Products: ['products'],
+  Product: ['product'],
+};
