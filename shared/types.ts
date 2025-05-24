@@ -19,7 +19,7 @@ export type Product = z.infer<typeof productSchema>;
 
 export type Cart = z.infer<typeof cartSchema>;
 
-export type GetCart = Product & { amount: number };
+export type GetCart = { amount: number } & { Product: Product };
 
 // USER
 
