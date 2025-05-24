@@ -1,11 +1,13 @@
 import { toast } from 'react-toastify';
 import SvgStoreBag from '~/icons/store_bag';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export function Product({
   image,
   price,
   title,
+  id,
 }: {
   image: string;
   title: string;
@@ -16,14 +18,16 @@ export function Product({
     <div className="mt-8 flex justify-center">
       <div className="m-3 mr-5 ml-5 flex flex-col items-center rounded border border-gray-100 bg-gray-100">
         <div className="m-5">
-          <Image
-            priority={true}
-            alt="SSD"
-            src={image}
-            width={1920}
-            height={1080}
-            className="w-48 rounded-md"
-          />
+          <Link href={`/shop/product/${id}`}>
+            <Image
+              priority={true}
+              alt="SSD"
+              src={image}
+              width={1920}
+              height={1080}
+              className="w-48 rounded-md"
+            />
+          </Link>
         </div>
         <div className="w-full bg-white">
           <div className="m-3 mr-5 ml-5 flex flex-col items-center text-sm text-gray-500">
