@@ -74,6 +74,7 @@ export type DatabaseAdapter = {
 
 export const QueryAndMutationKeys = {
   NavBarProducts: ['NavBarProducts'],
+  CartProducts: ['CartProducts'],
   Products: ['products'],
   Product: ['product'],
 };
