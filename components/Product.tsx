@@ -3,9 +3,13 @@ import SvgStoreBag from '~/icons/store_bag';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Product as ProductType } from '~/shared/types';
+import axios from 'axios';
+import { useQueryClient } from '@tanstack/react-query';
 
 export function Product({ product }: { product: ProductType }) {
   const { image, title, price, id } = product;
+
+  const queryClient = useQueryClient();
 
   return (
     <div className="mt-8 flex justify-center">
@@ -28,9 +32,14 @@ export function Product({ product }: { product: ProductType }) {
               {title}
               <span className="ml-3">
                 <button
-                  onClick={() => {
-                    toast('Test', {
-                      theme: 'light',
+                  onClick={async () => {
+                    await axios.post('/api/cart', {
+                      ...product,
+                      amount: 1,
+                    });
+
+                    await queryClient.invalidateQueries({
+                      queryKey: ['NavBarProducts'],
                     });
                   }}
                 >
