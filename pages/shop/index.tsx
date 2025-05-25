@@ -120,7 +120,7 @@ function ContactInfo() {
   return (
     <Container className="mr-3" parentDivClassName="mt-8">
       <TextCard
-        parentDivClassName="mt-5 w-full m-4 rounded"
+        parentDivClassName="mt-5 w-full m-4 rounded sm:flex sm:justify-center"
         className="flex flex-col rounded"
       >
         <div className="wrap-anywhere">
