@@ -10,7 +10,6 @@ export default async function Handler(
 ) {
   try {
     const requestMethod = req.method;
-    console.log(requestMethod);
     if (requestMethod === 'GET') {
       return await handleGET(req, res);
     }

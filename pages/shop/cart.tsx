@@ -17,13 +17,9 @@ export default function Cart() {
       return (await axios.get(`/api/cart`)).data as GetCart[];
     },
     refetchOnWindowFocus: false,
-    refetchOnMount: false,
+    refetchOnMount: true,
     retry: false,
   });
-
-  useEffect(() => {
-    console.log(products);
-  }, [products]);
 
   return (
     <main className="h-screen w-full bg-white">
@@ -62,6 +58,30 @@ function EmptyCart() {
 }
 
 function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
+  const [subTotal, setSubTotal] = useState(0);
+  const [tax, setTax] = useState(0);
+  const [total, setTotal] = useState(0);
+
+  const { data } = useQuery({
+    queryKey: ['updateCartTotalAmount'],
+    queryFn: async () => {
+      return (await axios.get(`/api/cart`)).data as GetCart[];
+    },
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+    retry: false,
+  });
+
+  useEffect(() => {
+    let _subtotal = 0;
+    for (const product of data || []) {
+      _subtotal += Number(product.Product.price) * product.amount;
+    }
+    setSubTotal(_subtotal);
+    setTax(_subtotal * 0.255);
+    setTotal(_subtotal + _subtotal * 0.255);
+  }, [data]);
+
   if (!products) {
     return null;
   }
@@ -73,6 +93,30 @@ function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
             <ProductBlock product={_product} key={`productBlock${_index}`} />
           );
         })}
+        <div className="mt-5 mr-3 ml-3 flex flex-col border border-gray-100">
+          <p className="p-4 font-bold">Order Summary</p>
+          <div className="m-4">
+            <p className="flex justify-between">
+              Subtotal: <span className="mr-10">${subTotal.toFixed(2)}</span>
+            </p>
+            <p className="flex justify-between">
+              Shipping: <span className="mr-10">Free</span>
+            </p>
+            <p className="flex justify-between">
+              Tax: <span className="mr-10">${tax.toFixed(2)}</span>
+            </p>
+          </div>
+          <div className="m-4 border-t border-gray-100 text-xl">
+            <p className="flex justify-between font-bold">
+              Total <span className="mr-10">${total.toFixed(2)}</span>
+            </p>
+          </div>
+          <div className="flex w-full justify-center">
+            <button className="w-48 rounded-md bg-black p-1 text-white">
+              Checkout
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -117,6 +161,9 @@ function ProductBlock({ product }: { product: GetCart }) {
                     await queryClient.invalidateQueries({
                       queryKey: QueryAndMutationKeys.NavBarProducts,
                     });
+                    await queryClient.invalidateQueries({
+                      queryKey: ['updateCartTotalAmount'],
+                    });
                   } catch (e) {
                     console.error(e);
                   }
@@ -133,6 +180,9 @@ function ProductBlock({ product }: { product: GetCart }) {
                     await mutateAsync();
                     await queryClient.invalidateQueries({
                       queryKey: QueryAndMutationKeys.NavBarProducts,
+                    });
+                    await queryClient.invalidateQueries({
+                      queryKey: ['updateCartTotalAmount'],
                     });
                   } catch (e) {
                     console.error(e);
