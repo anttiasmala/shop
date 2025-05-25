@@ -14,14 +14,16 @@ import { useGetProducts } from '~/utils/apiRequests';
 export default function Shop() {
   return (
     <main className="h-screen w-full bg-white">
-      <div className="w-full">
-        <NavBar />
+      <div className="flex w-full justify-center">
+        <div className="w-full max-w-1/2">
+          <NavBar />
+          <MainInformation />
+          <FeaturedProducts />
+          <WhyChooseUs />
+          <ContactInfo />
+          <Footer />
+        </div>
       </div>
-      <MainInformation />
-      <FeaturedProducts />
-      <WhyChooseUs />
-      <ContactInfo />
-      <Footer />
     </main>
   );
 }
@@ -53,14 +55,14 @@ function FeaturedProducts() {
 
   return (
     <div>
-      <div className="mt-12 ml-4 flex sm:ml-[15%]">
+      <div className="mt-12 ml-4 flex justify-between sm:ml-[15%]">
         <p className="text-2xl font-bold">Featured Products</p>
-        <button className="ml-4 flex items-center">
+        <Link className="ml-4 flex items-center" href={'/shop/products'}>
           View All
           <span className="ml-1">
             <SvgArrowRight className="w-6" />
           </span>
-        </button>
+        </Link>
       </div>
       <div className="flex flex-wrap justify-center">
         {products?.map((product, index) => (
