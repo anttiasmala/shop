@@ -67,7 +67,7 @@ export function NavBar() {
             Shop
           </LinkElement>
         </div>
-        <Link href={'/shop/cart'} className="relative sm:mr-[15%] lg:mr-[20%]">
+        <Link href={'/shop/cart'} className="relative">
           <span className="absolute top-1 left-0 flex rounded-full bg-red-500 p-1 pt-0 pb-0 text-xs text-white">
             <p>{productAmount}</p>
           </span>
