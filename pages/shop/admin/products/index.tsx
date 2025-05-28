@@ -1,8 +1,10 @@
 import { Pencil, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import {
+  Dispatch,
   HTMLAttributes,
   ReactNode,
+  SetStateAction,
   TdHTMLAttributes,
   useEffect,
   useState,
@@ -22,9 +24,17 @@ export default function ProductsIndex() {
         <div className="flex w-full flex-col items-center">
           <p className="animate-[opacity_1200ms] text-center">Products panel</p>
           <div className="mt-5 flex justify-center">
-            <ProductTable />
+            <ProductTable
+              setDeleteModalData={setDeleteModalData}
+              setEditModalData={setEditModalData}
+            />
 
-            {}
+            {editModalData && (
+              <EditModal
+                product={editModalData}
+                closeModal={() => setEditModalData(undefined)}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -32,7 +42,13 @@ export default function ProductsIndex() {
   );
 }
 
-function ProductTable() {
+function ProductTable({
+  setDeleteModalData,
+  setEditModalData,
+}: {
+  setEditModalData: Dispatch<SetStateAction<Product | undefined>>;
+  setDeleteModalData: Dispatch<SetStateAction<Product | undefined>>;
+}) {
   const { data: products } = useGetProducts();
 
   useEffect(() => {
@@ -70,7 +86,10 @@ function ProductTable() {
                 >
                   <Pencil />
                 </button>
-                <button className="m-2 border border-gray-500 p-2 hover:bg-gray-500">
+                <button
+                  className="m-2 border border-gray-500 p-2 hover:bg-gray-500"
+                  onClick={() => setDeleteModalData(_product)}
+                >
                   <Trash2 />
                 </button>
               </div>
@@ -90,7 +109,13 @@ function Td({ children, className }: HTMLAttributes<HTMLTableCellElement>) {
   );
 }
 
-function EditModal({ product }: { product: Product }) {
+function EditModal({
+  product,
+  closeModal,
+}: {
+  product: Product;
+  closeModal: () => void;
+}) {
   const {} = product;
 
   return (
@@ -116,6 +141,15 @@ function EditModal({ product }: { product: Product }) {
         <div className="flex flex-col">
           <label className="text-white">Category:</label>
           <Input />
+        </div>
+        <div className="flex justify-center">
+          <button
+            className="mt-4 mr-4 bg-blue-500 p-2 text-white"
+            onClick={closeModal}
+          >
+            Cancel
+          </button>
+          <button className="mt-4 ml-4 bg-blue-500 p-2 text-white">Save</button>
         </div>
       </div>
     </div>
