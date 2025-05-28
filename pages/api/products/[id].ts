@@ -5,9 +5,16 @@ export default async function Handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  if (req.method !== 'GET') {
-    return res.status(405).send('GET request is the only allowed method');
+  if (req.method === 'GET') {
+    return await handleGET(req, res);
   }
+
+  if (req.method === 'DELETE') {
+    return await handleDELETE(req, res);
+  }
+}
+
+async function handleGET(req: NextApiRequest, res: NextApiResponse) {
   const queryId = req.query.id;
   if (queryId === undefined || typeof queryId !== 'string') {
     return res.status(400).send('ID is mandatory in query');
@@ -26,4 +33,23 @@ export default async function Handler(
   });
 
   res.status(200).json(product);
+}
+
+async function handleDELETE(req: NextApiRequest, res: NextApiResponse) {
+  const queryId = req.query.id;
+  if (queryId === undefined || typeof queryId !== 'string') {
+    return res.status(400).send('ID is mandatory in query');
+  }
+
+  const numberQueryId = Number(queryId);
+  if (Number.isNaN(numberQueryId)) {
+    return res.status(400).send('Invalid ID given');
+  }
+
+  await prisma.product.delete({
+    where: { id: numberQueryId },
+  });
+
+  res.status(200).end();
+  return;
 }
