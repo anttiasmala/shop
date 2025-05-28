@@ -53,6 +53,8 @@ export const createProductSchema = productSchema.omit({
   id: true,
 });
 
+export const patchProductSchema = createProductSchema;
+
 // CART
 
 export const cartSchema = productSchema
