@@ -8,7 +8,7 @@ export default function AdminIndex() {
           <p className="animate-[opacity_1200ms] text-center">Admin panel</p>
           <div className="mt-5 flex w-full justify-center">
             <Link href={'/shop/admin/products'} className="bg-gray-200">
-              Add Products
+              Edit Products
             </Link>
           </div>
         </div>
