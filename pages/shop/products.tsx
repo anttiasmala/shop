@@ -40,47 +40,51 @@ export default function Products() {
 
   return (
     <main className="h-screen w-full bg-white">
-      <div className="w-full">
-        <NavBar />
-      </div>
-      <div>
-        <p className="m-6 text-3xl font-bold">All Products</p>
-        <div>
-          <div className="m-6 flex flex-wrap rounded-2xl border border-gray-200">
-            <SvgMagnifyingGlass className="ml-4 w-5 text-gray-300" />
-            <input
-              type="text"
-              placeholder="Search products..."
-              className="w-max p-3 pr-0"
-              onChange={(e) => setSearchTerm(e.currentTarget.value)}
-            />
+      <div className="flex flex-col items-center">
+        <div className="sm:max-w-1/2">
+          <div className="w-full">
+            <NavBar />
           </div>
-          <div className="flex flex-wrap justify-center">
-            {searchTerm.length === 0
-              ? products?.map((product, index) => {
-                  return (
-                    <ProductBlock
-                      id={product.id}
-                      image={product.image}
-                      price={product.price}
-                      title={product.title}
-                      key={`product_${index}`}
-                    />
-                  );
-                })
-              : searchedProducts.map((product, index) => (
-                  <ProductBlock
-                    id={product.id}
-                    image={product.image}
-                    price={product.price}
-                    title={product.title}
-                    key={`product_${index}`}
-                  />
-                ))}
+          <div>
+            <p className="m-6 text-3xl font-bold">All Products</p>
+            <div>
+              <div className="m-6 flex flex-wrap rounded-2xl border border-gray-200">
+                <SvgMagnifyingGlass className="ml-4 w-5 text-gray-300" />
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  className="w-max p-3 pr-0"
+                  onChange={(e) => setSearchTerm(e.currentTarget.value)}
+                />
+              </div>
+              <div className="flex flex-wrap justify-center">
+                {searchTerm.length === 0
+                  ? products?.map((product, index) => {
+                      return (
+                        <ProductBlock
+                          id={product.id}
+                          image={product.image}
+                          price={product.price}
+                          title={product.title}
+                          key={`product_${index}`}
+                        />
+                      );
+                    })
+                  : searchedProducts.map((product, index) => (
+                      <ProductBlock
+                        id={product.id}
+                        image={product.image}
+                        price={product.price}
+                        title={product.title}
+                        key={`product_${index}`}
+                      />
+                    ))}
+              </div>
+            </div>
           </div>
+          <Footer />
         </div>
       </div>
-      <Footer />
     </main>
   );
 }
