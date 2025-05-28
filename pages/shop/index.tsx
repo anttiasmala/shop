@@ -64,7 +64,7 @@ function FeaturedProducts() {
           </span>
         </Link>
       </div>
-      <div className="flex flex-wrap justify-center sm:flex-nowrap">
+      <div className="flex flex-wrap justify-center">
         {products?.map((product, index) => {
           return index >= 4 ? null : (
             <Product product={product} key={`product_${index}`} />
