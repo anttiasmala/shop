@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "svgr": "svgr --out-dir icons --typescript --jsx-runtime automatic --no-dimensions --silent --filename-case snake --ignore-existing --no-index -- public/images/icons",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix"
   },
   "dependencies": {
     "@prisma/client": "^6.8.2",
