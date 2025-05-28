@@ -143,7 +143,14 @@ function EditModal({
   product: Product;
   closeModal: () => void;
 }) {
-  const {} = product;
+  const { category, description, id, image, price, title } = product;
+  const [inputFields, setInputFields] = useState({
+    title: title,
+    description: description,
+    price: price,
+    image: image,
+    category: category,
+  });
 
   return (
     <div>
@@ -151,23 +158,63 @@ function EditModal({
       <div className="fixed top-[50%] left-[50%] z-99 translate-x-[-50%] translate-y-[-50%]">
         <div className="flex flex-col">
           <label className="text-white">Title:</label>
-          <Input />
+          <Input
+            onChange={(e) =>
+              setInputFields((prevValue) => ({
+                ...prevValue,
+                title: e.target.value,
+              }))
+            }
+            value={inputFields.title}
+          />
         </div>
         <div className="flex flex-col">
           <label className="text-white">Description:</label>
-          <Input />
+          <Input
+            onChange={(e) =>
+              setInputFields((prevValue) => ({
+                ...prevValue,
+                description: e.target.value,
+              }))
+            }
+            value={inputFields.description}
+          />
         </div>
         <div className="flex flex-col">
           <label className="text-white">Price:</label>
-          <Input />
+          <Input
+            onChange={(e) =>
+              setInputFields((prevValue) => ({
+                ...prevValue,
+                price: e.target.value,
+              }))
+            }
+            value={inputFields.price}
+          />
         </div>
         <div className="flex flex-col">
           <label className="text-white">Image:</label>
-          <Input />
+          <Input
+            onChange={(e) =>
+              setInputFields((prevValue) => ({
+                ...prevValue,
+                image: e.target.value,
+              }))
+            }
+            value={inputFields.image}
+          />
         </div>
         <div className="flex flex-col">
           <label className="text-white">Category:</label>
-          <Input />
+          <Input
+            onChange={(e) =>
+              setInputFields((prevValue) => ({
+                ...prevValue,
+                category: e.target.value,
+              }))
+            }
+            value={inputFields.category}
+          />
         </div>
         <div className="flex justify-center">
           <button
@@ -282,7 +329,8 @@ function AddProduct({
       <div className="fixed top-0 left-0 z-98 h-full w-full bg-black opacity-80" />
       <div className="fixed top-[50%] left-[50%] z-99 translate-x-[-50%] translate-y-[-50%]">
         <form
-          onSubmit={() => {
+          onSubmit={(e) => {
+            e.preventDefault();
             try {
               void mutateAsync();
             } catch (e) {
