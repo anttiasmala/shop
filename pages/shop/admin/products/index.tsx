@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { Pencil, Trash2 } from 'lucide-react';
 import Link from 'next/link';
@@ -13,7 +13,7 @@ import {
 } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { Input } from '~/components/Input';
-import { Product } from '~/shared/types';
+import { Product, QueryAndMutationKeys } from '~/shared/types';
 import { useGetProducts } from '~/utils/apiRequests';
 
 export default function ProductsIndex() {
@@ -224,10 +224,17 @@ function AddProduct({ closeModal }: { closeModal: () => void }) {
     category: '',
   });
 
+  const queryClient = useQueryClient();
+
   const { mutateAsync } = useMutation({
     mutationKey: ['addProductMutationKey'],
     mutationFn: () => axios.post('/api/products', inputFields),
-    onSuccess: () => closeModal(),
+    onSuccess: () => {
+      closeModal();
+      queryClient.invalidateQueries({
+        queryKey: QueryAndMutationKeys.Products,
+      });
+    },
   });
 
   return (
