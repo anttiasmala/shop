@@ -179,6 +179,7 @@ function EditModal({
           onSubmit={(e) => {
             e.preventDefault();
             try {
+              mutateAsync();
             } catch (e) {
               console.error(e);
             }
