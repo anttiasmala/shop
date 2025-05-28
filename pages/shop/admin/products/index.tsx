@@ -146,7 +146,7 @@ function EditModal({
   closeModal: () => void;
   queryClient: QueryClient;
 }) {
-  const { category, description, id, image, price, title } = product;
+  const { category, description, image, price, title } = product;
   const [inputFields, setInputFields] = useState({
     title: title,
     description: description,
@@ -179,7 +179,7 @@ function EditModal({
           onSubmit={(e) => {
             e.preventDefault();
             try {
-              mutateAsync();
+              void mutateAsync();
             } catch (e) {
               console.error(e);
             }
