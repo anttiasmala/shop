@@ -1,4 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import axios from 'axios';
 import { Pencil, Trash2 } from 'lucide-react';
 import Link from 'next/link';
@@ -20,6 +24,8 @@ export default function ProductsIndex() {
   const [editModalData, setEditModalData] = useState<Product | undefined>();
   const [deleteModalData, setDeleteModalData] = useState<Product | undefined>();
   const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
+
+  const queryClient = useQueryClient();
 
   return (
     <main className="h-screen w-full bg-white">
@@ -47,13 +53,17 @@ export default function ProductsIndex() {
 
             {deleteModalData && (
               <DeleteModal
+                queryClient={queryClient}
                 product={deleteModalData}
                 closeModal={() => setDeleteModalData(undefined)}
               />
             )}
 
             {isAddProductModalOpen && (
-              <AddProduct closeModal={() => setIsAddProductModalOpen(false)} />
+              <AddProduct
+                closeModal={() => setIsAddProductModalOpen(false)}
+                queryClient={queryClient}
+              />
             )}
           </div>
         </div>
@@ -179,10 +189,22 @@ function EditModal({
 function DeleteModal({
   closeModal,
   product,
+  queryClient,
 }: {
   product: Product;
   closeModal: () => void;
+  queryClient: QueryClient;
 }) {
+  const { mutateAsync } = useMutation({
+    mutationKey: ['deleteProductMutationKey'],
+    mutationFn: () => axios.delete(`/api/products/${product.id}`),
+    onSuccess: () => {
+      closeModal();
+      queryClient.invalidateQueries({
+        queryKey: QueryAndMutationKeys.Products,
+      });
+    },
+  });
   return (
     <div>
       <div className="fixed top-0 left-0 z-98 h-full w-full bg-black opacity-80" />
@@ -200,7 +222,16 @@ function DeleteModal({
           >
             Cancel
           </button>
-          <button className="mt-4 ml-4 bg-blue-500 p-2 text-white">
+          <button
+            className="mt-4 ml-4 bg-blue-500 p-2 text-white"
+            onClick={async () => {
+              try {
+                await mutateAsync();
+              } catch (e) {
+                console.error(e);
+              }
+            }}
+          >
             Delete
           </button>
         </div>
@@ -215,7 +246,13 @@ function DeleteModal({
  *
  * Add a check so any of the fields cannot be empty
  */
-function AddProduct({ closeModal }: { closeModal: () => void }) {
+function AddProduct({
+  closeModal,
+  queryClient,
+}: {
+  closeModal: () => void;
+  queryClient: QueryClient;
+}) {
   const [inputFields, setInputFields] = useState({
     title: '',
     description: '',
@@ -223,8 +260,6 @@ function AddProduct({ closeModal }: { closeModal: () => void }) {
     image: '',
     category: '',
   });
-
-  const queryClient = useQueryClient();
 
   const { mutateAsync } = useMutation({
     mutationKey: ['addProductMutationKey'],
