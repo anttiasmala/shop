@@ -45,14 +45,15 @@ export default function ProductsIndex() {
               <EditModal
                 product={editModalData}
                 closeModal={() => setEditModalData(undefined)}
+                queryClient={queryClient}
               />
             )}
 
             {deleteModalData && (
               <DeleteModal
-                queryClient={queryClient}
                 product={deleteModalData}
                 closeModal={() => setDeleteModalData(undefined)}
+                queryClient={queryClient}
               />
             )}
 
@@ -139,9 +140,11 @@ function Td({ children, className }: HTMLAttributes<HTMLTableCellElement>) {
 function EditModal({
   product,
   closeModal,
+  queryClient,
 }: {
   product: Product;
   closeModal: () => void;
+  queryClient: QueryClient;
 }) {
   const { category, description, id, image, price, title } = product;
   const [inputFields, setInputFields] = useState({
@@ -150,6 +153,22 @@ function EditModal({
     price: price,
     image: image,
     category: category,
+  });
+
+  const { mutateAsync } = useMutation({
+    mutationKey: ['editProductMutationKey'],
+    mutationFn: async () =>
+      await axios.patch(`/api/products/${product.id}`, inputFields),
+    onSuccess: async () => {
+      try {
+        closeModal();
+        await queryClient.invalidateQueries({
+          queryKey: QueryAndMutationKeys.Products,
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    },
   });
 
   return (
