@@ -9,11 +9,11 @@ export default async function Handler(
 ) {
   try {
     if (req.method === 'GET') {
-      return handleGET(req, res);
+      return await handleGET(req, res);
     }
 
     if (req.method === 'POST') {
-      return handlePOST(req, res);
+      return await handlePOST(req, res);
     }
 
     res.status(405).send('GET and POST requests are only allowed');
