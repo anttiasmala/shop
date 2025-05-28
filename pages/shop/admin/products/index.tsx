@@ -281,86 +281,91 @@ function AddProduct({
     <div>
       <div className="fixed top-0 left-0 z-98 h-full w-full bg-black opacity-80" />
       <div className="fixed top-[50%] left-[50%] z-99 translate-x-[-50%] translate-y-[-50%]">
-        <div className="flex flex-col">
-          <label className="text-white">Title:</label>
-          <Input
-            onChange={(e) =>
-              setInputFields((prevValue) => ({
-                ...prevValue,
-                title: e.target.value,
-              }))
+        <form
+          onSubmit={() => {
+            try {
+              void mutateAsync();
+            } catch (e) {
+              console.error(e);
             }
-            value={inputFields.title}
-          />
-        </div>
-        <div className="flex flex-col">
-          <label className="text-white">Description:</label>
-          <Input
-            onChange={(e) =>
-              setInputFields((prevValue) => ({
-                ...prevValue,
-                description: e.target.value,
-              }))
-            }
-            value={inputFields.description}
-          />
-        </div>
-        <div className="flex flex-col">
-          <label className="text-white">Price:</label>
-          <Input
-            onChange={(e) =>
-              setInputFields((prevValue) => ({
-                ...prevValue,
-                price: e.target.value,
-              }))
-            }
-            value={inputFields.price}
-          />
-        </div>
-        <div className="flex flex-col">
-          <label className="text-white">Image:</label>
-          <Input
-            onChange={(e) =>
-              setInputFields((prevValue) => ({
-                ...prevValue,
-                image: e.target.value,
-              }))
-            }
-            value={inputFields.image}
-          />
-        </div>
-        <div className="flex flex-col">
-          <label className="text-white">Category:</label>
-          <Input
-            onChange={(e) =>
-              setInputFields((prevValue) => ({
-                ...prevValue,
-                category: e.target.value,
-              }))
-            }
-            value={inputFields.category}
-          />
-        </div>
-        <div className="flex justify-center">
-          <button
-            className="mt-4 mr-4 bg-blue-500 p-2 text-white"
-            onClick={closeModal}
-          >
-            Cancel
-          </button>
-          <button
-            className="mt-4 ml-4 bg-blue-500 p-2 text-white"
-            onClick={() => {
-              try {
-                void mutateAsync();
-              } catch (e) {
-                console.error(e);
+          }}
+        >
+          <div className="flex flex-col">
+            <label className="text-white">Title:</label>
+            <Input
+              onChange={(e) =>
+                setInputFields((prevValue) => ({
+                  ...prevValue,
+                  title: e.target.value,
+                }))
               }
-            }}
-          >
-            Save
-          </button>
-        </div>
+              value={inputFields.title}
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="text-white">Description:</label>
+            <Input
+              onChange={(e) =>
+                setInputFields((prevValue) => ({
+                  ...prevValue,
+                  description: e.target.value,
+                }))
+              }
+              value={inputFields.description}
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="text-white">Price:</label>
+            <Input
+              onChange={(e) =>
+                setInputFields((prevValue) => ({
+                  ...prevValue,
+                  price: e.target.value,
+                }))
+              }
+              value={inputFields.price}
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="text-white">Image:</label>
+            <Input
+              onChange={(e) =>
+                setInputFields((prevValue) => ({
+                  ...prevValue,
+                  image: e.target.value,
+                }))
+              }
+              value={inputFields.image}
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="text-white">Category:</label>
+            <Input
+              onChange={(e) =>
+                setInputFields((prevValue) => ({
+                  ...prevValue,
+                  category: e.target.value,
+                }))
+              }
+              value={inputFields.category}
+            />
+          </div>
+          <div className="flex justify-center">
+            <button
+              className="mt-4 mr-4 bg-blue-500 p-2 text-white"
+              onClick={closeModal}
+              type="button"
+            >
+              Cancel
+            </button>
+            <button
+              className="mt-4 ml-4 bg-blue-500 p-2 text-white"
+              type="submit"
+            >
+              Save
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
