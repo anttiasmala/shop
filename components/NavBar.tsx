@@ -67,11 +67,11 @@ export function NavBar() {
             Shop
           </LinkElement>
         </div>
-        <Link href={'/shop/cart'} className="relative">
+        <Link href={'/shop/cart'} className="relative mr-10 sm:mr-0">
           <span className="absolute top-1 left-0 flex rounded-full bg-red-500 p-1 pt-0 pb-0 text-xs text-white">
             <p>{productAmount}</p>
           </span>
-          <SvgStoreBag width={40} height={40} className="mr-10 sm:mr-25" />
+          <SvgStoreBag width={40} height={40} className="" />
         </Link>
       </div>
       <Menu isMenuOpen={isMenuOpen} />
