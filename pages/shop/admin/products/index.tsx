@@ -35,6 +35,13 @@ export default function ProductsIndex() {
                 closeModal={() => setEditModalData(undefined)}
               />
             )}
+
+            {deleteModalData && (
+              <DeleteModal
+                product={deleteModalData}
+                closeModal={() => setDeleteModalData(undefined)}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -150,6 +157,39 @@ function EditModal({
             Cancel
           </button>
           <button className="mt-4 ml-4 bg-blue-500 p-2 text-white">Save</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DeleteModal({
+  closeModal,
+  product,
+}: {
+  product: Product;
+  closeModal: () => void;
+}) {
+  return (
+    <div>
+      <div className="fixed top-0 left-0 z-98 h-full w-full bg-black opacity-80" />
+      <div className="fixed top-[30%] left-[50%] z-99 translate-x-[-50%] translate-y-[-50%]">
+        <div className="flex flex-col">
+          <label className="text-white">
+            Delete <span className="font-bold">{product.title}</span>?
+          </label>
+        </div>
+
+        <div className="flex justify-center">
+          <button
+            className="mt-4 mr-4 bg-blue-500 p-2 text-white"
+            onClick={closeModal}
+          >
+            Cancel
+          </button>
+          <button className="mt-4 ml-4 bg-blue-500 p-2 text-white">
+            Delete
+          </button>
         </div>
       </div>
     </div>
