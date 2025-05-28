@@ -1,21 +1,6 @@
 import { z } from 'zod';
 import { emailRegex, passwordRegex } from './regexPatterns';
 
-export const productSchema = z.object({
-  id: z.number(),
-  title: z.string(),
-  price: z.string(),
-  image: z.string(),
-  description: z.string(),
-  category: z.string(),
-});
-
-export const cartSchema = productSchema
-  .extend({
-    amount: z.number(),
-  })
-  .array();
-
 // MISC SCHEMAS
 export const uuidSchema = z
   .string({ message: 'Invalid UUID! It should be given as a string!' })
@@ -52,6 +37,55 @@ export const passwordSchema = z
     passwordRegex,
     'Salasanan täytyy olla vähintään 8 merkkiä pitkä, maksimissaan 128 merkkiä pitkä, sekä sisältää vähintään yksi iso kirjain, yksi pieni kirjain, yksi numero ja yksi erikoismerkki!',
   );
+
+// PRODUCT
+
+export const productSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  description: z.string(),
+  price: z.string(),
+  image: z.string(),
+  category: z.string(),
+});
+
+export const createProductSchema = productSchema.omit({
+  id: true,
+});
+
+// CART
+
+export const cartSchema = productSchema
+  .extend({
+    amount: z.number(),
+  })
+  .array();
+
+// CART ITEM
+
+export const fullCartItemSchema = z.object({
+  id: z.number().min(1, 'ID is mandatory!'),
+  uuid: uuidSchema,
+  productUUID: z.number().min(1, 'Product UUID is mandatory!'),
+  cartUUID: z.number().min(1, 'Cart UUID is mandatory!'),
+  amount: z.number().min(1, 'Amount is mandatory!'),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+
+export const cartItemSchema = fullCartItemSchema.pick({
+  id: true,
+  uuid: true,
+  productUUID: true,
+  amount: true,
+});
+
+export const createCartItemSchema = cartItemSchema.pick({
+  id: true,
+  amount: true,
+});
+
+export const patchCartItemSchema = createCartItemSchema;
 
 // USER SCHEMAS
 
@@ -125,29 +159,3 @@ export const invalidSessionResultSchema = z.object({
   databaseSession: z.null(),
   databaseUser: z.null(),
 });
-
-// CART ITEM
-
-export const fullCartItemSchema = z.object({
-  id: z.number().min(1, 'ID is mandatory!'),
-  uuid: uuidSchema,
-  productUUID: z.number().min(1, 'Product UUID is mandatory!'),
-  cartUUID: z.number().min(1, 'Cart UUID is mandatory!'),
-  amount: z.number().min(1, 'Amount is mandatory!'),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-});
-
-export const cartItemSchema = fullCartItemSchema.pick({
-  id: true,
-  uuid: true,
-  productUUID: true,
-  amount: true,
-});
-
-export const createCartItemSchema = cartItemSchema.pick({
-  id: true,
-  amount: true,
-});
-
-export const patchCartItemSchema = createCartItemSchema;
