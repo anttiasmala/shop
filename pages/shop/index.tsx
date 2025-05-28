@@ -15,7 +15,7 @@ export default function Shop() {
   return (
     <main className="h-screen w-full bg-white">
       <div className="flex w-full justify-center">
-        <div className="w-full max-w-1/2">
+        <div className="w-full sm:max-w-1/2">
           <NavBar />
           <MainInformation />
           <FeaturedProducts />
