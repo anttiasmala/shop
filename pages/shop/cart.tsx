@@ -23,15 +23,19 @@ export default function Cart() {
 
   return (
     <main className="h-screen w-full bg-white">
-      <div className="w-full">
-        <NavBar />
+      <div className="flex w-full flex-col items-center">
+        <div className="w-full sm:max-w-1/2">
+          <div className="w-full">
+            <NavBar />
+          </div>
+          {products?.length === 0 ? (
+            <EmptyCart />
+          ) : (
+            <NonEmptyCart products={products} />
+          )}
+          <Footer />
+        </div>
       </div>
-      {products?.length === 0 ? (
-        <EmptyCart />
-      ) : (
-        <NonEmptyCart products={products} />
-      )}
-      <Footer />
     </main>
   );
 }
@@ -87,13 +91,13 @@ function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
   }
   return (
     <div>
-      <div>
+      <div className="flex flex-col items-center">
         {products.map((_product, _index) => {
           return (
             <ProductBlock product={_product} key={`productBlock${_index}`} />
           );
         })}
-        <div className="mt-5 mr-3 ml-3 flex flex-col border border-gray-100">
+        <div className="mt-5 mr-3 ml-3 flex flex-col border border-gray-100 sm:w-96">
           <p className="p-4 font-bold">Order Summary</p>
           <div className="m-4">
             <p className="flex justify-between">
@@ -112,7 +116,7 @@ function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
             </p>
           </div>
           <div className="flex w-full justify-center">
-            <button className="w-48 rounded-md bg-black p-1 text-white">
+            <button className="mt-4 w-48 rounded-md bg-black p-2 text-white">
               Checkout
             </button>
           </div>
