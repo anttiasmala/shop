@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export default function AdminIndeX() {
+export default function AdminIndex() {
   return (
     <main className="h-screen w-full bg-white">
       <div className="flex w-full justify-center">
