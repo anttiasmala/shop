@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '~/prisma';
+import { patchProductSchema } from '~/shared/zodSchemas';
 
 export default async function Handler(
   req: NextApiRequest,
@@ -12,6 +13,12 @@ export default async function Handler(
   if (req.method === 'DELETE') {
     return await handleDELETE(req, res);
   }
+
+  if (req.method === 'PATCH') {
+    return await handlePATCH(req, res);
+  }
+
+  res.status(405).send('GET, DELETE and PATCH are valid methods');
 }
 
 async function handleGET(req: NextApiRequest, res: NextApiResponse) {
@@ -52,4 +59,31 @@ async function handleDELETE(req: NextApiRequest, res: NextApiResponse) {
 
   res.status(200).end();
   return;
+}
+
+async function handlePATCH(req: NextApiRequest, res: NextApiResponse) {
+  const queryId = req.query.id;
+  if (queryId === undefined || typeof queryId !== 'string') {
+    return res.status(400).send('ID is mandatory in query');
+  }
+
+  const numberQueryId = Number(queryId);
+  if (Number.isNaN(numberQueryId)) {
+    return res.status(400).send('Invalid ID given');
+  }
+
+  const productSchemaParse = patchProductSchema.safeParse(req.body);
+
+  if (productSchemaParse.success === false) {
+    return res.status(400).send('Invalid request body given');
+  }
+
+  const updatedProduct = await prisma.product.update({
+    where: {
+      id: numberQueryId,
+    },
+    data: productSchemaParse.data,
+  });
+
+  return res.status(200).json(updatedProduct);
 }
