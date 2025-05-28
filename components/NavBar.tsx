@@ -1,11 +1,5 @@
 import Link from 'next/link';
-import {
-  AnchorHTMLAttributes,
-  HTMLAttributes,
-  useEffect,
-  useState,
-} from 'react';
-import { useIsPhoneUser } from '~/hooks/useIsPhoneUser';
+import { HTMLAttributes, useEffect, useState } from 'react';
 import SvgMenu from '~/icons/menu';
 import SvgStoreBag from '~/icons/store_bag';
 import { twMerge } from 'tailwind-merge';
@@ -28,7 +22,7 @@ export function NavBar() {
   });
 
   useEffect(() => {
-    async function runThis() {
+    function runThis() {
       let amountOfItems = 0;
       for (const item of products || []) {
         if (item.amount) {

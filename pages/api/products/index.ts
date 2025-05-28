@@ -35,9 +35,7 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
-  const requestBody = req.body;
-
-  const productSchemaParse = createProductSchema.safeParse(requestBody);
+  const productSchemaParse = createProductSchema.safeParse(req.body);
 
   if (productSchemaParse.success === false) {
     return res.status(200).send('Wrong request body given');

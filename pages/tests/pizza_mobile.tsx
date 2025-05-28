@@ -73,7 +73,7 @@ function UnderTopBar() {
     </div>
   );
 }
-
+/*
 function FoodTopBar({ titleText }: { titleText: string }) {
   return (
     <button className="group flex flex-col items-center">
@@ -106,3 +106,4 @@ function FoodBlock() {
     </div>
   );
 }
+*/

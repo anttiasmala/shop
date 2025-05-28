@@ -1,8 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import { Footer } from '~/components/Footer';
 import { NavBar } from '~/components/NavBar';
 

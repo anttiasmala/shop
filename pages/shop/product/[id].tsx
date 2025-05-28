@@ -1,14 +1,11 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { ArrowLeft, Minus, Plus, ShoppingBagIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { z } from 'zod';
 import { Footer } from '~/components/Footer';
 import { NavBar } from '~/components/NavBar';
-import { Cart, Product } from '~/shared/types';
-import { cartSchema } from '~/shared/zodSchemas';
 import { useGetProduct } from '~/utils/apiRequests';
 
 export default function HandleProduct() {
@@ -26,11 +23,11 @@ export default function HandleProduct() {
     if (router.query.id && typeof router.query.id === 'string') {
       setProductId(router.query.id);
     }
-  }, [router.isReady]);
+  }, [router.isReady, router.query.id]);
 
   useEffect(() => {
-    if (productId) refetch();
-  }, [productId]);
+    if (productId) void refetch();
+  }, [productId, refetch]);
 
   return (
     <main className="h-screen w-full bg-white">
@@ -109,21 +106,21 @@ export default function HandleProduct() {
                       </div>
                       <button
                         className="ml-16 flex items-center rounded-2xl bg-black p-2 text-white"
-                        onClick={async () => {
-                          try {
-                            if (selectedAmount === 0) return;
-
-                            await axios.post('/api/cart', {
-                              ...product,
-                              amount: selectedAmount,
-                            });
-
-                            await queryClient.invalidateQueries({
-                              queryKey: ['NavBarProducts'],
-                            });
-                          } catch (e) {
-                            console.error(e);
-                          }
+                        onClick={() => {
+                          void (async () => {
+                            try {
+                              if (selectedAmount === 0) return;
+                              await axios.post('/api/cart', {
+                                ...product,
+                                amount: selectedAmount,
+                              });
+                              await queryClient.invalidateQueries({
+                                queryKey: ['NavBarProducts'],
+                              });
+                            } catch (e) {
+                              console.error(e);
+                            }
+                          })();
                         }}
                       >
                         <ShoppingBagIcon className="mr-3 w-4" />

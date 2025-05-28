@@ -1,4 +1,3 @@
-import { toast } from 'react-toastify';
 import SvgStoreBag from '~/icons/store_bag';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -32,15 +31,16 @@ export function Product({ product }: { product: ProductType }) {
               {title}
               <span className="ml-3">
                 <button
-                  onClick={async () => {
-                    await axios.post('/api/cart', {
-                      ...product,
-                      amount: 1,
-                    });
-
-                    await queryClient.invalidateQueries({
-                      queryKey: ['NavBarProducts'],
-                    });
+                  onClick={() => {
+                    void (async () => {
+                      await axios.post('/api/cart', {
+                        ...product,
+                        amount: 1,
+                      });
+                      await queryClient.invalidateQueries({
+                        queryKey: ['NavBarProducts'],
+                      });
+                    })();
                   }}
                 >
                   <SvgStoreBag className="w-6" />

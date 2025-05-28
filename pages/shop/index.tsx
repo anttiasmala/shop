@@ -1,13 +1,9 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { Footer } from '~/components/Footer';
 import { NavBar } from '~/components/NavBar';
 import SvgArrowRight from '~/icons/arrow_right';
-import SvgStoreBag from '~/icons/store_bag';
 import { Container } from '../../components/Container';
 import { TextCard } from '~/components/TextCard';
-import { toast } from 'react-toastify';
-import { arrayOfProducts } from '~/utils/debug';
 import { Product } from '~/components/Product';
 import { useGetProducts } from '~/utils/apiRequests';
 

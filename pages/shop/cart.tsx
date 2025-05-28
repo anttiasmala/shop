@@ -1,4 +1,4 @@
-import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { Minus, Plus, ShoppingBag } from 'lucide-react';
 import Image from 'next/image';
@@ -6,9 +6,8 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Footer } from '~/components/Footer';
 import { NavBar } from '~/components/NavBar';
-import SvgStoreBag from '~/icons/store_bag';
-import { GetCart, Product, QueryAndMutationKeys } from '~/shared/types';
-import { useChangeProductAmount, useGetProducts } from '~/utils/apiRequests';
+import { GetCart, QueryAndMutationKeys } from '~/shared/types';
+import { useChangeProductAmount } from '~/utils/apiRequests';
 
 export default function Cart() {
   const { data: products } = useQuery({
@@ -48,7 +47,7 @@ function EmptyCart() {
         <ShoppingBag className="size-16 text-gray-300" />
         <p className="mt-4 text-xl font-bold">Your cart is empty</p>
         <p className="mt-3 w-52 text-center text-sm wrap-anywhere text-gray-400">
-          Looks like you haven't added any products to your cart yet.
+          Looks like you haven&apos;t added any products to your cart yet
         </p>
         <Link
           href={'/shop/products'}
@@ -156,21 +155,23 @@ function ProductBlock({ product }: { product: GetCart }) {
             </div>
             <div className="flex">
               <button
-                onClick={async () => {
-                  try {
-                    setAmountOfProduct((prevValue) =>
-                      prevValue === 0 ? 0 : prevValue - 1,
-                    );
-                    await mutateAsync();
-                    await queryClient.invalidateQueries({
-                      queryKey: QueryAndMutationKeys.NavBarProducts,
-                    });
-                    await queryClient.invalidateQueries({
-                      queryKey: ['updateCartTotalAmount'],
-                    });
-                  } catch (e) {
-                    console.error(e);
-                  }
+                onClick={() => {
+                  void (async () => {
+                    try {
+                      setAmountOfProduct((prevValue) =>
+                        prevValue === 0 ? 0 : prevValue - 1,
+                      );
+                      await mutateAsync();
+                      await queryClient.invalidateQueries({
+                        queryKey: QueryAndMutationKeys.NavBarProducts,
+                      });
+                      await queryClient.invalidateQueries({
+                        queryKey: ['updateCartTotalAmount'],
+                      });
+                    } catch (e) {
+                      console.error(e);
+                    }
+                  })();
                 }}
                 className="border border-gray-100"
               >
@@ -178,19 +179,21 @@ function ProductBlock({ product }: { product: GetCart }) {
               </button>
               <p className="p-6 pt-2 pb-2">{amountOfProduct}</p>
               <button
-                onClick={async () => {
-                  try {
-                    setAmountOfProduct((prevValue) => prevValue + 1);
-                    await mutateAsync();
-                    await queryClient.invalidateQueries({
-                      queryKey: QueryAndMutationKeys.NavBarProducts,
-                    });
-                    await queryClient.invalidateQueries({
-                      queryKey: ['updateCartTotalAmount'],
-                    });
-                  } catch (e) {
-                    console.error(e);
-                  }
+                onClick={() => {
+                  void (async () => {
+                    try {
+                      setAmountOfProduct((prevValue) => prevValue + 1);
+                      await mutateAsync();
+                      await queryClient.invalidateQueries({
+                        queryKey: QueryAndMutationKeys.NavBarProducts,
+                      });
+                      await queryClient.invalidateQueries({
+                        queryKey: ['updateCartTotalAmount'],
+                      });
+                    } catch (e) {
+                      console.error(e);
+                    }
+                  })();
                 }}
                 className="border border-gray-100"
               >

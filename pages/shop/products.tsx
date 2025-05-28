@@ -1,18 +1,14 @@
-import { QueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { Container } from '~/components/Container';
 import { Footer } from '~/components/Footer';
 import { NavBar } from '~/components/NavBar';
-import { TextCard } from '~/components/TextCard';
 import SvgMagnifyingGlass from '~/icons/magnifying_glass';
 import SvgStoreBag from '~/icons/store_bag';
 import { Product } from '~/shared/types';
 import { useGetProducts } from '~/utils/apiRequests';
-import { arrayOfProducts } from '~/utils/debug';
 
 export default function Products() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -100,7 +96,7 @@ function ProductBlock({
   price: string;
   id: number;
 }) {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   return (
     <div className="mt-8 flex justify-center">

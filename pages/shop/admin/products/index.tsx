@@ -5,13 +5,10 @@ import {
 } from '@tanstack/react-query';
 import axios from 'axios';
 import { Pencil, Trash2 } from 'lucide-react';
-import Link from 'next/link';
 import {
   Dispatch,
   HTMLAttributes,
-  ReactNode,
   SetStateAction,
-  TdHTMLAttributes,
   useEffect,
   useState,
 } from 'react';
@@ -198,11 +195,15 @@ function DeleteModal({
   const { mutateAsync } = useMutation({
     mutationKey: ['deleteProductMutationKey'],
     mutationFn: () => axios.delete(`/api/products/${product.id}`),
-    onSuccess: () => {
-      closeModal();
-      queryClient.invalidateQueries({
-        queryKey: QueryAndMutationKeys.Products,
-      });
+    onSuccess: async () => {
+      try {
+        closeModal();
+        await queryClient.invalidateQueries({
+          queryKey: QueryAndMutationKeys.Products,
+        });
+      } catch (e) {
+        console.error(e);
+      }
     },
   });
   return (
@@ -224,9 +225,9 @@ function DeleteModal({
           </button>
           <button
             className="mt-4 ml-4 bg-blue-500 p-2 text-white"
-            onClick={async () => {
+            onClick={() => {
               try {
-                await mutateAsync();
+                void mutateAsync();
               } catch (e) {
                 console.error(e);
               }
@@ -264,11 +265,15 @@ function AddProduct({
   const { mutateAsync } = useMutation({
     mutationKey: ['addProductMutationKey'],
     mutationFn: () => axios.post('/api/products', inputFields),
-    onSuccess: () => {
-      closeModal();
-      queryClient.invalidateQueries({
-        queryKey: QueryAndMutationKeys.Products,
-      });
+    onSuccess: async () => {
+      try {
+        closeModal();
+        await queryClient.invalidateQueries({
+          queryKey: QueryAndMutationKeys.Products,
+        });
+      } catch (e) {
+        console.error(e);
+      }
     },
   });
 
@@ -345,9 +350,9 @@ function AddProduct({
           </button>
           <button
             className="mt-4 ml-4 bg-blue-500 p-2 text-white"
-            onClick={async () => {
+            onClick={() => {
               try {
-                await mutateAsync();
+                void mutateAsync();
               } catch (e) {
                 console.error(e);
               }
