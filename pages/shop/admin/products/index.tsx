@@ -1,3 +1,5 @@
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
 import { Pencil, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import {
@@ -17,17 +19,24 @@ import { useGetProducts } from '~/utils/apiRequests';
 export default function ProductsIndex() {
   const [editModalData, setEditModalData] = useState<Product | undefined>();
   const [deleteModalData, setDeleteModalData] = useState<Product | undefined>();
+  const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
 
   return (
     <main className="h-screen w-full bg-white">
       <div className="w-full">
         <div className="flex w-full flex-col items-center">
           <p className="animate-[opacity_1200ms] text-center">Products panel</p>
-          <div className="mt-5 flex justify-center">
+          <div className="mt-5 flex flex-col items-center">
             <ProductTable
               setDeleteModalData={setDeleteModalData}
               setEditModalData={setEditModalData}
             />
+            <button
+              className="mt-4 rounded-md bg-black p-2 text-white"
+              onClick={() => setIsAddProductModalOpen(true)}
+            >
+              Add Product
+            </button>
 
             {editModalData && (
               <EditModal
@@ -41,6 +50,10 @@ export default function ProductsIndex() {
                 product={deleteModalData}
                 closeModal={() => setDeleteModalData(undefined)}
               />
+            )}
+
+            {isAddProductModalOpen && (
+              <AddProduct closeModal={() => setIsAddProductModalOpen(false)} />
             )}
           </div>
         </div>
@@ -189,6 +202,61 @@ function DeleteModal({
           </button>
           <button className="mt-4 ml-4 bg-blue-500 p-2 text-white">
             Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AddProduct({ closeModal }: { closeModal: () => void }) {
+  const { mutateAsync } = useMutation({
+    mutationKey: ['addProductMutationKey'],
+    mutationFn: () => axios.post('/api/products'),
+  });
+
+  return (
+    <div>
+      <div className="fixed top-0 left-0 z-98 h-full w-full bg-black opacity-80" />
+      <div className="fixed top-[30%] left-[50%] z-99 translate-x-[-50%] translate-y-[-50%]">
+        <div className="flex flex-col">
+          <label className="text-white">Title:</label>
+          <Input />
+        </div>
+        <div className="flex flex-col">
+          <label className="text-white">Description:</label>
+          <Input />
+        </div>
+        <div className="flex flex-col">
+          <label className="text-white">Price:</label>
+          <Input />
+        </div>
+        <div className="flex flex-col">
+          <label className="text-white">Image:</label>
+          <Input />
+        </div>
+        <div className="flex flex-col">
+          <label className="text-white">Category:</label>
+          <Input />
+        </div>
+        <div className="flex justify-center">
+          <button
+            className="mt-4 mr-4 bg-blue-500 p-2 text-white"
+            onClick={closeModal}
+          >
+            Cancel
+          </button>
+          <button
+            className="mt-4 ml-4 bg-blue-500 p-2 text-white"
+            onClick={async () => {
+              try {
+                await mutateAsync();
+              } catch (e) {
+                console.error(e);
+              }
+            }}
+          >
+            Save
           </button>
         </div>
       </div>
