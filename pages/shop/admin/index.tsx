@@ -6,9 +6,15 @@ export default function AdminIndex() {
       <div className="flex w-full justify-center">
         <div className="w-full sm:max-w-1/2">
           <p className="animate-[opacity_1200ms] text-center">Admin panel</p>
-          <div className="mt-5 flex w-full justify-center">
+          <div className="mt-5 flex w-full flex-col items-center">
             <Link href={'/shop/admin/products'} className="bg-gray-200">
               Edit Products
+            </Link>
+            <Link
+              href={'/shop/admin/upload-images'}
+              className="mt-4 bg-gray-200"
+            >
+              Upload Images
             </Link>
           </div>
         </div>
