@@ -8,11 +8,6 @@ export const config = {
   },
 };
 
-const MIME_TO_FILE = {
-  'image/png': ['.png'],
-  'image/jpeg': ['.jpg', '.jpeg'],
-};
-
 const uploadFolderLocation = './public/images/products';
 
 export default async function UploadHandler(
@@ -41,17 +36,17 @@ export default async function UploadHandler(
           return false;
         }
 
-        console.log(MIME_TO_FILE[mimetype as keyof typeof MIME_TO_FILE]);
         try {
           const access = fs.accessSync(
             `${uploadFolderLocation}/${originalFilename}`,
           );
 
+          // image is existing already, skip adding
           if (access === undefined) {
-            console.log('Returning false');
             return false;
           }
         } catch (e) {
+          // throws and error if image was not found, we can add the image
           return true;
         }
 
@@ -59,7 +54,7 @@ export default async function UploadHandler(
       },
     });
 
-    form.parse(req, (err, fields, files) => {
+    form.parse(req, (err, _, files) => {
       if (err) {
         console.error('Error parsing form:', err);
         return res.status(500).json({ error: 'File upload failed.' });
