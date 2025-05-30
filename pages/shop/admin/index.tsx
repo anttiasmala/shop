@@ -14,7 +14,7 @@ export default function AdminIndex() {
               href={'/shop/admin/upload-images'}
               className="mt-4 bg-gray-200"
             >
-              Upload Images
+              Upload Product Images
             </Link>
           </div>
         </div>
