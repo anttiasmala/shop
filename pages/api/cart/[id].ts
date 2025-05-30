@@ -35,8 +35,6 @@ async function handleDELETE(req: NextApiRequest, res: NextApiResponse) {
     },
   });
 
-  console.log(product);
-
   const cartItem = await prisma.cartItem.findFirst({
     where: {
       productUUID: product.uuid,
