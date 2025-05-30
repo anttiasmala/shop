@@ -59,7 +59,9 @@ export default function Products() {
                       return (
                         <ProductBlock
                           id={product.id}
-                          image={product.image}
+                          image={
+                            product.image || '/images/products/image_base.png'
+                          }
                           price={product.price}
                           title={product.title}
                           key={`product_${index}`}
@@ -69,7 +71,9 @@ export default function Products() {
                   : searchedProducts.map((product, index) => (
                       <ProductBlock
                         id={product.id}
-                        image={product.image}
+                        image={
+                          product.image || '/images/products/image_base.png'
+                        }
                         price={product.price}
                         title={product.title}
                         key={`product_${index}`}

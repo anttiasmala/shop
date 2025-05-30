@@ -143,7 +143,7 @@ function ProductBlock({ product }: { product: GetCart }) {
           <Image
             priority={true}
             alt={`${title}ProductImage`}
-            src={image}
+            src={image || '/images/products/image_base.png'}
             width={1920}
             height={1080}
             className="w-24 rounded-md"

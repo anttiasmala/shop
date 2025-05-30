@@ -61,7 +61,7 @@ export default function HandleProduct() {
                     <Image
                       priority={true}
                       alt="SSD"
-                      src={product.image}
+                      src={product.image || '/images/products/image_base.png'}
                       width={1920}
                       height={1080}
                       className="w-48 rounded-md"
