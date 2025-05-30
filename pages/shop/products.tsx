@@ -118,7 +118,7 @@ function ProductBlock({
               src={image}
               width={1920}
               height={1080}
-              className="w-48 rounded-md"
+              className="h-48 w-48 rounded-md"
             />
           </Link>
         </div>
