@@ -82,7 +82,7 @@ function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
     }
     setSubTotal(_subtotal);
     setTax(_subtotal * 0.255);
-    setTotal(_subtotal + _subtotal * 0.255);
+    setTotal(_subtotal);
   }, [data]);
 
   if (!products) {
