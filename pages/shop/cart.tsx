@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { Minus, Plus, ShoppingBag } from 'lucide-react';
+import { Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -201,6 +201,26 @@ function ProductBlock({ product }: { product: GetCart }) {
                 className="border border-gray-100"
               >
                 <Plus className="w-4" />
+              </button>
+
+              <button
+                className="ml-8"
+                onClick={() => {
+                  void (async () => {
+                    await axios.delete(`/api/cart/${product.Product.id}`);
+                    await queryClient.invalidateQueries({
+                      queryKey: QueryAndMutationKeys.NavBarProducts,
+                    });
+                    await queryClient.invalidateQueries({
+                      queryKey: ['updateCartTotalAmount'],
+                    });
+                    await queryClient.invalidateQueries({
+                      queryKey: QueryAndMutationKeys.CartProducts,
+                    });
+                  })();
+                }}
+              >
+                <Trash2 />
               </button>
             </div>
           </div>
