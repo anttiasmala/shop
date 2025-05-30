@@ -1,7 +1,7 @@
 import SvgStoreBag from '~/icons/store_bag';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Product as ProductType } from '~/shared/types';
+import { Product as ProductType, QueryAndMutationKeys } from '~/shared/types';
 import axios from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -20,7 +20,7 @@ export function Product({ product }: { product: ProductType }) {
             <Image
               priority={true}
               alt="SSD"
-              src={image}
+              src={image || '/images/products/image_base.png'}
               width={1920}
               height={1080}
               className="w-48 rounded-md"
@@ -40,7 +40,7 @@ export function Product({ product }: { product: ProductType }) {
                         amount: 1,
                       });
                       await queryClient.invalidateQueries({
-                        queryKey: ['NavBarProducts'],
+                        queryKey: QueryAndMutationKeys.NavBarProducts,
                       });
                     })();
                   }}
