@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { X } from 'lucide-react';
 import Link from 'next/link';
 import { FormEvent, useEffect, useRef, useState } from 'react';
@@ -96,6 +97,9 @@ export default function AdminIndex() {
                 <button
                   className="mt-3 w-48 rounded border bg-gray-300 p-2 hover:bg-gray-400"
                   type="submit"
+                  onClick={() => {
+                    axios.post('/api/upload', inputRef.current?.files);
+                  }}
                 >
                   Submit File
                 </button>
