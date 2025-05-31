@@ -131,6 +131,10 @@ function ProductBlock({ product }: { product: GetCart }) {
 
   const queryClient = useQueryClient();
 
+  useEffect(() => {
+    setAmountOfProduct(product.amount);
+  }, [product, setAmountOfProduct]);
+
   const { mutateAsync } = useChangeProductAmount(
     product.Product.id,
     amountOfProduct,
