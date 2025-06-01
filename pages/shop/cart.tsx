@@ -4,6 +4,7 @@ import { Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { Footer } from '~/components/Footer';
 import { NavBar } from '~/components/NavBar';
 import { GetCart, QueryAndMutationKeys } from '~/shared/types';
@@ -221,6 +222,7 @@ function ProductBlock({ product }: { product: GetCart }) {
                     await queryClient.invalidateQueries({
                       queryKey: QueryAndMutationKeys.CartProducts,
                     });
+                    toast('Removed product from your cart succesfully');
                   })();
                 }}
               >

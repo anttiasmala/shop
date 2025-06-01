@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Product as ProductType, QueryAndMutationKeys } from '~/shared/types';
 import axios from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 
 export function Product({ product }: { product: ProductType }) {
   const { image, title, price, id } = product;
@@ -35,13 +36,18 @@ export function Product({ product }: { product: ProductType }) {
                 <button
                   onClick={() => {
                     void (async () => {
-                      await axios.post('/api/cart', {
-                        ...product,
-                        amount: 1,
-                      });
-                      await queryClient.invalidateQueries({
-                        queryKey: QueryAndMutationKeys.NavBarProducts,
-                      });
+                      try {
+                        await axios.post('/api/cart', {
+                          ...product,
+                          amount: 1,
+                        });
+                        await queryClient.invalidateQueries({
+                          queryKey: QueryAndMutationKeys.NavBarProducts,
+                        });
+                        toast('Added products to your cart succesfully');
+                      } catch (e) {
+                        console.error(e);
+                      }
                     })();
                   }}
                 >

@@ -179,13 +179,18 @@ function ProductBlock({ product }: { product: Product }) {
                 <button
                   onClick={() => {
                     void (async () => {
-                      await axios.post('/api/cart', {
-                        ...product,
-                        amount: 1,
-                      });
-                      await queryClient.invalidateQueries({
-                        queryKey: QueryAndMutationKeys.NavBarProducts,
-                      });
+                      try {
+                        await axios.post('/api/cart', {
+                          ...product,
+                          amount: 1,
+                        });
+                        await queryClient.invalidateQueries({
+                          queryKey: QueryAndMutationKeys.NavBarProducts,
+                        });
+                        toast('Added products to your cart succesfully');
+                      } catch (e) {
+                        console.error(e);
+                      }
                     })();
                   }}
                 >

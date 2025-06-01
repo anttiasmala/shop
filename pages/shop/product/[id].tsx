@@ -4,6 +4,7 @@ import { ArrowLeft, Minus, Plus, ShoppingBagIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { Footer } from '~/components/Footer';
 import { NavBar } from '~/components/NavBar';
 import { useGetProduct } from '~/utils/apiRequests';
@@ -117,6 +118,7 @@ export default function HandleProduct() {
                               await queryClient.invalidateQueries({
                                 queryKey: ['NavBarProducts'],
                               });
+                              toast('Added products to your cart succesfully');
                             } catch (e) {
                               console.error(e);
                             }
