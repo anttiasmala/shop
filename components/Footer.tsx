@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export function Footer() {
   return (
     <footer className="mt-10 h-8 w-full">
@@ -6,10 +8,18 @@ export function Footer() {
           © MINIMONEY Shop. All rights reserverd.
         </p>
         <div className="m-2 flex text-sm">
-          <button className="mr-8 hover:text-black/50">Privacy Policy</button>
-          <button className="inline hover:text-black/50">
+          <Link
+            href={'/shop/privacy-policy'}
+            className="mr-8 hover:text-black/50"
+          >
+            Privacy Policy
+          </Link>
+          <Link
+            href={'/shop/terms-of-service'}
+            className="inline hover:text-black/50"
+          >
             Terms of Service
-          </button>
+          </Link>
         </div>
       </div>
     </footer>
