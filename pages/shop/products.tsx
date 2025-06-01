@@ -14,11 +14,16 @@ import { useGetProducts } from '~/utils/apiRequests';
 export default function Products() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchedProducts, setSearchedProducts] = useState<Product[]>([]);
+  const [categoryList, setCategoryList] = useState<string[]>([]);
+  const [categoryTerm, setCategoryTerm] = useState<string[]>([]);
 
   const { data: products } = useGetProducts();
 
   useEffect(() => {
     console.log(products);
+    let array: string[] = [];
+    products?.forEach((value) => array.push(value.category));
+    setCategoryList([...new Set(array)]);
   }, [products]);
 
   useEffect(() => {
@@ -38,7 +43,7 @@ export default function Products() {
   return (
     <main className="h-screen w-full bg-white">
       <div className="flex flex-col items-center">
-        <div className="sm:max-w-1/2">
+        <div className="w-full sm:max-w-1/2">
           <div className="w-full">
             <NavBar />
           </div>
@@ -54,22 +59,62 @@ export default function Products() {
                   onChange={(e) => setSearchTerm(e.currentTarget.value)}
                 />
               </div>
+              <div>
+                <p className="text-2xl">Categories:</p>
+                {categoryList?.map((_category, _index) => (
+                  <div key={`category_${_index}`}>
+                    <input
+                      type="checkbox"
+                      name={_category}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setCategoryTerm((prevValue) => [
+                            ...prevValue,
+                            e.target.name,
+                          ]);
+                        } else {
+                          setCategoryTerm((prevValue) =>
+                            prevValue.filter(
+                              (category) => category !== e.target.name,
+                            ),
+                          );
+                        }
+                      }}
+                    />
+                    <label className="ml-2">{_category}</label>
+                  </div>
+                ))}
+              </div>
               <div className="flex flex-wrap justify-center">
                 {searchTerm.length === 0
                   ? products?.map((product, index) => {
-                      return (
-                        <ProductBlock
-                          product={product}
-                          key={`product_${index}`}
-                        />
-                      );
+                      if (
+                        categoryTerm.includes(product.category) ||
+                        categoryTerm.length === 0
+                      ) {
+                        return (
+                          <ProductBlock
+                            product={product}
+                            key={`product_${index}`}
+                          />
+                        );
+                      }
+                      return null;
                     })
-                  : searchedProducts.map((product, index) => (
-                      <ProductBlock
-                        product={product}
-                        key={`product_${index}`}
-                      />
-                    ))}
+                  : searchedProducts.map((product, index) => {
+                      if (
+                        categoryTerm.includes(product.category) ||
+                        categoryTerm.length === 0
+                      ) {
+                        return (
+                          <ProductBlock
+                            product={product}
+                            key={`product_${index}`}
+                          />
+                        );
+                      }
+                      return null;
+                    })}
               </div>
             </div>
           </div>
