@@ -11,13 +11,23 @@ import SvgStoreBag from '~/icons/store_bag';
 import { Product, QueryAndMutationKeys } from '~/shared/types';
 import { useGetProducts } from '~/utils/apiRequests';
 
+const SORT_BY_POSSIBILITIES = {
+  Default: 'default',
+  'Lowest Price': 'cheapest',
+  'Highest Price': 'mostExpensive',
+  Alphabet: 'alphabet',
+} as const;
+
 export default function Products() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchedProducts, setSearchedProducts] = useState<Product[]>([]);
   const [categoryList, setCategoryList] = useState<string[]>([]);
   const [categoryTerm, setCategoryTerm] = useState<string[]>([]);
+  const [sortProductsBy, setSortProductsBy] = useState<
+    'cheapest' | 'mostExpensive' | 'alphabet' | 'default'
+  >('default');
 
-  const { data: products } = useGetProducts();
+  let { data: products } = useGetProducts();
 
   useEffect(() => {
     console.log(products);
@@ -35,10 +45,27 @@ export default function Products() {
       const matchedSearch =
         product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         product.description?.toLowerCase().includes(searchTerm.toLowerCase());
-      return matchedSearch;
+      const matchedCategory =
+        categoryTerm.length === 0
+          ? true
+          : categoryTerm.includes(product.category);
+      return matchedSearch && matchedCategory;
     });
-    setSearchedProducts(filtered);
-  }, [searchTerm, products]);
+    console.log(filtered);
+    const sortedProducts = [...filtered].sort((a, b) => {
+      switch (sortProductsBy) {
+        case 'alphabet':
+          return a.title.localeCompare(b.title);
+        case 'cheapest':
+          return Number(a.price) - Number(b.price);
+        case 'mostExpensive':
+          return Number(b.price) - Number(a.price);
+        default:
+          return 0;
+      }
+    });
+    setSearchedProducts(sortedProducts);
+  }, [searchTerm, products, categoryTerm, sortProductsBy]);
 
   return (
     <main className="h-screen w-full bg-white">
@@ -59,62 +86,58 @@ export default function Products() {
                   onChange={(e) => setSearchTerm(e.currentTarget.value)}
                 />
               </div>
-              <div>
-                <p className="text-2xl">Categories:</p>
-                {categoryList?.map((_category, _index) => (
-                  <div key={`category_${_index}`}>
-                    <input
-                      type="checkbox"
-                      name={_category}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setCategoryTerm((prevValue) => [
-                            ...prevValue,
-                            e.target.name,
-                          ]);
-                        } else {
-                          setCategoryTerm((prevValue) =>
-                            prevValue.filter(
-                              (category) => category !== e.target.name,
-                            ),
-                          );
-                        }
-                      }}
-                    />
-                    <label className="ml-2">{_category}</label>
-                  </div>
-                ))}
+              <div className="flex justify-between">
+                <div>
+                  <p className="text-2xl">Categories:</p>
+                  {categoryList?.map((_category, _index) => (
+                    <div key={`category_${_index}`}>
+                      <input
+                        type="checkbox"
+                        className="hover:cursor-pointer"
+                        name={_category}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setCategoryTerm((prevValue) => [
+                              ...prevValue,
+                              e.target.name,
+                            ]);
+                          } else {
+                            setCategoryTerm((prevValue) =>
+                              prevValue.filter(
+                                (category) => category !== e.target.name,
+                              ),
+                            );
+                          }
+                        }}
+                      />
+                      <label className="ml-2">{_category}</label>
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <p>Sort by:</p>
+                  <select
+                    onChange={(e) => {
+                      setSortProductsBy(
+                        SORT_BY_POSSIBILITIES[
+                          e.target.value as keyof typeof SORT_BY_POSSIBILITIES
+                        ],
+                      );
+                    }}
+                  >
+                    <option>Default</option>
+                    <option>Alphabet</option>
+                    <option>Lowest Price</option>
+                    <option>Highest Price</option>
+                  </select>
+                </div>
               </div>
               <div className="flex flex-wrap justify-center">
-                {searchTerm.length === 0
-                  ? products?.map((product, index) => {
-                      if (
-                        categoryTerm.includes(product.category) ||
-                        categoryTerm.length === 0
-                      ) {
-                        return (
-                          <ProductBlock
-                            product={product}
-                            key={`product_${index}`}
-                          />
-                        );
-                      }
-                      return null;
-                    })
-                  : searchedProducts.map((product, index) => {
-                      if (
-                        categoryTerm.includes(product.category) ||
-                        categoryTerm.length === 0
-                      ) {
-                        return (
-                          <ProductBlock
-                            product={product}
-                            key={`product_${index}`}
-                          />
-                        );
-                      }
-                      return null;
-                    })}
+                {searchedProducts.map((product, index) => {
+                  return (
+                    <ProductBlock product={product} key={`product_${index}`} />
+                  );
+                })}
               </div>
             </div>
           </div>
