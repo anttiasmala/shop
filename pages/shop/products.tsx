@@ -51,7 +51,6 @@ export default function Products() {
           : categoryTerm.includes(product.category);
       return matchedSearch && matchedCategory;
     });
-    console.log(filtered);
     const sortedProducts = [...filtered].sort((a, b) => {
       switch (sortProductsBy) {
         case 'alphabet':
