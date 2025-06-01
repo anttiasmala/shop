@@ -1,4 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -7,7 +8,7 @@ import { Footer } from '~/components/Footer';
 import { NavBar } from '~/components/NavBar';
 import SvgMagnifyingGlass from '~/icons/magnifying_glass';
 import SvgStoreBag from '~/icons/store_bag';
-import { Product } from '~/shared/types';
+import { Product, QueryAndMutationKeys } from '~/shared/types';
 import { useGetProducts } from '~/utils/apiRequests';
 
 export default function Products() {
@@ -58,24 +59,14 @@ export default function Products() {
                   ? products?.map((product, index) => {
                       return (
                         <ProductBlock
-                          id={product.id}
-                          image={
-                            product.image || '/images/products/image_base.png'
-                          }
-                          price={product.price}
-                          title={product.title}
+                          product={product}
                           key={`product_${index}`}
                         />
                       );
                     })
                   : searchedProducts.map((product, index) => (
                       <ProductBlock
-                        id={product.id}
-                        image={
-                          product.image || '/images/products/image_base.png'
-                        }
-                        price={product.price}
-                        title={product.title}
+                        product={product}
                         key={`product_${index}`}
                       />
                     ))}
@@ -89,18 +80,9 @@ export default function Products() {
   );
 }
 
-function ProductBlock({
-  image,
-  price,
-  title,
-  id,
-}: {
-  image: string;
-  title: string;
-  price: string;
-  id: number;
-}) {
+function ProductBlock({ product }: { product: Product }) {
   const queryClient = useQueryClient();
+  const { id, image, title, price } = product;
 
   return (
     <div className="mt-8 flex justify-center">
@@ -115,7 +97,7 @@ function ProductBlock({
             <Image
               priority={true}
               alt="SSD"
-              src={image}
+              src={image || '/images/products/image_base.png'}
               width={1920}
               height={1080}
               className="h-48 w-48 rounded-md"
@@ -129,9 +111,15 @@ function ProductBlock({
               <span className="ml-3">
                 <button
                   onClick={() => {
-                    toast('Test', {
-                      theme: 'light',
-                    });
+                    void (async () => {
+                      await axios.post('/api/cart', {
+                        ...product,
+                        amount: 1,
+                      });
+                      await queryClient.invalidateQueries({
+                        queryKey: QueryAndMutationKeys.NavBarProducts,
+                      });
+                    })();
                   }}
                 >
                   <SvgStoreBag className="w-6" />
