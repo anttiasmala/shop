@@ -41,7 +41,7 @@ export default function Products() {
       setSearchedProducts([]);
       return;
     }
-    const filtered = products.filter((product) => {
+    const filteredProducts = products.filter((product) => {
       const matchedSearch =
         product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         product.description?.toLowerCase().includes(searchTerm.toLowerCase());
@@ -51,7 +51,7 @@ export default function Products() {
           : categoryTerm.includes(product.category);
       return matchedSearch && matchedCategory;
     });
-    const sortedProducts = [...filtered].sort((a, b) => {
+    const sortedProducts = [...filteredProducts].sort((a, b) => {
       switch (sortProductsBy) {
         case 'alphabet':
           return a.title.localeCompare(b.title);
