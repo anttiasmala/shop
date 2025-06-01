@@ -3,6 +3,7 @@ import { X } from 'lucide-react';
 import Link from 'next/link';
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
+import { NavBarAdmin } from '~/components/NavBarAdmin';
 
 const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg'];
 
@@ -33,7 +34,8 @@ export default function AdminIndex() {
     <main className="h-screen w-full bg-white">
       <div className="flex w-full justify-center">
         <div className="w-full sm:max-w-1/2">
-          <p className="animate-[opacity_1200ms] text-center">
+          <NavBarAdmin />
+          <p className="animate-[opacity_1200ms] text-center text-4xl font-bold">
             Upload images panel
           </p>
           <div className="mt-5 flex w-full justify-center">

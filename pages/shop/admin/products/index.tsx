@@ -14,6 +14,7 @@ import {
 } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { Input } from '~/components/Input';
+import { NavBarAdmin } from '~/components/NavBarAdmin';
 import { Product, QueryAndMutationKeys } from '~/shared/types';
 import { useGetProducts } from '~/utils/apiRequests';
 
@@ -26,9 +27,14 @@ export default function ProductsIndex() {
 
   return (
     <main className="h-screen w-full bg-white">
-      <div className="w-full">
+      <div className="flex w-full flex-col items-center">
+        <div className="w-full max-w-1/2">
+          <NavBarAdmin />
+        </div>
         <div className="flex w-full flex-col items-center">
-          <p className="animate-[opacity_1200ms] text-center">Products panel</p>
+          <p className="animate-[opacity_1200ms] text-4xl font-bold">
+            Products panel
+          </p>
           <div className="mt-5 flex flex-col items-center">
             <ProductTable
               setDeleteModalData={setDeleteModalData}
