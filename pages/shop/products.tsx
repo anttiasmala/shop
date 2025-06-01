@@ -45,12 +45,12 @@ export default function Products() {
           <div>
             <p className="m-6 text-3xl font-bold">All Products</p>
             <div>
-              <div className="m-6 flex flex-wrap rounded-2xl border border-gray-200">
+              <div className="m-6 flex rounded-2xl border border-gray-200">
                 <SvgMagnifyingGlass className="ml-4 w-5 text-gray-300" />
                 <input
                   type="text"
                   placeholder="Search products..."
-                  className="w-max p-3 pr-0"
+                  className="w-full p-3 pr-0"
                   onChange={(e) => setSearchTerm(e.currentTarget.value)}
                 />
               </div>
