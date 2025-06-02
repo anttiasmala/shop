@@ -32,12 +32,12 @@ export default function AdminIndex() {
               <p className="mt-4 text-xs sm:mt-8">Add image of a product</p>
             </Link>
             <Link
-              href={'/shop/admin/upload-images'}
+              href={'/shop/admin/list-images'}
               className="mr-8 h-32 w-64 rounded bg-gray-200 text-center hover:bg-gray-300"
             >
-              <p className="relative text-lg font-bold">Edit Images</p>
+              <p className="relative text-lg font-bold">List Images</p>
               <p className="mt-4 text-xs sm:mt-8">
-                Edit and delete product images
+                See, edit and delete product images
               </p>
             </Link>
           </div>
