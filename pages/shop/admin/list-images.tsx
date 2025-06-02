@@ -158,10 +158,12 @@ function DeleteModal({
   imageName: string;
   closeModal: () => void;
 }) {
-  function handleSubmit(e: FormEvent<HTMLElement>) {
+  async function handleSubmit(e: FormEvent<HTMLElement>) {
     e.preventDefault();
     try {
       console.log('Submit');
+      await axios.delete('/api/list-images', { data: imageName });
+      closeModal();
     } catch (e) {
       console.error(e);
     }

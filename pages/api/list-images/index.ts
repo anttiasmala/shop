@@ -17,6 +17,9 @@ export default async function Handler(
     if (req.method === 'PUT') {
       return await handlePUT(req, res);
     }
+    if (req.method === 'DELETE') {
+      return await handleDELETE(req, res);
+    }
   } catch (e) {
     return handleError(res, e);
   }
@@ -54,11 +57,35 @@ async function handlePUT(req: NextApiRequest, res: NextApiResponse) {
 
   // if there are more than 1 files, throw an error. We'll do only one file at the time
   if (oldFileName.length > 1 || newFileName.length > 1) {
-    throw new Error('Only one file is allowed to be changed at a time');
+    throw new HttpError(
+      'Only one file is allowed to be changed at a time',
+      400,
+    );
   }
 
   // rename the file from old name to the new name
   await fs.rename(`${PATH}/${oldFileName[0]}`, `${PATH}/${newFileName[0]}`);
+  res.status(200).end();
+  return;
+}
+
+async function handleDELETE(req: NextApiRequest, res: NextApiResponse) {
+  const parsedReqBody = z.string().safeParse(req.body);
+
+  if (parsedReqBody.success === false) {
+    throw new HttpError('Invalid request body', 400);
+  }
+
+  const reqBody = parsedReqBody.data;
+
+  const files = await fs.readdir(PATH);
+
+  if (!files.includes(reqBody)) {
+    throw new HttpError('Invalid file name', 400);
+  }
+
+  await fs.unlink(`${PATH}/${reqBody}`);
+
   res.status(200).end();
   return;
 }
