@@ -1,6 +1,4 @@
-import { ArrowRight, Edit, Image, PencilIcon } from 'lucide-react';
 import Link from 'next/link';
-import { NavBar } from '~/components/NavBar';
 import { NavBarAdmin } from '~/components/NavBarAdmin';
 
 export default function AdminIndex() {
@@ -19,9 +17,6 @@ export default function AdminIndex() {
             >
               <p className="flex justify-center text-lg font-bold">
                 Edit Products
-                <span className="sm:ml-2">
-                  <Edit />
-                </span>
               </p>
               <p className="mt-4 text-xs sm:mt-8">
                 Edit, add and delete current products
@@ -32,12 +27,18 @@ export default function AdminIndex() {
               className="mr-8 h-32 w-64 rounded bg-gray-200 text-center hover:bg-gray-300"
             >
               <p className="relative text-lg font-bold">
-                <span className="absolute right-0">
-                  <Image />
-                </span>
                 Upload Product Images
               </p>
               <p className="mt-4 text-xs sm:mt-8">Add image of a product</p>
+            </Link>
+            <Link
+              href={'/shop/admin/upload-images'}
+              className="mr-8 h-32 w-64 rounded bg-gray-200 text-center hover:bg-gray-300"
+            >
+              <p className="relative text-lg font-bold">Edit Images</p>
+              <p className="mt-4 text-xs sm:mt-8">
+                Edit and delete product images
+              </p>
             </Link>
           </div>
         </div>
