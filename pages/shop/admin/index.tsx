@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import { HTMLAttributes } from 'react';
+import { twMerge } from 'tailwind-merge';
 import { NavBarAdmin } from '~/components/NavBarAdmin';
 
 export default function AdminIndex() {
@@ -11,38 +13,49 @@ export default function AdminIndex() {
             Admin Dashboard
           </p>
           <div className="mt-5 flex w-full">
-            <Link
+            <LinkElement
               href={'/shop/admin/products'}
-              className="mr-8 h-32 w-64 rounded bg-gray-200 text-center hover:bg-gray-300"
-            >
-              <p className="flex justify-center text-lg font-bold">
-                Edit Products
-              </p>
-              <p className="mt-4 text-xs sm:mt-8">
-                Edit, add and delete current products
-              </p>
-            </Link>
-            <Link
+              title="Edit Products"
+              titleDescription="Edit, add and delete current products"
+            />
+            <LinkElement
               href={'/shop/admin/upload-images'}
-              className="mr-8 h-32 w-64 rounded bg-gray-200 text-center hover:bg-gray-300"
-            >
-              <p className="relative text-lg font-bold">
-                Upload Product Images
-              </p>
-              <p className="mt-4 text-xs sm:mt-8">Add image of a product</p>
-            </Link>
-            <Link
+              title="Upload Product Images"
+              titleDescription="Add image of a product"
+            />
+            <LinkElement
               href={'/shop/admin/list-images'}
-              className="mr-8 h-32 w-64 rounded bg-gray-200 text-center hover:bg-gray-300"
-            >
-              <p className="relative text-lg font-bold">List Images</p>
-              <p className="mt-4 text-xs sm:mt-8">
-                See, edit and delete product images
-              </p>
-            </Link>
+              title="List Images"
+              titleDescription="See, edit and delete product images"
+            />
           </div>
         </div>
       </div>
     </main>
+  );
+}
+
+function LinkElement({
+  href,
+  className,
+  title,
+  titleDescription,
+  children,
+}: {
+  href: string;
+  title: string;
+  titleDescription: string;
+} & HTMLAttributes<HTMLDivElement>) {
+  return (
+    <Link
+      href={href}
+      className={twMerge(
+        'mr-8 h-32 w-64 rounded bg-gray-200 text-center hover:bg-gray-300',
+        className,
+      )}
+    >
+      <p className="relative text-lg font-bold">{title}</p>
+      <p className="mt-4 text-xs sm:mt-8">{titleDescription}</p>
+    </Link>
   );
 }
