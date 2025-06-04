@@ -86,4 +86,5 @@ export const QueryAndMutationKeys = {
   ReduceProductAmount: ['ReduceProductAmount'],
   Products: ['products'],
   Product: ['product'],
+  Images: ['images'],
 };
