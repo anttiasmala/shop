@@ -64,6 +64,7 @@ function EmptyCart() {
 
 function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
   const [subTotal, setSubTotal] = useState(0);
+  const [shippingFee, setShippingFee] = useState(0);
   const [tax, setTax] = useState(0);
   const [total, setTotal] = useState(0);
 
@@ -82,9 +83,10 @@ function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
     for (const product of data || []) {
       _subtotal += Number(product.Product.price) * product.amount;
     }
+    _subtotal >= 50 ? setShippingFee(0) : setShippingFee(4.9);
     setSubTotal(_subtotal);
     setTax(_subtotal * 0.255);
-    setTotal(_subtotal);
+    setTotal(_subtotal + (_subtotal >= 50 ? 0 : 4.9));
   }, [data]);
 
   if (!products) {
@@ -105,7 +107,10 @@ function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
               Subtotal: <span className="mr-10">${subTotal.toFixed(2)}</span>
             </p>
             <p className="flex justify-between">
-              Shipping: <span className="mr-10">Free</span>
+              Shipping:{' '}
+              <span className="mr-10">
+                {shippingFee === 0 ? 'Free' : `$${shippingFee.toString()}`}
+              </span>
             </p>
             <p className="flex justify-between">
               Tax: <span className="mr-10">${tax.toFixed(2)}</span>
