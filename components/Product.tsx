@@ -5,6 +5,7 @@ import { Product as ProductType, QueryAndMutationKeys } from '~/shared/types';
 import axios from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
+import { handleError } from '~/utils/handleError';
 
 export function Product({ product }: { product: ProductType }) {
   const { image, title, price, id } = product;
@@ -46,7 +47,7 @@ export function Product({ product }: { product: ProductType }) {
                         });
                         toast('Added products to your cart succesfully');
                       } catch (e) {
-                        console.error(e);
+                        handleError(e);
                       }
                     })();
                   }}
