@@ -8,3 +8,4 @@ magnifying-glass.svg = https://heroicons.com/
 ai_gaming_monitor.png = https://www.freepik.com/free-ai-image/view-computer-video-display-monitor_65161126.htm
 Razer_gaming_mouse.png = https://commons.wikimedia.org/wiki/File:Razer_DeathAdder_Elite-front_oblique-ar_16to10-fs_PNr%C2%B00465.jpg
 Logitech_G_PRO_gaming_keyboard.png = https://www.gigantti.fi/product/tietokoneet-ja-toimistotarvikkeet/tietokonetarvikkeet/hiiret-ja-nappaimistot/nappaimistot/logitech-g-pro-pelinappaimisto-pohjoismainen/149320
+background2.png = https://wallpaperswide.com/planets-wallpapers.html
