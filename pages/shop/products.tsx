@@ -86,7 +86,7 @@ export default function Products() {
                 />
               </div>
               <div className="flex justify-between">
-                <div>
+                <div className="ml-3 sm:ml-0">
                   <p className="text-2xl">Categories:</p>
                   {categoryList?.map((_category, _index) => (
                     <div key={`category_${_index}`}>
@@ -113,7 +113,7 @@ export default function Products() {
                     </div>
                   ))}
                 </div>
-                <div>
+                <div className="mr-3 sm:ml-0">
                   <p>Sort by:</p>
                   <select
                     onChange={(e) => {
