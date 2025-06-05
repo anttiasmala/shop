@@ -172,6 +172,7 @@ function EditModal({
   queryClient: QueryClient;
   listOfImages: string[];
 }) {
+  const [showSelectModal, setShowSelectModal] = useState(false);
   const { category, description, image, price, title } = product;
   const [inputFields, setInputFields] = useState({
     title: title,
@@ -249,15 +250,42 @@ function EditModal({
           </div>
           <div className="flex flex-col">
             <label className="text-white">Image:</label>
-            <Input
-              onChange={(e) =>
-                setInputFields((prevValue) => ({
-                  ...prevValue,
-                  image: e.target.value,
-                }))
-              }
-              value={inputFields.image}
-            />
+            <button
+              type="button"
+              className="mb-3 rounded border border-white text-white hover:bg-blue-500"
+              onClick={() => setShowSelectModal((prevValue) => !prevValue)}
+            >
+              Choose Image
+            </button>
+            <p className="mt-3 max-w-48 wrap-anywhere text-white">
+              {inputFields.image || ''}
+            </p>
+            {showSelectModal && (
+              <div className="h-64 w-56 overflow-auto bg-white">
+                {listOfImages.map((_image, _index) => (
+                  <button
+                    key={`${_image}_${_index}`}
+                    className="border-black p-4 hover:border-4"
+                    type="button"
+                    onClick={() => {
+                      setInputFields((prevValue) => ({
+                        ...prevValue,
+                        image: `/images/products/${_image}`,
+                      }));
+                      setShowSelectModal(false);
+                    }}
+                  >
+                    <Image
+                      alt="productImage"
+                      src={`/images/products/${_image}`}
+                      width={1920}
+                      height={1080}
+                      className="w-32"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
           <div className="flex flex-col">
             <label className="text-white">Category:</label>
@@ -455,12 +483,13 @@ function AddProduct({
                     key={`${_image}_${_index}`}
                     className="p-4"
                     type="button"
-                    onClick={() =>
+                    onClick={() => {
                       setInputFields((prevValue) => ({
                         ...prevValue,
                         image: `/images/products/${_image}`,
-                      }))
-                    }
+                      }));
+                      setShowSelectModal(false);
+                    }}
                   >
                     <Image
                       alt="productImage"
