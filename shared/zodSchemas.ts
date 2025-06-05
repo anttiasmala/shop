@@ -98,6 +98,7 @@ export const fullUserSchema = z.object({
   lastName: lastNameSchema,
   email: emailSchema,
   password: passwordSchema,
+  role: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
 });
@@ -111,6 +112,7 @@ export const userSchema = fullUserSchema.pick({
 export const getUserSchema = fullUserSchema
   .pick({
     uuid: true,
+    role: true,
     createdAt: true,
     updatedAt: true,
   })

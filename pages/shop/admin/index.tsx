@@ -1,9 +1,23 @@
+import { InferGetServerSidePropsType } from 'next';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { HTMLAttributes } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { NavBarAdmin } from '~/components/NavBarAdmin';
+import { getServerSideProps } from '~/utils/getServerSideProps';
 
-export default function AdminIndex() {
+export { getServerSideProps };
+
+export default function AdminIndex({
+  user,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const router = useRouter();
+
+  if (user.role !== 'ADMIN') {
+    router.push('/auth/login').catch((e) => console.error(e));
+    return;
+  }
+
   return (
     <main className="h-screen w-full bg-white">
       <div className="flex w-full justify-center">
