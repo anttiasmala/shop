@@ -67,7 +67,7 @@ function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
   const [total, setTotal] = useState(0);
 
   const { data } = useQuery({
-    queryKey: ['updateCartTotalAmount'],
+    queryKey: QueryAndMutationKeys.UpdateCartTotalAmount,
     queryFn: async () => {
       return (await axios.get(`/api/cart`)).data as GetCart[];
     },
@@ -174,7 +174,7 @@ function ProductBlock({ product }: { product: GetCart }) {
                         queryKey: QueryAndMutationKeys.NavBarProducts,
                       });
                       await queryClient.invalidateQueries({
-                        queryKey: ['updateCartTotalAmount'],
+                        queryKey: QueryAndMutationKeys.UpdateCartTotalAmount,
                       });
                     } catch (e) {
                       console.error(e);
@@ -196,7 +196,7 @@ function ProductBlock({ product }: { product: GetCart }) {
                         queryKey: QueryAndMutationKeys.NavBarProducts,
                       });
                       await queryClient.invalidateQueries({
-                        queryKey: ['updateCartTotalAmount'],
+                        queryKey: QueryAndMutationKeys.UpdateCartTotalAmount,
                       });
                     } catch (e) {
                       console.error(e);
@@ -217,7 +217,7 @@ function ProductBlock({ product }: { product: GetCart }) {
                       queryKey: QueryAndMutationKeys.NavBarProducts,
                     });
                     await queryClient.invalidateQueries({
-                      queryKey: ['updateCartTotalAmount'],
+                      queryKey: QueryAndMutationKeys.UpdateCartTotalAmount,
                     });
                     await queryClient.invalidateQueries({
                       queryKey: QueryAndMutationKeys.CartProducts,
