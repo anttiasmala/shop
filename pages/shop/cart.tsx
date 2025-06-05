@@ -9,6 +9,7 @@ import { Footer } from '~/components/Footer';
 import { NavBar } from '~/components/NavBar';
 import { GetCart, QueryAndMutationKeys } from '~/shared/types';
 import { useChangeProductAmount } from '~/utils/apiRequests';
+import { handleError } from '~/utils/handleError';
 
 export default function Cart() {
   const { data: products } = useQuery({
@@ -177,7 +178,7 @@ function ProductBlock({ product }: { product: GetCart }) {
                         queryKey: QueryAndMutationKeys.UpdateCartTotalAmount,
                       });
                     } catch (e) {
-                      console.error(e);
+                      handleError(e);
                     }
                   })();
                 }}
@@ -199,7 +200,7 @@ function ProductBlock({ product }: { product: GetCart }) {
                         queryKey: QueryAndMutationKeys.UpdateCartTotalAmount,
                       });
                     } catch (e) {
-                      console.error(e);
+                      handleError(e);
                     }
                   })();
                 }}
@@ -212,17 +213,21 @@ function ProductBlock({ product }: { product: GetCart }) {
                 className="ml-8"
                 onClick={() => {
                   void (async () => {
-                    await axios.delete(`/api/cart/${product.Product.id}`);
-                    await queryClient.invalidateQueries({
-                      queryKey: QueryAndMutationKeys.NavBarProducts,
-                    });
-                    await queryClient.invalidateQueries({
-                      queryKey: QueryAndMutationKeys.UpdateCartTotalAmount,
-                    });
-                    await queryClient.invalidateQueries({
-                      queryKey: QueryAndMutationKeys.CartProducts,
-                    });
-                    toast('Removed product from your cart succesfully');
+                    try {
+                      await axios.delete(`/api/cart/${product.Product.id}`);
+                      await queryClient.invalidateQueries({
+                        queryKey: QueryAndMutationKeys.NavBarProducts,
+                      });
+                      await queryClient.invalidateQueries({
+                        queryKey: QueryAndMutationKeys.UpdateCartTotalAmount,
+                      });
+                      await queryClient.invalidateQueries({
+                        queryKey: QueryAndMutationKeys.CartProducts,
+                      });
+                      toast('Removed product from your cart succesfully');
+                    } catch (e) {
+                      handleError(e);
+                    }
                   })();
                 }}
               >
