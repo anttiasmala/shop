@@ -44,7 +44,7 @@ button:not(:disabled),
   letter-spacing: 2px;
   text-decoration: none;
   text-transform: uppercase;
-  color: yellow;
+  color: black;
   cursor: pointer;
   border: 3px solid;
   padding: 0.25em 0.5em;
