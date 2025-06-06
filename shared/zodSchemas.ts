@@ -122,6 +122,11 @@ export const createUserSchema = userSchema.extend({
   password: passwordSchema,
 });
 
+export const userLoginDetailsSchema = createUserSchema.pick({
+  email: true,
+  password: true,
+});
+
 // SESSION SCHEMAS
 
 export const fullSessionSchema = z.object({

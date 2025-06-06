@@ -12,6 +12,7 @@ import {
   patchCartItemSchema,
   productSchema,
   sessionSchema,
+  userLoginDetailsSchema,
   userSchema,
   validSessionResultSchema,
 } from './zodSchemas';
@@ -38,6 +39,8 @@ export type User = z.infer<typeof userSchema>;
 export type GetUser = z.infer<typeof getUserSchema>;
 
 export type CreateUser = z.infer<typeof createUserSchema>;
+
+export type UserLoginDetails = z.infer<typeof userLoginDetailsSchema>;
 
 // SESSION
 
@@ -88,4 +91,5 @@ export const QueryAndMutationKeys = {
   Product: ['product'],
   Images: ['images'],
   UpdateCartTotalAmount: ['updateCartTotalAmount'],
+  Login: ['login'],
 };
