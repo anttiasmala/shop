@@ -20,6 +20,11 @@ import { Product, QueryAndMutationKeys } from '~/shared/types';
 import { useGetProducts } from '~/utils/apiRequests';
 import Image from 'next/image';
 
+import { getServerSidePropsAdminOnly as getServerSideProps } from '~/utils/getServerSideProps';
+
+/* ADMINS ONLY */
+export { getServerSideProps };
+
 export default function ProductsIndex() {
   const [editModalData, setEditModalData] = useState<Product | undefined>();
   const [deleteModalData, setDeleteModalData] = useState<Product | undefined>();

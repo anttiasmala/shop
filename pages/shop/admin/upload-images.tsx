@@ -5,6 +5,11 @@ import { FormEvent, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { NavBarAdmin } from '~/components/NavBarAdmin';
 
+import { getServerSidePropsAdminOnly as getServerSideProps } from '~/utils/getServerSideProps';
+
+/* ADMINS ONLY */
+export { getServerSideProps };
+
 const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg'];
 
 export default function AdminIndex() {

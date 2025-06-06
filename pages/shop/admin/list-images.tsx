@@ -5,6 +5,10 @@ import Link from 'next/link';
 import { FormEvent, useEffect, useState } from 'react';
 import { Input } from '~/components/Input';
 import { NavBarAdmin } from '~/components/NavBarAdmin';
+import { getServerSidePropsAdminOnly as getServerSideProps } from '~/utils/getServerSideProps';
+
+/* ADMINS ONLY */
+export { getServerSideProps };
 
 export default function ListImages() {
   const [images, setImages] = useState<string[]>([]);
