@@ -93,4 +93,5 @@ export const QueryAndMutationKeys = {
   UpdateCartTotalAmount: ['updateCartTotalAmount'],
   Login: ['login'],
   Register: ['register'],
+  Logout: ['logout'],
 };
