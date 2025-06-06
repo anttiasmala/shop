@@ -35,14 +35,14 @@ export async function validateRequest(
 ): Promise<
   { user: GetUser; session: FrontendSession } | { user: null; session: null }
 > {
-  const sessionId = authLong.readSessionCookie(req.headers.cookie ?? '');
-  if (!sessionId) {
+  const sessionUUID = authLong.readSessionCookie(req.headers.cookie ?? '');
+  if (!sessionUUID) {
     return {
       user: null,
       session: null,
     };
   }
-  const result = await authLong.validateSession(sessionId);
+  const result = await authLong.validateSession(sessionUUID);
   if (result.session && result.session.fresh) {
     res.appendHeader(
       'Set-Cookie',
