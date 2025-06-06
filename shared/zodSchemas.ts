@@ -168,3 +168,10 @@ export const invalidSessionResultSchema = z.object({
   databaseSession: z.null(),
   databaseUser: z.null(),
 });
+
+// LOGIN
+
+export const loginDetailsSchema = z.object({
+  email: emailSchema,
+  password: passwordSchema,
+});
