@@ -71,3 +71,26 @@ button:not(:disabled),
     padding: 0.25em 0.75em;
   }
 }
+
+/* Loading dots, taken from: https://github.com/samuliasmala/lahjalista */
+
+.loading-dots:after {
+  display: inline-block;
+  animation: dotty steps(1, end) 2s infinite;
+  content: '';
+}
+
+@keyframes dotty {
+  0% {
+    content: '.';
+  }
+  25% {
+    content: '..';
+  }
+  50% {
+    content: '...';
+  }
+  75% {
+    content: '';
+  }
+}
