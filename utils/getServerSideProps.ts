@@ -1,6 +1,5 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { auth, validateRequest } from '~/backend/auth/auth';
-import { logUserOut } from '~/pages/api/auth/logout';
 import { GetUser, User } from '~/shared/types';
 import { getUserSchema } from '~/shared/zodSchemas';
 
@@ -79,7 +78,6 @@ export async function getServerSidePropsAdminOnly(
   }
   const returnThis = getUserSchema.safeParse(cookieData.user);
   if (returnThis.error) {
-    await logUserOut(cookieData.session.uuid);
     await auth.deleteSession(cookieData.session.uuid);
 
     return {

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { validateRequest } from '~/backend/auth/auth';
+import { auth, validateRequest } from '~/backend/auth/auth';
 import { handleError } from '~/backend/handleError';
 import { HttpError } from '~/backend/HttpError';
 import prisma from '~/prisma';
@@ -22,24 +22,14 @@ export default async function Logout(
       return;
     }
     // if session is found, mark user's isLoggedIn to false it
-    await logUserOut(session.uuid);
+    await auth.deleteSession(session.uuid);
 
-    res.status(200).end();
+    res
+      .appendHeader('Set-cookie', auth.createBlankSessionCookie().serialize())
+      .status(200)
+      .end();
     return;
   } catch (e) {
     return handleError(res, e);
   }
-}
-
-export async function logUserOut(sessionUUID: string) {
-  await prisma.session.update({
-    where: {
-      uuid: sessionUUID,
-    },
-    data: {
-      isLoggedIn: false,
-    },
-  });
-
-  return;
 }
