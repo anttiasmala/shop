@@ -61,7 +61,7 @@ export async function getServerSideProps(
 
 export async function getServerSidePropsAdminOnly(
   context: GetServerSidePropsContext,
-): Promise<GetServerSidePropsResult<{ user: User }>> {
+): Promise<GetServerSidePropsResult<{ user: GetUser }>> {
   const cookieData = await validateRequest(context.req, context.res);
 
   if (
@@ -96,7 +96,40 @@ export async function getServerSidePropsAdminOnly(
       // primitive values). This is why we use JSON.parse and JSON.stringify
       // to convert the object to a plain object (specifically here we convert
       // the user.createdAt Date object to a string).
-      user: JSON.parse(JSON.stringify(returnThis.data)) as User,
+      user: JSON.parse(JSON.stringify(returnThis.data)) as GetUser,
+    },
+  };
+}
+
+/**
+ * **>>IMPORTANT<<**
+ *
+ * This function is ran in backend!
+ *
+ * **>>IMPORTANT<<**
+ *
+ * **This function just returns User object if found to frontend, nothing else**
+ */
+
+export async function getServerSidePropsNoLoginRequired(
+  context: GetServerSidePropsContext,
+): Promise<GetServerSidePropsResult<{ user: GetUser }>> {
+  const cookieData = await validateRequest(context.req, context.res);
+
+  const returnThis = getUserSchema.safeParse(cookieData.user);
+  if (returnThis.error) {
+    return {
+      props: { user: {} as GetUser },
+    };
+  }
+
+  return {
+    props: {
+      // getStaticProps can only return plain objects (i.e., objects with
+      // primitive values). This is why we use JSON.parse and JSON.stringify
+      // to convert the object to a plain object (specifically here we convert
+      // the user.createdAt Date object to a string).
+      user: JSON.parse(JSON.stringify(returnThis.data)) as GetUser,
     },
   };
 }
