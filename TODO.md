@@ -4,3 +4,4 @@
 4. Yhdistetään Cart ja User 1-1 relaatiolla
    4.1 Valmiina olevan kärryn yhdistäminen kirjautuvaan henkilöön, jonkinlainen tunnistus LocalStorage / Cookieiden kautta?
    Vaihtoehtoisesti vain kirjautuneena voi lisätä kärryyn tavaraa?
+5. Lisää enemmän virhetekstejä / jokin virhetekstien käsittelijä. Esim. että "email was not unique" näytettäisiin käyttäjälle toastina
