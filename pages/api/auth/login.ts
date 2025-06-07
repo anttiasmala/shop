@@ -24,7 +24,7 @@ export default async function Login(req: NextApiRequest, res: NextApiResponse) {
       },
     });
 
-    const isPasswordSame = verifyPassword(
+    const isPasswordSame = await verifyPassword(
       loginDetails.password,
       userDetails.password,
     );

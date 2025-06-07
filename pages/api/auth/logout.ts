@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { auth, validateRequest } from '~/backend/auth/auth';
 import { handleError } from '~/backend/handleError';
 import { HttpError } from '~/backend/HttpError';
-import prisma from '~/prisma';
 import { getServerSideProps } from '~/utils/getServerSideProps';
 
 export { getServerSideProps };
@@ -21,7 +20,8 @@ export default async function Logout(
       res.status(200).end();
       return;
     }
-    // if session is found, mark user's isLoggedIn to false it
+
+    // delete the session
     await auth.deleteSession(session.uuid);
 
     res

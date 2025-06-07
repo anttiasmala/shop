@@ -34,11 +34,11 @@ export default function Products({
     'cheapest' | 'mostExpensive' | 'alphabet' | 'default'
   >('default');
 
-  let { data: products } = useGetProducts();
+  const { data: products } = useGetProducts();
 
   useEffect(() => {
     console.log(products);
-    let array: string[] = [];
+    const array: string[] = [];
     products?.forEach((value) => array.push(value.category));
     setCategoryList([...new Set(array)]);
   }, [products]);

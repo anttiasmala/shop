@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { Edit, EditIcon, Trash2, X } from 'lucide-react';
+import { EditIcon, Trash2, X } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { FormEvent, useEffect, useState } from 'react';
 import { Input } from '~/components/Input';
 import { NavBarAdmin } from '~/components/NavBarAdmin';
@@ -17,7 +16,9 @@ export default function ListImages() {
 
   useEffect(() => {
     async function runThis() {
-      const fetchedImages = await (await axios.get('/api/list-images')).data;
+      const fetchedImages = (await (
+        await axios.get('/api/list-images')
+      ).data) as string[];
       setImages(fetchedImages);
     }
 
@@ -98,7 +99,7 @@ function EditModal({
 
   const oldImageName = imageName;
 
-  function handleSubmit(e: FormEvent<HTMLElement>) {
+  async function handleSubmit(e: FormEvent<HTMLElement>) {
     e.preventDefault();
     try {
       console.log('Submit');
@@ -109,7 +110,7 @@ function EditModal({
       console.log(oldImageName, newImageName);
       const newAllImages = [...filteredImages, newImageName];
       console.log(newAllImages);
-      axios.put('/api/list-images', newAllImages);
+      await axios.put('/api/list-images', newAllImages);
       closeModal();
     } catch (e) {
       console.error(e);
@@ -126,7 +127,10 @@ function EditModal({
           <X className="size-8" />
         </button>
         <div>
-          <form className="flex flex-col" onSubmit={(e) => handleSubmit(e)}>
+          <form
+            className="flex flex-col"
+            onSubmit={(e) => void handleSubmit(e)}
+          >
             <label className="text-white">Image Name:</label>
             <Input
               className="w-72"
@@ -183,7 +187,10 @@ function DeleteModal({
           <X className="size-8" />
         </button>
         <div>
-          <form className="flex flex-col" onSubmit={(e) => handleSubmit(e)}>
+          <form
+            className="flex flex-col"
+            onSubmit={(e) => void handleSubmit(e)}
+          >
             <p className="text-white">
               Delete image{' '}
               <span className="text-lg font-bold">{imageName}</span>?

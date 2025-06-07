@@ -1,6 +1,5 @@
 import { InferGetServerSidePropsType } from 'next';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { HTMLAttributes } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { NavBarAdmin } from '~/components/NavBarAdmin';
@@ -8,9 +7,9 @@ import { getServerSidePropsAdminOnly as getServerSideProps } from '~/utils/getSe
 
 export { getServerSideProps };
 
-export default function AdminIndex({
-  user,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function AdminIndex({}: InferGetServerSidePropsType<
+  typeof getServerSideProps
+>) {
   return (
     <main className="h-screen w-full bg-white">
       <div className="flex w-full justify-center">
@@ -47,7 +46,6 @@ function LinkElement({
   className,
   title,
   titleDescription,
-  children,
 }: {
   href: string;
   title: string;

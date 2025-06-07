@@ -39,7 +39,7 @@ export default function Login() {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const { mutateAsync, isPending, error } = useMutation({
+  const { mutateAsync, error } = useMutation({
     mutationKey: QueryAndMutationKeys.Login,
     mutationFn: async (loginCredentials: UserLoginDetails) =>
       await axios.post('/api/auth/login', loginCredentials),
@@ -96,7 +96,7 @@ export default function Login() {
     <main className="h-screen w-full">
       <div className="flex h-full w-full flex-col items-center">
         <p className="mb-6 text-center text-2xl font-bold">Login</p>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(e) => void handleSubmit(e)}>
           <div className="mb-4">
             <label htmlFor="email" className="mb-2 block font-bold">
               Email

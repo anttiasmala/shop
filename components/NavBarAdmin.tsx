@@ -1,11 +1,7 @@
 import Link from 'next/link';
-import { HTMLAttributes, useEffect, useState } from 'react';
+import { HTMLAttributes, useState } from 'react';
 import SvgMenu from '~/icons/menu';
-import SvgStoreBag from '~/icons/store_bag';
 import { twMerge } from 'tailwind-merge';
-import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
-import { GetCart, QueryAndMutationKeys } from '~/shared/types';
 
 export function NavBarAdmin() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
