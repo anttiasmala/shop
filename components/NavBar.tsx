@@ -6,6 +6,7 @@ import { twMerge } from 'tailwind-merge';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { GetCart, QueryAndMutationKeys } from '~/shared/types';
+import { User } from 'lucide-react';
 
 export function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -61,12 +62,17 @@ export function NavBar() {
             Shop
           </LinkElement>
         </div>
-        <Link href={'/shop/cart'} className="relative mr-10 sm:mr-0">
-          <span className="absolute top-1 left-0 flex rounded-full bg-red-500 p-1 pt-0 pb-0 text-xs text-white">
-            <p>{productAmount}</p>
-          </span>
-          <SvgStoreBag width={40} height={40} className="" />
-        </Link>
+        <div className="flex">
+          <button className="mr-6">
+            <User className="size-8" />
+          </button>
+          <Link href={'/shop/cart'} className="relative mr-10 sm:mr-0">
+            <span className="absolute top-1 left-0 flex rounded-full bg-red-500 p-1 pt-0 pb-0 text-xs text-white">
+              <p>{productAmount}</p>
+            </span>
+            <SvgStoreBag width={40} height={40} className="" />
+          </Link>
+        </div>
       </div>
       <Menu isMenuOpen={isMenuOpen} />
     </div>
