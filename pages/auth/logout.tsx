@@ -19,12 +19,15 @@ export default function Logout() {
   });
 
   useEffectAfterInitialRender(() => {
-    try {
-      mutateAsync();
-    } catch (e) {
-      console.error(e);
-      router.push('/shop').catch((e) => console.error(e));
+    async function runThis() {
+      try {
+        await mutateAsync();
+      } catch (e) {
+        console.error(e);
+        router.push('/shop').catch((e) => console.error(e));
+      }
     }
+    void runThis();
   }, []);
 
   return (

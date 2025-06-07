@@ -1,13 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-import { validateRequest } from '~/backend/auth/auth';
+import { useState } from 'react';
 import { Input } from '~/components/Input';
-import { QueryAndMutationKeys, UserLoginDetails } from '~/shared/types';
+import { QueryAndMutationKeys } from '~/shared/types';
 import {
   emailSchema,
   firstNameSchema,
@@ -32,13 +29,11 @@ export default function Register() {
     useState(false);
   const [formData, setFormData] = useState<Form>(EMPTY_FORM);
   const [errors, setErrors] = useState(EMPTY_ERRORS);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const { mutateAsync, isPending, error } = useMutation({
+  const { mutateAsync } = useMutation({
     mutationKey: QueryAndMutationKeys.Register,
     mutationFn: async () => await axios.post('/api/auth/register', formData),
     onSuccess: () => accountCreatedSuccesfully(),
@@ -95,7 +90,7 @@ export default function Register() {
     <main className="h-screen w-full">
       <div className="flex h-full w-full flex-col items-center">
         <p className="mb-6 text-center text-2xl font-bold">Register</p>
-        <form onSubmit={handleSubmit} className="w-72 sm:w-96">
+        <form onSubmit={(e) => void handleSubmit(e)} className="w-72 sm:w-96">
           <div className="mb-4">
             <label htmlFor="firstName" className="mb-2 block font-bold">
               First name

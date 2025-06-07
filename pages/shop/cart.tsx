@@ -90,6 +90,7 @@ function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
     for (const product of data || []) {
       _subtotal += Number(product.Product.price) * product.amount;
     }
+    // eslint-disable-next-line
     _subtotal >= 50 ? setShippingFee(0) : setShippingFee(4.9);
     setSubTotal(_subtotal);
     setTax(_subtotal * 0.255);

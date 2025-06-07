@@ -10,7 +10,7 @@ export const config = {
 
 const uploadFolderLocation = './public/images/products';
 
-export default async function UploadHandler(
+export default function UploadHandler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
@@ -19,11 +19,11 @@ export default async function UploadHandler(
       uploadDir: uploadFolderLocation,
       keepExtensions: true,
       maxFileSize: 5 * 1024 * 1024, // 5 MB
-      filename(name, ext, part, form) {
+      filename(name, ext) {
         return `${name}${ext}`;
       },
 
-      filter({ originalFilename, mimetype, name }) {
+      filter({ originalFilename, mimetype }) {
         console.log(originalFilename);
         const allowedMimeTypes = ['image/png', 'image/jpeg'];
 
@@ -45,6 +45,7 @@ export default async function UploadHandler(
           if (access === undefined) {
             return false;
           }
+          // eslint-disable-next-line
         } catch (e) {
           // throws and error if image was not found, we can add the image
           return true;

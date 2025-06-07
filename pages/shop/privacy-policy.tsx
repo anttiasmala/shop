@@ -17,7 +17,9 @@ export default function PrivacyPolicy({
           <div className="flex w-full flex-col items-center">
             <p className="mt-4 text-4xl font-bold">Privacy Policy</p>
             <ul className="mt-4 mr-6 ml-6 list-decimal sm:mr-0 sm:ml-0">
-              <li>This is a test privacy policy. We don't collect any data</li>
+              <li>
+                This is a test privacy policy. We don&apos;t collect any data
+              </li>
             </ul>
           </div>
         </div>

@@ -6,7 +6,7 @@ import { twMerge } from 'tailwind-merge';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { GetCart, GetUser, QueryAndMutationKeys } from '~/shared/types';
-import { User, UserCheck, UserX } from 'lucide-react';
+import { UserCheck, UserX } from 'lucide-react';
 import { isUserLoggedIn } from '~/utils/utils';
 
 export function NavBar({ user }: { user: GetUser }) {

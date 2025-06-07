@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { auth, validateRequest } from '~/backend/auth/auth';
 import { handleError } from '~/backend/handleError';
 import { HttpError } from '~/backend/HttpError';
-import prisma from '~/prisma';
 import { getServerSideProps } from '~/utils/getServerSideProps';
 
 export { getServerSideProps };
