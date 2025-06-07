@@ -11,6 +11,7 @@ import { isUserLoggedIn } from '~/utils/utils';
 
 export function NavBar({ user }: { user: GetUser }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [productAmount, setProductAmount] = useState(0);
 
   const { data: products } = useQuery({
@@ -66,9 +67,19 @@ export function NavBar({ user }: { user: GetUser }) {
           </LinkElement>
         </div>
         <div className="flex">
-          <button className="mr-6">
-            <UserSVG className="size-8" />
-          </button>
+          <div>
+            <button
+              className="mr-6"
+              onClick={() => setIsAuthModalOpen((prevValue) => !prevValue)}
+            >
+              <UserSVG className="size-8" />
+            </button>
+            <AuthModal
+              isAuthModalOpen={isAuthModalOpen}
+              closeModal={() => setIsAuthModalOpen(false)}
+              user={user}
+            />
+          </div>
           <Link href={'/shop/cart'} className="relative mr-10 sm:mr-0">
             <span className="absolute top-1 left-0 flex rounded-full bg-red-500 p-1 pt-0 pb-0 text-xs text-white">
               <p>{productAmount}</p>
@@ -107,5 +118,46 @@ function LinkElement({
     <Link className={twMerge('hover:text-gray-600', className)} href={href}>
       {children}
     </Link>
+  );
+}
+
+function AuthModal({
+  isAuthModalOpen,
+  user,
+}: {
+  closeModal: () => void;
+  isAuthModalOpen: boolean;
+  user: GetUser;
+}) {
+  if (!isAuthModalOpen) {
+    return null;
+  }
+
+  if (isUserLoggedIn(user)) {
+    return (
+      <div className="absolute w-72 border-black bg-white">
+        <div className="w-full">
+          <Link href={'/auth/logout'} className="button-54 hover:bg-gray-500">
+            Kirjaudu ulos
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="absolute right-3 border-black bg-white sm:right-auto">
+      <div className="flex w-max flex-col">
+        <Link href={'/auth/login'} className="button-54 hover:bg-gray-500">
+          Kirjaudu sisään
+        </Link>
+        <Link
+          href={'/auth/register'}
+          className="button-54 mt-3 hover:bg-gray-500"
+        >
+          Rekistöröidy
+        </Link>
+      </div>
+    </div>
   );
 }
