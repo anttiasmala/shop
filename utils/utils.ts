@@ -1,12 +1,12 @@
-export function isUserLoggedIn(object: object): boolean {
+export function isUserLoggedIn(user: object): boolean {
   const verifyParameterObject =
-    typeof object === 'object' && !Array.isArray(object) && object !== null;
+    typeof user === 'object' && !Array.isArray(user) && user !== null;
 
   if (!verifyParameterObject) {
     return false;
   }
 
-  if (Object.keys(object).length === 0) {
+  if (Object.keys(user).length === 0) {
     return false;
   }
 
