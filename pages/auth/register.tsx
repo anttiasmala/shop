@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { GetServerSidePropsContext } from 'next';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -172,7 +173,7 @@ export default function Register() {
             type="submit"
             className={`button-54 w-full rounded bg-yellow-300 p-2 text-white`}
           >
-            Login
+            Register
           </button>
         </form>
         {isAccountCreationSuccess && (
@@ -187,6 +188,14 @@ export default function Register() {
             </div>
           </div>
         )}
+        <div className="mt-12 flex flex-col">
+          <Link
+            href={'/auth/login'}
+            className="rounded-lg border border-black p-2 hover:bg-gray-300"
+          >
+            Login instead? Click here
+          </Link>
+        </div>
       </div>
     </main>
   );
