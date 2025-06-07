@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffectAfterInitialRender } from '~/hooks/useEffectAfterInitialRender';
 import { QueryAndMutationKeys } from '~/shared/types';
 
 export default function Logout() {
@@ -18,8 +18,13 @@ export default function Logout() {
     },
   });
 
-  useEffect(() => {
-    mutateAsync();
+  useEffectAfterInitialRender(() => {
+    try {
+      mutateAsync();
+    } catch (e) {
+      console.error(e);
+      router.push('/shop').catch((e) => console.error(e));
+    }
   }, []);
 
   return (
