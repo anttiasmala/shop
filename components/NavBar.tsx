@@ -5,10 +5,11 @@ import SvgStoreBag from '~/icons/store_bag';
 import { twMerge } from 'tailwind-merge';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { GetCart, QueryAndMutationKeys } from '~/shared/types';
-import { User } from 'lucide-react';
+import { GetCart, GetUser, QueryAndMutationKeys } from '~/shared/types';
+import { User, UserCheck, UserX } from 'lucide-react';
+import { isUserLoggedIn } from '~/utils/utils';
 
-export function NavBar() {
+export function NavBar({ user }: { user: GetUser }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [productAmount, setProductAmount] = useState(0);
 
@@ -34,6 +35,8 @@ export function NavBar() {
     }
     runThis();
   }, [products]);
+
+  const UserSVG = isUserLoggedIn(user) ? UserCheck : UserX;
 
   return (
     <div>
@@ -64,7 +67,7 @@ export function NavBar() {
         </div>
         <div className="flex">
           <button className="mr-6">
-            <User className="size-8" />
+            <UserSVG className="size-8" />
           </button>
           <Link href={'/shop/cart'} className="relative mr-10 sm:mr-0">
             <span className="absolute top-1 left-0 flex rounded-full bg-red-500 p-1 pt-0 pb-0 text-xs text-white">
