@@ -1,6 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { ArrowLeft, Minus, Plus, ShoppingBagIcon } from 'lucide-react';
+import { InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -8,8 +9,14 @@ import { toast } from 'react-toastify';
 import { Footer } from '~/components/Footer';
 import { NavBar } from '~/components/NavBar';
 import { useGetProduct } from '~/utils/apiRequests';
+import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
 
-export default function HandleProduct() {
+// No login required
+export { getServerSideProps };
+
+export default function HandleProduct({
+  user,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [productId, setProductId] = useState('');
   const [selectedAmount, setSelectedAmount] = useState(0);
 
@@ -35,7 +42,7 @@ export default function HandleProduct() {
       <div className="flex flex-col items-center">
         <div className="w-full sm:max-w-1/2">
           <div className="w-full">
-            <NavBar />
+            <NavBar user={user} />
           </div>
           <div className="mt-16">
             <div className="ml-8 flex items-center">

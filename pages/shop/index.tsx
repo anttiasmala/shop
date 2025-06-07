@@ -6,13 +6,20 @@ import { Container } from '../../components/Container';
 import { TextCard } from '~/components/TextCard';
 import { Product } from '~/components/Product';
 import { useGetProducts } from '~/utils/apiRequests';
+import { InferGetServerSidePropsType } from 'next';
+import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
 
-export default function Shop() {
+// Does not require login
+export { getServerSideProps };
+
+export default function Shop({
+  user,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <main className="h-screen w-full bg-white">
       <div className="flex w-full justify-center">
         <div className="w-full sm:max-w-1/2">
-          <NavBar />
+          <NavBar user={user} />
           <MainInformation />
           <FeaturedProducts />
           <WhyChooseUs />

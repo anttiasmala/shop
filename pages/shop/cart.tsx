@@ -10,8 +10,15 @@ import { NavBar } from '~/components/NavBar';
 import { GetCart, QueryAndMutationKeys } from '~/shared/types';
 import { useChangeProductAmount } from '~/utils/apiRequests';
 import { handleError } from '~/utils/handleError';
+import { InferGetServerSidePropsType } from 'next';
+import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
 
-export default function Cart() {
+// Does not require login
+export { getServerSideProps };
+
+export default function Cart({
+  user,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { data: products } = useQuery({
     queryKey: QueryAndMutationKeys.CartProducts,
     queryFn: async () => {
@@ -27,7 +34,7 @@ export default function Cart() {
       <div className="flex w-full flex-col items-center">
         <div className="w-full sm:max-w-1/2">
           <div className="w-full">
-            <NavBar />
+            <NavBar user={user} />
           </div>
           {products?.length === 0 ? (
             <EmptyCart />

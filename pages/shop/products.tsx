@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -10,6 +11,10 @@ import SvgMagnifyingGlass from '~/icons/magnifying_glass';
 import SvgStoreBag from '~/icons/store_bag';
 import { Product, QueryAndMutationKeys } from '~/shared/types';
 import { useGetProducts } from '~/utils/apiRequests';
+import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
+
+// No login required
+export { getServerSideProps };
 
 const SORT_BY_POSSIBILITIES = {
   Default: 'default',
@@ -18,7 +23,9 @@ const SORT_BY_POSSIBILITIES = {
   Alphabet: 'alphabet',
 } as const;
 
-export default function Products() {
+export default function Products({
+  user,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchedProducts, setSearchedProducts] = useState<Product[]>([]);
   const [categoryList, setCategoryList] = useState<string[]>([]);
@@ -71,7 +78,7 @@ export default function Products() {
       <div className="flex flex-col items-center">
         <div className="w-full sm:max-w-1/2">
           <div className="w-full">
-            <NavBar />
+            <NavBar user={user} />
           </div>
           <div>
             <p className="m-6 text-3xl font-bold">All Products</p>
