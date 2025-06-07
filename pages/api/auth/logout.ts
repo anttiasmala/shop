@@ -21,7 +21,8 @@ export default async function Logout(
       res.status(200).end();
       return;
     }
-    // if session is found, mark user's isLoggedIn to false it
+
+    // delete the session
     await auth.deleteSession(session.uuid);
 
     res
