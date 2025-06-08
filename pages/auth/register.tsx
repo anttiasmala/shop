@@ -90,9 +90,9 @@ export default function Register() {
     <main className="h-screen w-full">
       <div className="flex h-full w-full flex-col items-center">
         <p className="mb-6 text-center text-2xl font-bold">Register</p>
-        <form onSubmit={(e) => void handleSubmit(e)} className="w-72 sm:w-96">
+        <form onSubmit={(e) => void handleSubmit(e)} className="w-72">
           <div className="mb-4">
-            <label htmlFor="firstName" className="mb-2 block font-bold">
+            <label htmlFor="firstName" className="mb-2 font-bold">
               First name
             </label>
             <Input
@@ -110,7 +110,7 @@ export default function Register() {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="lastName" className="mb-2 block font-bold">
+            <label htmlFor="lastName" className="mb-2 font-bold">
               Last name
             </label>
             <Input
@@ -128,7 +128,7 @@ export default function Register() {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="email" className="mb-2 block font-bold">
+            <label htmlFor="email" className="mb-2 font-bold">
               Email
             </label>
             <Input
@@ -146,7 +146,7 @@ export default function Register() {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="Password" className="mb-2 block font-bold">
+            <label htmlFor="Password" className="mb-2 font-bold">
               Password
             </label>
             <Input

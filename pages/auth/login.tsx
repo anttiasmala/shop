@@ -96,9 +96,9 @@ export default function Login() {
     <main className="h-screen w-full">
       <div className="flex h-full w-full flex-col items-center">
         <p className="mb-6 text-center text-2xl font-bold">Login</p>
-        <form onSubmit={(e) => void handleSubmit(e)}>
+        <form onSubmit={(e) => void handleSubmit(e)} className="w-72">
           <div className="mb-4">
-            <label htmlFor="email" className="mb-2 block font-bold">
+            <label htmlFor="email" className="mb-2 font-bold">
               Email
             </label>
             <Input
@@ -112,7 +112,7 @@ export default function Login() {
             )}
           </div>
           <div className="mb-6">
-            <label htmlFor="password" className="mb-2 block font-bold">
+            <label htmlFor="password" className="mb-2 font-bold">
               Password
             </label>
             <Input
