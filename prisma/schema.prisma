@@ -51,11 +51,12 @@ model Product {
 }
 
 model Cart {
-    id        Int      @id @default(autoincrement())
-    uuid      String   @unique @default(uuid())
-    userUUID  String?  @unique
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    id           Int      @id @default(autoincrement())
+    uuid         String   @unique @default(uuid())
+    userCartUUID String   @unique
+    userUUID     String?  @unique
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
 
     User     User?      @relation(fields: [userUUID], references: [uuid])
     CartItem CartItem[]
