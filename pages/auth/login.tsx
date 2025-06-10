@@ -3,8 +3,7 @@ import axios from 'axios';
 import { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import { useState } from 'react';
 import { validateRequest } from '~/backend/auth/auth';
 import { Input } from '~/components/Input';
 import { QueryAndMutationKeys, UserLoginDetails } from '~/shared/types';
@@ -39,7 +38,7 @@ export default function Login() {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const { mutateAsync, error } = useMutation({
+  const { mutateAsync } = useMutation({
     mutationKey: QueryAndMutationKeys.Login,
     mutationFn: async (loginCredentials: UserLoginDetails) =>
       await axios.post('/api/auth/login', loginCredentials),

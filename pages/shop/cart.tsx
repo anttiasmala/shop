@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Footer } from '~/components/Footer';
 import { NavBar } from '~/components/NavBar';
-import { DeleteCartItem, GetCart, QueryAndMutationKeys } from '~/shared/types';
+import { GetCart, QueryAndMutationKeys } from '~/shared/types';
 import { useChangeProductAmount } from '~/utils/apiRequests';
 import { handleError } from '~/utils/handleError';
 import { InferGetServerSidePropsType } from 'next';

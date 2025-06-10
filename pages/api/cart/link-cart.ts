@@ -4,15 +4,15 @@ import { handleError } from '~/backend/handleError';
 import { HttpError } from '~/backend/HttpError';
 import { linkCartSchema } from '~/shared/zodSchemas';
 
-export default async function LinkCartHandler(
+export default function LinkCartHandler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
   try {
     const reqMethod = req.method;
 
-    if (req.method === 'POST') {
-      return await handlePOST(req, res);
+    if (reqMethod === 'POST') {
+      return handlePOST(req, res);
     }
 
     return res.status(405).send('Invalid request method');
@@ -21,7 +21,7 @@ export default async function LinkCartHandler(
   }
 }
 
-async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
+function handlePOST(req: NextApiRequest, res: NextApiResponse) {
   const parsedLinkCart = linkCartSchema.safeParse(req.body);
   if (!parsedLinkCart.success) {
     console.log(parsedLinkCart.error);
@@ -31,6 +31,6 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
   const { cartUUID, userUUID } = parsedLinkCart.data;
 
   // not awaited, not needed
-  linkUserToCart(cartUUID, userUUID);
+  void linkUserToCart(cartUUID, userUUID);
   res.status(200).send('Cart linked successfully');
 }

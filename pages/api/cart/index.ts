@@ -3,11 +3,7 @@ import { TimeSpan } from '~/backend/auth/auth/date';
 import { handleError } from '~/backend/handleError';
 import { HttpError } from '~/backend/HttpError';
 import prisma from '~/prisma';
-import {
-  createCartItemSchema,
-  createCartSchema,
-  patchCartItemSchema,
-} from '~/shared/zodSchemas';
+import { createCartSchema, patchCartItemSchema } from '~/shared/zodSchemas';
 
 export default async function Handler(
   req: NextApiRequest,
