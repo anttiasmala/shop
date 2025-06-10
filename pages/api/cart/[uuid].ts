@@ -1,8 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { linkUserToCart } from '~/backend/cart/utils';
 import { handleError } from '~/backend/handleError';
 import { HttpError } from '~/backend/HttpError';
 import prisma from '~/prisma';
-import { createCartItemSchema } from '~/shared/zodSchemas';
+import {
+  createCartItemSchema,
+  deleteCartItemSchema,
+} from '~/shared/zodSchemas';
 
 export default async function Handler(
   req: NextApiRequest,
@@ -11,12 +15,21 @@ export default async function Handler(
   try {
     const requestMethod = req.method;
 
+    const queryUUID = req.query.uuid;
+    if (queryUUID === undefined || typeof queryUUID !== 'string') {
+      return res.status(400).send('UUID is mandatory in query');
+    }
+
+    if (requestMethod === 'GET') {
+      return await handleGET(req, res, queryUUID);
+    }
+
     if (requestMethod === 'POST') {
-      return await handlePOST(req, res);
+      return await handlePOST(req, res, queryUUID);
     }
 
     if (requestMethod === 'DELETE') {
-      return await handleDELETE(req, res);
+      return await handleDELETE(req, res, queryUUID);
     }
 
     res.status(200).end();
@@ -25,12 +38,44 @@ export default async function Handler(
   }
 }
 
-async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
-  console.log(req.body);
+async function handleGET(
+  req: NextApiRequest,
+  res: NextApiResponse,
+  cartUUID: string,
+) {
+  const cart = await prisma.cart.findFirstOrThrow({
+    where: { userCartUUID: cartUUID },
+  });
+
+  const cartItems = await prisma.cartItem.findMany({
+    where: {
+      cartUUID: cart.uuid,
+    },
+    select: {
+      amount: true,
+      Product: {
+        omit: {
+          createdAt: true,
+          updatedAt: true,
+          uuid: true,
+        },
+      },
+    },
+  });
+
+  return res.status(200).json(cartItems);
+}
+
+async function handlePOST(
+  req: NextApiRequest,
+  res: NextApiResponse,
+  queryUUID: string,
+) {
   const requestBodyParse = createCartItemSchema.safeParse(req.body);
   if (requestBodyParse.success === false) {
     throw new HttpError('Invalid req.body given', 400);
   }
+
   const productToBeAdded = requestBodyParse.data;
   const product = await prisma.product.findFirstOrThrow({
     where: {
@@ -39,7 +84,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
   });
   const cart = await prisma.cart.findFirstOrThrow({
     where: {
-      id: 1,
+      userCartUUID: queryUUID,
     },
   });
 
@@ -84,19 +129,28 @@ async function updateExistingCartItem(
   });
 }
 
-async function handleDELETE(req: NextApiRequest, res: NextApiResponse) {
-  const queryId = req.query.id;
-  if (queryId === undefined || typeof queryId !== 'string') {
-    return res.status(400).send('ID is mandatory in query');
+async function handleDELETE(
+  req: NextApiRequest,
+  res: NextApiResponse,
+  queryUUID: string,
+) {
+  const deleteCartItemParse = deleteCartItemSchema.safeParse(req.body);
+
+  if (!deleteCartItemParse.success) {
+    throw new HttpError('Invalid request body', 400);
   }
-  const numberQueryId = Number(queryId);
-  if (Number.isNaN(numberQueryId)) {
-    return res.status(400).send('Invalid ID given');
-  }
+
+  const requestBody = deleteCartItemParse.data;
+
+  const cart = await prisma.cart.findFirstOrThrow({
+    where: {
+      userCartUUID: queryUUID,
+    },
+  });
 
   const product = await prisma.product.findFirstOrThrow({
     where: {
-      id: numberQueryId,
+      id: Number(requestBody.productId),
     },
   });
 
@@ -107,12 +161,13 @@ async function handleDELETE(req: NextApiRequest, res: NextApiResponse) {
   });
 
   if (!cartItem) {
-    return res.status(500).send('Server Error');
+    return res.status(500).send('Product to be deleted does not exist');
   }
 
   await prisma.cartItem.delete({
     where: {
       uuid: cartItem.uuid,
+      cartUUID: cart.uuid,
     },
   });
 

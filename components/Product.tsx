@@ -38,7 +38,9 @@ export function Product({ product }: { product: ProductType }) {
                   onClick={() => {
                     void (async () => {
                       try {
-                        await axios.post('/api/cart', {
+                        const uuid =
+                          window.localStorage.getItem('cartUUID') || '';
+                        await axios.post(`/api/cart/${uuid}`, {
                           ...product,
                           amount: 1,
                         });

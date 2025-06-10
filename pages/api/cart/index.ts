@@ -1,8 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { TimeSpan } from '~/backend/auth/auth/date';
 import { handleError } from '~/backend/handleError';
 import { HttpError } from '~/backend/HttpError';
 import prisma from '~/prisma';
-import { createCartItemSchema, patchCartItemSchema } from '~/shared/zodSchemas';
+import {
+  createCartItemSchema,
+  createCartSchema,
+  patchCartItemSchema,
+} from '~/shared/zodSchemas';
 
 export default async function Handler(
   req: NextApiRequest,
@@ -50,47 +55,23 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
-  console.log(req.body);
-  const requestBodyParse = createCartItemSchema.safeParse(req.body);
-  if (requestBodyParse.success === false) {
-    throw new HttpError('Invalid req.body given', 400);
+  const parsedCreateCartSchema = createCartSchema.safeParse(req.body);
+  if (parsedCreateCartSchema.success === false) {
+    throw new HttpError('Invalid request body', 400);
   }
-  const productToBeAdded = requestBodyParse.data;
-  const product = await prisma.product.findFirstOrThrow({
-    where: {
-      id: requestBodyParse.data.id,
-    },
-  });
-  const cart = await prisma.cart.findFirstOrThrow({
-    where: {
-      id: 1,
-    },
-  });
+  const reqBodyData = parsedCreateCartSchema.data;
+  console.log(reqBodyData);
 
-  const productExists = await prisma.cartItem.findFirst({
-    where: {
-      productUUID: product.uuid,
-    },
-  });
+  const timeSpan = new TimeSpan(30, 'd');
 
-  if (productExists) {
-    const updatedItem = await updateExistingCartItem(
-      productExists.id,
-      productExists.amount,
-      productToBeAdded.amount,
-    );
-
-    return res.status(200).json(updatedItem);
-  }
-
-  const createdItem = await prisma.cartItem.create({
+  await prisma.cart.create({
     data: {
-      cartUUID: cart.uuid,
-      productUUID: product.uuid,
-      amount: productToBeAdded.amount,
+      userCartUUID: reqBodyData.cartUUID,
+      expiresAt: new Date(Date.now() + timeSpan.milliseconds()),
     },
   });
-  return res.status(200).json(createdItem);
+
+  res.status(200).end();
 }
 
 async function handlePATCH(req: NextApiRequest, res: NextApiResponse) {
@@ -123,19 +104,4 @@ async function handlePATCH(req: NextApiRequest, res: NextApiResponse) {
   });
 
   return res.status(200).json(updatedCartItem);
-}
-
-async function updateExistingCartItem(
-  id: number,
-  amountBeforeUpdate: number,
-  amountToBeAdded: number,
-) {
-  await prisma.cartItem.update({
-    where: {
-      id,
-    },
-    data: {
-      amount: amountBeforeUpdate + amountToBeAdded,
-    },
-  });
 }

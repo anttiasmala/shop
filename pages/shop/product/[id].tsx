@@ -118,7 +118,9 @@ export default function HandleProduct({
                           void (async () => {
                             try {
                               if (selectedAmount === 0) return;
-                              await axios.post('/api/cart', {
+                              const cartUUID =
+                                window.localStorage.getItem('cartUUID');
+                              await axios.post(`/api/cart/${cartUUID}`, {
                                 ...product,
                                 amount: selectedAmount,
                               });

@@ -40,6 +40,14 @@ export default function Register() {
   });
 
   function accountCreatedSuccesfully() {
+    // set cartSetting's isLoggedIn to true
+    window.localStorage.setItem(
+      'cartSettings',
+      JSON.stringify({
+        isLoggedIn: true,
+        isCartLinked: false,
+      }),
+    );
     setFormData(EMPTY_FORM);
     setIsAccountCreationSuccess(true);
     setTimeout(() => {

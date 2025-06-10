@@ -8,6 +8,8 @@ import { useQuery } from '@tanstack/react-query';
 import { GetCart, GetUser, QueryAndMutationKeys } from '~/shared/types';
 import { UserCheck, UserX } from 'lucide-react';
 import { isUserLoggedIn } from '~/utils/utils';
+import { handleError } from '~/utils/handleError';
+import { useEffectAfterInitialRender } from '~/hooks/useEffectAfterInitialRender';
 
 export function NavBar({ user }: { user: GetUser }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,7 +19,8 @@ export function NavBar({ user }: { user: GetUser }) {
   const { data: products } = useQuery({
     queryKey: QueryAndMutationKeys.NavBarProducts,
     queryFn: async () => {
-      return (await axios.get('/api/cart')).data as GetCart[];
+      const cartUUID = window.localStorage.getItem('cartUUID');
+      return (await axios.get(`/api/cart/${cartUUID}`)).data as GetCart[];
     },
     refetchOnWindowFocus: false,
     refetchOnMount: false,
@@ -36,6 +39,38 @@ export function NavBar({ user }: { user: GetUser }) {
     }
     runThis();
   }, [products]);
+
+  useEffectAfterInitialRender(() => {
+    async function runThis() {
+      try {
+        const cartSettings = window.localStorage.getItem('cartSettings');
+        const cartUUID = window.localStorage.getItem('cartUUID');
+        if (!cartSettings) return;
+        // check here if JSON is parseable
+        // perhaps make these into a separate functions?
+
+        if (
+          JSON.parse(cartSettings).isLoggedIn &&
+          !JSON.parse(cartSettings).isCartLinked
+        ) {
+          const cartLinkingRequest = await axios.post('/api/cart/link-cart', {
+            cartUUID,
+            userUUID: user.uuid,
+          });
+          window.localStorage.setItem(
+            'cartSettings',
+            JSON.stringify({
+              isLoggedIn: true,
+              isCartLinked: cartLinkingRequest.status === 200 ? true : false,
+            }),
+          );
+        }
+      } catch (e) {
+        handleError(e);
+      }
+    }
+    void runThis();
+  }, []);
 
   const UserSVG = isUserLoggedIn(user) ? UserCheck : UserX;
 

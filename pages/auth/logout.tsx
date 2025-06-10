@@ -12,6 +12,14 @@ export default function Logout() {
       await axios.post('/api/auth/logout');
     },
     onSuccess: () => {
+      // set cartSetting's isLoggedIn to true
+      window.localStorage.setItem(
+        'cartSettings',
+        JSON.stringify({
+          isLoggedIn: false,
+          isCartLinked: false,
+        }),
+      );
       setTimeout(() => {
         router.push('/shop').catch((e) => console.error(e));
       }, 1000);

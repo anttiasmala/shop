@@ -3,6 +3,7 @@ import {
   cartSchema,
   createSessionSchema,
   createUserSchema,
+  deleteCartItemSchema,
   frontendSessionSchema,
   fullSessionSchema,
   fullUserSchema,
@@ -29,6 +30,8 @@ export type GetCart = { amount: number } & { Product: Product };
 // CART ITEM
 
 export type PatchCartItem = z.infer<typeof patchCartItemSchema>;
+
+export type DeleteCartItem = z.infer<typeof deleteCartItemSchema>;
 
 // USER
 

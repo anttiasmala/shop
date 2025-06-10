@@ -187,7 +187,9 @@ function ProductBlock({ product }: { product: Product }) {
                   onClick={() => {
                     void (async () => {
                       try {
-                        await axios.post('/api/cart', {
+                        const cartUUID =
+                          window.localStorage.getItem('cartUUID');
+                        await axios.post(`/api/cart/${cartUUID}`, {
                           ...product,
                           amount: 1,
                         });

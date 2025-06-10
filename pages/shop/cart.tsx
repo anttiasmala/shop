@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Footer } from '~/components/Footer';
 import { NavBar } from '~/components/NavBar';
-import { GetCart, QueryAndMutationKeys } from '~/shared/types';
+import { DeleteCartItem, GetCart, QueryAndMutationKeys } from '~/shared/types';
 import { useChangeProductAmount } from '~/utils/apiRequests';
 import { handleError } from '~/utils/handleError';
 import { InferGetServerSidePropsType } from 'next';
@@ -22,7 +22,8 @@ export default function Cart({
   const { data: products } = useQuery({
     queryKey: QueryAndMutationKeys.CartProducts,
     queryFn: async () => {
-      return (await axios.get(`/api/cart`)).data as GetCart[];
+      const cartUUID = window.localStorage.getItem('cartUUID');
+      return (await axios.get(`/api/cart/${cartUUID}`)).data as GetCart[];
     },
     refetchOnWindowFocus: false,
     refetchOnMount: true,
@@ -78,7 +79,8 @@ function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
   const { data } = useQuery({
     queryKey: QueryAndMutationKeys.UpdateCartTotalAmount,
     queryFn: async () => {
-      return (await axios.get(`/api/cart`)).data as GetCart[];
+      const cartUUID = window.localStorage.getItem('cartUUID');
+      return (await axios.get(`/api/cart/${cartUUID}`)).data as GetCart[];
     },
     refetchOnWindowFocus: false,
     refetchOnMount: true,
@@ -227,7 +229,12 @@ function ProductBlock({ product }: { product: GetCart }) {
                 onClick={() => {
                   void (async () => {
                     try {
-                      await axios.delete(`/api/cart/${product.Product.id}`);
+                      const cartUUID = window.localStorage.getItem('cartUUID');
+                      await axios.delete(`/api/cart/${cartUUID}`, {
+                        data: {
+                          productId: product.Product.id.toString(),
+                        },
+                      });
                       await queryClient.invalidateQueries({
                         queryKey: QueryAndMutationKeys.NavBarProducts,
                       });

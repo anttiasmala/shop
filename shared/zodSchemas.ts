@@ -63,6 +63,15 @@ export const cartSchema = productSchema
   })
   .array();
 
+export const createCartSchema = z.object({
+  cartUUID: uuidSchema,
+});
+
+export const linkCartSchema = z.object({
+  cartUUID: uuidSchema,
+  userUUID: uuidSchema,
+});
+
 // CART ITEM
 
 export const fullCartItemSchema = z.object({
@@ -85,6 +94,10 @@ export const cartItemSchema = fullCartItemSchema.pick({
 export const createCartItemSchema = cartItemSchema.pick({
   id: true,
   amount: true,
+});
+
+export const deleteCartItemSchema = z.object({
+  productId: z.string(),
 });
 
 export const patchCartItemSchema = createCartItemSchema;

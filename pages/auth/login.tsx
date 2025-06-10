@@ -47,6 +47,15 @@ export default function Login() {
     onSuccess: () => {
       queryClient.clear();
       router.push('/shop').catch((e) => console.error(e));
+
+      // set cartSetting's isLoggedIn to true
+      window.localStorage.setItem(
+        'cartSettings',
+        JSON.stringify({
+          isLoggedIn: true,
+          isCartLinked: false,
+        }),
+      );
     },
   });
 
