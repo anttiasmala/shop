@@ -59,10 +59,6 @@ export default function Login() {
     },
   });
 
-  useEffect(() => {
-    toast(error?.message);
-  }, [error]);
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
