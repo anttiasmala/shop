@@ -12,3 +12,17 @@ export function isUserLoggedIn(user: object): boolean {
 
   return true;
 }
+
+export function JSONParse(value: string) {
+  try {
+    if (typeof value !== 'string') {
+      throw new Error('Was not a string');
+    }
+
+    const parsedValue = JSON.parse(value) as object;
+    return parsedValue;
+  } catch (e) {
+    console.error(e);
+    throw new Error('Value is not parseable');
+  }
+}
