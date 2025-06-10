@@ -79,6 +79,14 @@ const eslintConfig = [
             // node/no-missing-import: https://github.com/mysticatea/eslint-plugin-node | n/no-missing-import: https://github.com/eslint-community/eslint-plugin-n
             'n/no-missing-import': 'off',
 
+            // localStorage should not be experimental anymore? Skip the error for now
+            'n/no-unsupported-features/node-builtins': [
+              'error',
+              {
+                ignores: ['localStorage'],
+              },
+            ],
+
             // Disable some rules which are difficult for beginners
             '@typescript-eslint/no-unsafe-assignment': 'warn',
             '@typescript-eslint/no-unsafe-member-access': 'warn',
