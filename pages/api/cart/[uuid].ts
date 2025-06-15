@@ -90,6 +90,7 @@ async function handlePOST(
   const productExists = await prisma.cartItem.findFirst({
     where: {
       productUUID: product.uuid,
+      cartUUID: cart.uuid,
     },
   });
 
