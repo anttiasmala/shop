@@ -5,7 +5,6 @@ import { Bounce, ToastContainer } from 'react-toastify';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import axios from 'axios';
-import crypto from 'crypto';
 
 const queryClient = new QueryClient();
 
@@ -14,6 +13,8 @@ export default function App({ Component, pageProps }: AppProps) {
     const cartUUID = window.localStorage.getItem('cartUUID');
     const cartSettings = window.localStorage.getItem('cartSettings');
     if (!cartUUID) {
+      // this is skipped due to browser Crypto should be used, not NodeJS'
+      // eslint-disable-next-line
       const randomUUID = crypto.randomUUID();
       window.localStorage.setItem('cartUUID', randomUUID);
 
