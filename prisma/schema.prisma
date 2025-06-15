@@ -23,7 +23,7 @@ model User {
     updatedAt DateTime  @updatedAt
     Session   Session[]
     role      Roles     @default(USER)
-    Cart      Cart?
+    Cart      Cart[]
 }
 
 model Session {
@@ -54,12 +54,12 @@ model Cart {
     id           Int      @id @default(autoincrement())
     uuid         String   @unique @default(uuid())
     userCartUUID String   @unique
-    userUUID     String?  @unique
+    userUUID     String?
     expiresAt    DateTime
     createdAt    DateTime @default(now())
     updatedAt    DateTime @updatedAt
 
-    User     User?      @relation(fields: [userUUID], references: [uuid])
+    User     User[]
     CartItem CartItem[]
 }
 
