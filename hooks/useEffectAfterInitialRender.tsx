@@ -9,7 +9,7 @@ export function useEffectAfterInitialRender<T extends DependencyList>(
   useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false;
-      //return;
+      return;
     }
     callback();
   }, dependencies);
