@@ -1,10 +1,18 @@
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
+import { InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
+import { useEffect, useRef } from 'react';
 import { useEffectAfterInitialRender } from '~/hooks/useEffectAfterInitialRender';
 import { QueryAndMutationKeys } from '~/shared/types';
+import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
 
-export default function Logout() {
+export { getServerSideProps };
+
+export default function Logout({
+  user,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const firstRender = useRef(true);
   const router = useRouter();
   const { mutateAsync } = useMutation({
     mutationKey: QueryAndMutationKeys.Logout,
@@ -26,10 +34,19 @@ export default function Logout() {
     },
   });
 
-  useEffectAfterInitialRender(() => {
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
     async function runThis() {
       try {
         await mutateAsync();
+        const cartUUID = window.localStorage.getItem('cartUUID');
+        void axios.post('/api/cart/unlink-cart', {
+          cartUUID: cartUUID,
+          userUUID: user.uuid,
+        });
       } catch (e) {
         console.error(e);
         router.push('/shop').catch((e) => console.error(e));
