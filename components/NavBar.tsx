@@ -90,7 +90,7 @@ export function NavBar({ user }: { user: GetUser }) {
         >
           MINIMONEY
         </Link>
-        <div className="mr-3 flex sm:absolute sm:left-1/2">
+        <div className="mr-3 flex">
           <button onClick={() => setIsMenuOpen((prevValue) => !prevValue)}>
             {isMenuOpen ? (
               <span className="text-3xl font-bold">X</span>
