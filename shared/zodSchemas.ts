@@ -188,3 +188,10 @@ export const loginDetailsSchema = z.object({
   email: emailSchema,
   password: passwordSchema,
 });
+
+// LOCALSTORAGE
+
+export const cartSettingsSchema = z.object({
+  isLoggedIn: z.boolean(),
+  isCartLinked: z.boolean(),
+});

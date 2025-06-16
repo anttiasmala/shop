@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import {
   cartSchema,
+  cartSettingsSchema,
   createSessionSchema,
   createUserSchema,
   deleteCartItemSchema,
@@ -98,3 +99,7 @@ export const QueryAndMutationKeys = {
   Register: ['register'],
   Logout: ['logout'],
 };
+
+// LOCALSTORAGE
+
+export type CartSettings = z.infer<typeof cartSettingsSchema>;

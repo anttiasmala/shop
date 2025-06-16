@@ -10,6 +10,7 @@ import { UserCheck, UserX } from 'lucide-react';
 import { isUserLoggedIn } from '~/utils/utils';
 import { handleError } from '~/utils/handleError';
 import { useEffectAfterInitialRender } from '~/hooks/useEffectAfterInitialRender';
+import { cartSettingsSchema } from '~/shared/zodSchemas';
 
 export function NavBar({ user }: { user: GetUser }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -49,9 +50,15 @@ export function NavBar({ user }: { user: GetUser }) {
         // check here if JSON is parseable
         // perhaps make these into a separate functions?
 
+        const cartSettingsParse = cartSettingsSchema.safeParse(
+          JSON.parse(cartSettings),
+        );
+        if (!cartSettingsParse.success) {
+          return;
+        }
         if (
-          JSON.parse(cartSettings).isLoggedIn &&
-          !JSON.parse(cartSettings).isCartLinked
+          cartSettingsParse.data.isLoggedIn &&
+          !cartSettingsParse.data.isCartLinked
         ) {
           const cartLinkingRequest = await axios.post('/api/cart/link-cart', {
             cartUUID,
