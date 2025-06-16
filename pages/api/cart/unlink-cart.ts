@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { linkUserToCart, unLinkUserAndCart } from '~/backend/cart/utils';
+import { unLinkUserAndCart } from '~/backend/cart/utils';
 import { handleError } from '~/backend/handleError';
 import { HttpError } from '~/backend/HttpError';
 import { linkCartSchema } from '~/shared/zodSchemas';

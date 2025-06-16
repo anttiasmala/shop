@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useEffectAfterInitialRender } from '~/hooks/useEffectAfterInitialRender';
 import { QueryAndMutationKeys } from '~/shared/types';
 import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
@@ -56,7 +56,7 @@ export default function Logout({
     }, 10000);
 
     return () => clearInterval(timeout);
-  }, []);
+  }, [router]);
 
   return (
     <div className="h-screen w-full">
