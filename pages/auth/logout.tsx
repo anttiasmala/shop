@@ -12,7 +12,6 @@ export { getServerSideProps };
 export default function Logout({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const firstRender = useRef(true);
   const router = useRouter();
   const { mutateAsync } = useMutation({
     mutationKey: QueryAndMutationKeys.Logout,
@@ -34,11 +33,7 @@ export default function Logout({
     },
   });
 
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      return;
-    }
+  useEffectAfterInitialRender(() => {
     async function runThis() {
       try {
         await mutateAsync();
@@ -53,6 +48,14 @@ export default function Logout({
       }
     }
     void runThis();
+  }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      router.push('/shop').catch((e) => console.error(e));
+    }, 10000);
+
+    return () => clearInterval(timeout);
   }, []);
 
   return (
