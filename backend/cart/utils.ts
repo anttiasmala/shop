@@ -12,3 +12,15 @@ export async function linkUserToCart(cartUUID: string, userUUID: string) {
     },
   });
 }
+
+export async function unLinkUserAndCart(cartUUID: string, userUUID: string) {
+  await prisma.cart.update({
+    where: {
+      userCartUUID: cartUUID,
+      userUUID: userUUID,
+    },
+    data: {
+      userUUID: null,
+    },
+  });
+}
