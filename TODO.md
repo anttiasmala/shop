@@ -1,4 +1,4 @@
-1. Admin API -endpointteihin tarkistus, että käyttäjä on ADMIN.
+1. Admin API -endpointteihin tarkistus, että käyttäjä on ADMIN. // WIP
 2. Järjestele koodia
 3. Ehkä jonkilainen menu, josta voisi kirjautua sisään ja ulos. Ehkä rekistöröityä. Siellä olisi kotisivulle ja kauppaan linkit
 4. Yhdistetään Cart ja User 1-1 relaatiolla
