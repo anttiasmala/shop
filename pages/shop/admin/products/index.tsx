@@ -21,6 +21,7 @@ import { useGetProducts } from '~/utils/apiRequests';
 import Image from 'next/image';
 
 import { getServerSidePropsAdminOnly as getServerSideProps } from '~/utils/getServerSideProps';
+import { Main } from '~/components/Main';
 
 /* ADMINS ONLY */
 export { getServerSideProps };
@@ -47,55 +48,51 @@ export default function ProductsIndex() {
   }, [listOfImages]);
 
   return (
-    <main className="h-screen w-full bg-white">
+    <Main>
+      <NavBarAdmin />
       <div className="flex w-full flex-col items-center">
-        <div className="w-full max-w-1/2">
-          <NavBarAdmin />
-        </div>
-        <div className="flex w-full flex-col items-center">
-          <p className="animate-[opacity_1200ms] text-4xl font-bold">
-            Products panel
-          </p>
-          <div className="mt-5 flex flex-col items-center">
-            <ProductTable
-              setDeleteModalData={setDeleteModalData}
-              setEditModalData={setEditModalData}
+        <p className="animate-[opacity_1200ms] text-4xl font-bold">
+          Products panel
+        </p>
+        <div className="mt-5 flex flex-col items-center">
+          <ProductTable
+            setDeleteModalData={setDeleteModalData}
+            setEditModalData={setEditModalData}
+          />
+          <button
+            className="mt-4 rounded-md bg-black p-2 text-white"
+            onClick={() => setIsAddProductModalOpen(true)}
+          >
+            Add Product
+          </button>
+
+          {editModalData && (
+            <EditModal
+              product={editModalData}
+              closeModal={() => setEditModalData(undefined)}
+              queryClient={queryClient}
+              listOfImages={listOfImages || []}
             />
-            <button
-              className="mt-4 rounded-md bg-black p-2 text-white"
-              onClick={() => setIsAddProductModalOpen(true)}
-            >
-              Add Product
-            </button>
+          )}
 
-            {editModalData && (
-              <EditModal
-                product={editModalData}
-                closeModal={() => setEditModalData(undefined)}
-                queryClient={queryClient}
-                listOfImages={listOfImages || []}
-              />
-            )}
+          {deleteModalData && (
+            <DeleteModal
+              product={deleteModalData}
+              closeModal={() => setDeleteModalData(undefined)}
+              queryClient={queryClient}
+            />
+          )}
 
-            {deleteModalData && (
-              <DeleteModal
-                product={deleteModalData}
-                closeModal={() => setDeleteModalData(undefined)}
-                queryClient={queryClient}
-              />
-            )}
-
-            {isAddProductModalOpen && (
-              <AddProduct
-                closeModal={() => setIsAddProductModalOpen(false)}
-                queryClient={queryClient}
-                listOfImages={listOfImages || []}
-              />
-            )}
-          </div>
+          {isAddProductModalOpen && (
+            <AddProduct
+              closeModal={() => setIsAddProductModalOpen(false)}
+              queryClient={queryClient}
+              listOfImages={listOfImages || []}
+            />
+          )}
         </div>
       </div>
-    </main>
+    </Main>
   );
 }
 

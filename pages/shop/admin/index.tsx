@@ -2,6 +2,7 @@ import { InferGetServerSidePropsType } from 'next';
 import Link from 'next/link';
 import { HTMLAttributes } from 'react';
 import { twMerge } from 'tailwind-merge';
+import { Main } from '~/components/Main';
 import { NavBarAdmin } from '~/components/NavBarAdmin';
 import { getServerSidePropsAdminOnly as getServerSideProps } from '~/utils/getServerSideProps';
 
@@ -11,33 +12,29 @@ export default function AdminIndex({}: InferGetServerSidePropsType<
   typeof getServerSideProps
 >) {
   return (
-    <main className="h-screen w-full bg-white">
-      <div className="flex w-full justify-center">
-        <div className="w-full sm:max-w-1/2">
-          <NavBarAdmin />
-          <p className="mt-3 animate-[opacity_1200ms] text-center text-4xl font-bold">
-            Admin Dashboard
-          </p>
-          <div className="mt-5 flex w-full">
-            <LinkElement
-              href={'/shop/admin/products'}
-              title="Edit Products"
-              titleDescription="Edit, add and delete current products"
-            />
-            <LinkElement
-              href={'/shop/admin/upload-images'}
-              title="Upload Product Images"
-              titleDescription="Add image of a product"
-            />
-            <LinkElement
-              href={'/shop/admin/list-images'}
-              title="List Images"
-              titleDescription="See, edit and delete product images"
-            />
-          </div>
-        </div>
+    <Main>
+      <NavBarAdmin />
+      <p className="mt-3 animate-[opacity_1200ms] text-center text-4xl font-bold">
+        Admin Dashboard
+      </p>
+      <div className="mt-5 flex w-full">
+        <LinkElement
+          href={'/shop/admin/products'}
+          title="Edit Products"
+          titleDescription="Edit, add and delete current products"
+        />
+        <LinkElement
+          href={'/shop/admin/upload-images'}
+          title="Upload Product Images"
+          titleDescription="Add image of a product"
+        />
+        <LinkElement
+          href={'/shop/admin/list-images'}
+          title="List Images"
+          titleDescription="See, edit and delete product images"
+        />
       </div>
-    </main>
+    </Main>
   );
 }
 

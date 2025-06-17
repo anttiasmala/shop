@@ -1,6 +1,7 @@
 import { InferGetServerSidePropsType } from 'next/dist/types';
 import Link from 'next/link';
 import { Footer } from '~/components/Footer';
+import { Main } from '~/components/Main';
 import { NavBar } from '~/components/NavBar';
 import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
 
@@ -11,10 +12,8 @@ export default function HandleProduct({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <main className="h-screen w-full bg-white">
-      <div className="w-full">
-        <NavBar user={user} />
-      </div>
+    <Main>
+      <NavBar user={user} />
       <div className="flex w-full justify-center">
         <Link
           href={'/shop'}
@@ -24,6 +23,6 @@ export default function HandleProduct({
         </Link>
       </div>
       <Footer />
-    </main>
+    </Main>
   );
 }

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Footer } from '~/components/Footer';
+import { Main } from '~/components/Main';
 import { NavBar } from '~/components/NavBar';
 import SvgMagnifyingGlass from '~/icons/magnifying_glass';
 import SvgStoreBag from '~/icons/store_bag';
@@ -74,83 +75,79 @@ export default function Products({
   }, [searchTerm, products, categoryTerm, sortProductsBy]);
 
   return (
-    <main className="h-screen w-full bg-white">
-      <div className="flex flex-col items-center">
-        <div className="w-full sm:max-w-1/2">
-          <div className="w-full">
-            <NavBar user={user} />
+    <Main>
+      <div className="w-full">
+        <NavBar user={user} />
+      </div>
+      <div>
+        <p className="m-6 text-3xl font-bold">All Products</p>
+        <div>
+          <div className="m-6 flex rounded-2xl border border-gray-200">
+            <SvgMagnifyingGlass className="ml-4 w-5 text-gray-300" />
+            <input
+              type="text"
+              placeholder="Search products..."
+              className="w-full p-3 pr-0"
+              onChange={(e) => setSearchTerm(e.currentTarget.value)}
+            />
           </div>
-          <div>
-            <p className="m-6 text-3xl font-bold">All Products</p>
-            <div>
-              <div className="m-6 flex rounded-2xl border border-gray-200">
-                <SvgMagnifyingGlass className="ml-4 w-5 text-gray-300" />
-                <input
-                  type="text"
-                  placeholder="Search products..."
-                  className="w-full p-3 pr-0"
-                  onChange={(e) => setSearchTerm(e.currentTarget.value)}
-                />
-              </div>
-              <div className="flex justify-between">
-                <div className="ml-3 sm:ml-0">
-                  <p className="text-2xl">Categories:</p>
-                  {categoryList?.map((_category, _index) => (
-                    <div key={`category_${_index}`}>
-                      <input
-                        type="checkbox"
-                        className="hover:cursor-pointer"
-                        name={_category}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setCategoryTerm((prevValue) => [
-                              ...prevValue,
-                              e.target.name,
-                            ]);
-                          } else {
-                            setCategoryTerm((prevValue) =>
-                              prevValue.filter(
-                                (category) => category !== e.target.name,
-                              ),
-                            );
-                          }
-                        }}
-                      />
-                      <label className="ml-2">{_category}</label>
-                    </div>
-                  ))}
-                </div>
-                <div className="mr-3 sm:ml-0">
-                  <p>Sort by:</p>
-                  <select
+          <div className="flex justify-between">
+            <div className="ml-3 sm:ml-0">
+              <p className="text-2xl">Categories:</p>
+              {categoryList?.map((_category, _index) => (
+                <div key={`category_${_index}`}>
+                  <input
+                    type="checkbox"
+                    className="hover:cursor-pointer"
+                    name={_category}
                     onChange={(e) => {
-                      setSortProductsBy(
-                        SORT_BY_POSSIBILITIES[
-                          e.target.value as keyof typeof SORT_BY_POSSIBILITIES
-                        ],
-                      );
+                      if (e.target.checked) {
+                        setCategoryTerm((prevValue) => [
+                          ...prevValue,
+                          e.target.name,
+                        ]);
+                      } else {
+                        setCategoryTerm((prevValue) =>
+                          prevValue.filter(
+                            (category) => category !== e.target.name,
+                          ),
+                        );
+                      }
                     }}
-                  >
-                    <option>Default</option>
-                    <option>Alphabet</option>
-                    <option>Lowest Price</option>
-                    <option>Highest Price</option>
-                  </select>
+                  />
+                  <label className="ml-2">{_category}</label>
                 </div>
-              </div>
-              <div className="flex flex-wrap justify-center">
-                {searchedProducts.map((product, index) => {
-                  return (
-                    <ProductBlock product={product} key={`product_${index}`} />
+              ))}
+            </div>
+            <div className="mr-3 sm:ml-0">
+              <p>Sort by:</p>
+              <select
+                onChange={(e) => {
+                  setSortProductsBy(
+                    SORT_BY_POSSIBILITIES[
+                      e.target.value as keyof typeof SORT_BY_POSSIBILITIES
+                    ],
                   );
-                })}
-              </div>
+                }}
+              >
+                <option>Default</option>
+                <option>Alphabet</option>
+                <option>Lowest Price</option>
+                <option>Highest Price</option>
+              </select>
             </div>
           </div>
-          <Footer />
+          <div className="flex flex-wrap justify-center">
+            {searchedProducts.map((product, index) => {
+              return (
+                <ProductBlock product={product} key={`product_${index}`} />
+              );
+            })}
+          </div>
         </div>
       </div>
-    </main>
+      <Footer />
+    </Main>
   );
 }
 

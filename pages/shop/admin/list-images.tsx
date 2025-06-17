@@ -3,6 +3,7 @@ import { EditIcon, Trash2, X } from 'lucide-react';
 import Image from 'next/image';
 import { FormEvent, useEffect, useState } from 'react';
 import { Input } from '~/components/Input';
+import { Main } from '~/components/Main';
 import { NavBarAdmin } from '~/components/NavBarAdmin';
 import { getServerSidePropsAdminOnly as getServerSideProps } from '~/utils/getServerSideProps';
 
@@ -26,63 +27,59 @@ export default function ListImages() {
   }, []);
 
   return (
-    <main className="h-screen w-full bg-white">
-      <div className="flex w-full justify-center">
-        <div className="w-full sm:max-w-1/2">
-          <NavBarAdmin />
-          <p className="mt-3 animate-[opacity_1200ms] text-center text-4xl font-bold">
-            List Images
-          </p>
-          <div className="mt-5 flex w-full flex-wrap">
-            {images.map((_image, _index) => {
-              return (
-                <div
-                  key={`imageDiv_${_index}`}
-                  className="flex w-96 flex-col items-center border"
+    <Main>
+      <NavBarAdmin />
+      <p className="mt-3 animate-[opacity_1200ms] text-center text-4xl font-bold">
+        List Images
+      </p>
+      <div className="mt-5 flex w-full flex-wrap">
+        {images.map((_image, _index) => {
+          return (
+            <div
+              key={`imageDiv_${_index}`}
+              className="flex w-96 flex-col items-center border"
+            >
+              <Image
+                priority={true}
+                alt="image"
+                src={`/images/products/${_image}`}
+                width={1920}
+                height={1080}
+                className="size-48"
+              />
+              <p className="wrap-anywhere">{_image}</p>
+              <div>
+                <button
+                  className="mr-4 hover:bg-gray-400"
+                  onClick={() => setEditModalData(_image)}
                 >
-                  <Image
-                    priority={true}
-                    alt="image"
-                    src={`/images/products/${_image}`}
-                    width={1920}
-                    height={1080}
-                    className="size-48"
-                  />
-                  <p className="wrap-anywhere">{_image}</p>
-                  <div>
-                    <button
-                      className="mr-4 hover:bg-gray-400"
-                      onClick={() => setEditModalData(_image)}
-                    >
-                      <EditIcon />
-                    </button>
-                    <button
-                      className="hover:bg-gray-400"
-                      onClick={() => setDeleteModalData(_image)}
-                    >
-                      <Trash2 />
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          {editModalData && (
-            <EditModal
-              closeModal={() => setEditModalData('')}
-              imageName={editModalData}
-              allImages={images}
-            />
-          )}
-          {deleteModalData && (
-            <DeleteModal
-              closeModal={() => setDeleteModalData('')}
-              imageName={deleteModalData}
-            />
-          )}
-        </div>
+                  <EditIcon />
+                </button>
+                <button
+                  className="hover:bg-gray-400"
+                  onClick={() => setDeleteModalData(_image)}
+                >
+                  <Trash2 />
+                </button>
+              </div>
+            </div>
+          );
+        })}
       </div>
-    </main>
+      {editModalData && (
+        <EditModal
+          closeModal={() => setEditModalData('')}
+          imageName={editModalData}
+          allImages={images}
+        />
+      )}
+      {deleteModalData && (
+        <DeleteModal
+          closeModal={() => setDeleteModalData('')}
+          imageName={deleteModalData}
+        />
+      )}
+    </Main>
   );
 }
 

@@ -8,6 +8,7 @@ import { Product } from '~/components/Product';
 import { useGetProducts } from '~/utils/apiRequests';
 import { InferGetServerSidePropsType } from 'next';
 import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
+import { Main } from '~/components/Main';
 
 // Does not require login
 export { getServerSideProps };
@@ -16,18 +17,14 @@ export default function Shop({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <main className="h-screen w-full bg-white">
-      <div className="flex w-full justify-center">
-        <div className="w-full sm:max-w-1/2">
-          <NavBar user={user} />
-          <MainInformation />
-          <FeaturedProducts />
-          <WhyChooseUs />
-          <ContactInfo />
-          <Footer />
-        </div>
-      </div>
-    </main>
+    <Main>
+      <NavBar user={user} />
+      <MainInformation />
+      <FeaturedProducts />
+      <WhyChooseUs />
+      <ContactInfo />
+      <Footer />
+    </Main>
   );
 }
 

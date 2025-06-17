@@ -12,6 +12,7 @@ import { useChangeProductAmount } from '~/utils/apiRequests';
 import { handleError } from '~/utils/handleError';
 import { InferGetServerSidePropsType } from 'next';
 import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
+import { Main } from '~/components/Main';
 
 // Does not require login
 export { getServerSideProps };
@@ -31,21 +32,17 @@ export default function Cart({
   });
 
   return (
-    <main className="h-screen w-full bg-white">
-      <div className="flex w-full flex-col items-center">
-        <div className="w-full sm:max-w-1/2">
-          <div className="w-full">
-            <NavBar user={user} />
-          </div>
-          {products?.length === 0 ? (
-            <EmptyCart />
-          ) : (
-            <NonEmptyCart products={products} />
-          )}
-          <Footer />
-        </div>
+    <Main>
+      <div className="w-full">
+        <NavBar user={user} />
       </div>
-    </main>
+      {products?.length === 0 ? (
+        <EmptyCart />
+      ) : (
+        <NonEmptyCart products={products} />
+      )}
+      <Footer />
+    </Main>
   );
 }
 
