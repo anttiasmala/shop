@@ -96,26 +96,30 @@ export default function Products({
               <p className="text-2xl">Categories:</p>
               {categoryList?.map((_category, _index) => (
                 <div key={`category_${_index}`}>
-                  <input
-                    type="checkbox"
-                    className="hover:cursor-pointer"
-                    name={_category}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setCategoryTerm((prevValue) => [
-                          ...prevValue,
-                          e.target.name,
-                        ]);
-                      } else {
-                        setCategoryTerm((prevValue) =>
-                          prevValue.filter(
-                            (category) => category !== e.target.name,
-                          ),
-                        );
-                      }
-                    }}
-                  />
-                  <label className="ml-2">{_category}</label>
+                  <label className="ml-2">
+                    <input
+                      type="checkbox"
+                      className="hover:cursor-pointer"
+                      name={_category}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setCategoryTerm((prevValue) => [
+                            ...prevValue,
+                            e.target.name,
+                          ]);
+                        } else {
+                          setCategoryTerm((prevValue) =>
+                            prevValue.filter(
+                              (category) => category !== e.target.name,
+                            ),
+                          );
+                        }
+                      }}
+                    />
+                    <span className="ml-1 cursor-pointer select-none">
+                      {_category}
+                    </span>
+                  </label>
                 </div>
               ))}
             </div>
