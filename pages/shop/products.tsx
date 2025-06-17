@@ -119,6 +119,7 @@ export default function Products({
                 </div>
               ))}
             </div>
+            <p>Products found: {searchedProducts.length}</p>
             <div className="mr-3 sm:ml-0">
               <p>Sort by:</p>
               <select
