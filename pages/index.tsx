@@ -40,7 +40,7 @@ function MainInformation() {
           enhance your lifestyle.
         </p>
         <Link
-          href={'/shop/products'}
+          href={'/products'}
           className="mt-5 flex h-11 w-max items-center rounded-full bg-gray-700 px-8 text-sm text-white hover:bg-gray-700/80"
         >
           Shop Now
@@ -57,7 +57,7 @@ function FeaturedProducts() {
     <div>
       <div className="mt-12 ml-4 flex justify-between sm:ml-[15%]">
         <p className="text-2xl font-bold">Featured Products</p>
-        <Link className="ml-4 flex items-center" href={'/shop/products'}>
+        <Link className="ml-4 flex items-center" href={'/products'}>
           View All
           <span className="ml-1">
             <SvgArrowRight className="w-6" />

@@ -19,17 +19,17 @@ export default function AdminIndex({}: InferGetServerSidePropsType<
       </p>
       <div className="mt-5 flex w-full">
         <LinkElement
-          href={'/shop/admin/products'}
+          href={'/admin/products'}
           title="Edit Products"
           titleDescription="Edit, add and delete current products"
         />
         <LinkElement
-          href={'/shop/admin/upload-images'}
+          href={'/admin/upload-images'}
           title="Upload Product Images"
           titleDescription="Add image of a product"
         />
         <LinkElement
-          href={'/shop/admin/list-images'}
+          href={'/admin/list-images'}
           title="List Images"
           titleDescription="See, edit and delete product images"
         />

@@ -8,14 +8,11 @@ export function Footer() {
           © MINIMONEY Shop. All rights reserverd.
         </p>
         <div className="m-2 flex text-sm">
-          <Link
-            href={'/shop/privacy-policy'}
-            className="mr-8 hover:text-black/50"
-          >
+          <Link href={'/privacy-policy'} className="mr-8 hover:text-black/50">
             Privacy Policy
           </Link>
           <Link
-            href={'/shop/terms-of-service'}
+            href={'/terms-of-service'}
             className="inline hover:text-black/50"
           >
             Terms of Service
