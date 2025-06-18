@@ -13,9 +13,12 @@ export default async function Handler(
   res: NextApiResponse,
 ) {
   try {
-    // Gets user's data from its session token
-    const validatedRequest = await validateRequest(req, res);
-    if (!checkIsAdminFromValidateRequest(validatedRequest)) {
+    const isAdmin = checkIsAdminFromValidateRequest(
+      await validateRequest(req, res),
+    );
+
+    // user is not Admin, throw an error
+    if (!isAdmin) {
       throw new HttpError("You don't have privileges to do that", 400);
     }
 
