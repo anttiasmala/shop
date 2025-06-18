@@ -11,6 +11,7 @@
 9. lisää salasana-kenttiin mahdollisuus nähdä salasana
 10. Päivitä "käyttäjätili luotu onnistuneesti" pareemmaksi
 11. Muokkaa virheet englanniksi ja muutenkin sivu englanniksi nyt. Myöhemmin voi lisätä suomen
+12. Lisää Authentication Modaliin jokin tieto, että kuka on kirjautunut sisään ja millä käyttäjällä
 
 ### Ideoita
 
