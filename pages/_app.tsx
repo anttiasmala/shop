@@ -14,7 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
     const cartSettings = window.localStorage.getItem('cartSettings');
     if (!cartUUID) {
       // this is skipped due to browser Crypto should be used, not NodeJS'
-      // eslint-disable-next-line
+
       const randomUUID = crypto.randomUUID();
       window.localStorage.setItem('cartUUID', randomUUID);
 

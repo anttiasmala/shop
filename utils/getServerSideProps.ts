@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import { auth, validateRequest } from '~/backend/auth/auth';
-import { GetUser, User } from '~/shared/types';
+import { GetUser } from '~/shared/types';
 import { getUserSchema } from '~/shared/zodSchemas';
 
 /**
