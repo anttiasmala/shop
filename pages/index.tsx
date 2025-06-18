@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Footer } from '~/components/Footer';
 import { NavBar } from '~/components/NavBar';
 import SvgArrowRight from '~/icons/arrow_right';
-import { Container } from '../../components/Container';
+import { Container } from '~/components/Container';
 import { TextCard } from '~/components/TextCard';
 import { Product } from '~/components/Product';
 import { useGetProducts } from '~/utils/apiRequests';
