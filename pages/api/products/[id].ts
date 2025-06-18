@@ -1,4 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { validateRequest } from '~/backend/auth/auth';
+import { HttpError } from '~/backend/HttpError';
+import { checkIsAdminFromValidateRequest } from '~/backend/utils';
 import prisma from '~/prisma';
 import { patchProductSchema } from '~/shared/zodSchemas';
 
@@ -43,6 +46,17 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function handleDELETE(req: NextApiRequest, res: NextApiResponse) {
+  // the reason why these aren't checked in Handler function is due to not needed in GET request
+  // GET request is most likely sent fairly often. The check would be unnecessary most of the times
+  const isAdmin = checkIsAdminFromValidateRequest(
+    await validateRequest(req, res),
+  );
+
+  // user is not Admin, throw an error
+  if (!isAdmin) {
+    throw new HttpError("You don't have privileges to do that", 400);
+  }
+
   const queryId = req.query.id;
   if (queryId === undefined || typeof queryId !== 'string') {
     return res.status(400).send('ID is mandatory in query');
@@ -62,6 +76,17 @@ async function handleDELETE(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function handlePATCH(req: NextApiRequest, res: NextApiResponse) {
+  // the reason why these aren't checked in Handler function is due to not needed in GET request
+  // GET request is most likely sent fairly often. The check would be unnecessary most of the times
+  const isAdmin = checkIsAdminFromValidateRequest(
+    await validateRequest(req, res),
+  );
+
+  // user is not Admin, throw an error
+  if (!isAdmin) {
+    throw new HttpError("You don't have privileges to do that", 400);
+  }
+
   const queryId = req.query.id;
   if (queryId === undefined || typeof queryId !== 'string') {
     return res.status(400).send('ID is mandatory in query');

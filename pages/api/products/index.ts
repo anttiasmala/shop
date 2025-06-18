@@ -1,5 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { validateRequest } from '~/backend/auth/auth';
 import { handleError } from '~/backend/handleError';
+import { HttpError } from '~/backend/HttpError';
+import { checkIsAdminFromValidateRequest } from '~/backend/utils';
 import prisma from '~/prisma';
 import { createProductSchema } from '~/shared/zodSchemas';
 
@@ -35,6 +38,13 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
+  const isAdmin = checkIsAdminFromValidateRequest(
+    await validateRequest(req, res),
+  );
+  // user is not Admin, throw an error
+  if (!isAdmin) {
+    throw new HttpError("You don't have privileges to do that", 400);
+  }
   const productSchemaParse = createProductSchema.safeParse(req.body);
 
   if (productSchemaParse.success === false) {

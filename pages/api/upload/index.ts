@@ -1,6 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import formidable from 'formidable';
 import fs from 'fs';
+import { checkIsAdminFromValidateRequest } from '~/backend/utils';
+import { validateRequest } from '~/backend/auth/auth';
+import { HttpError } from '~/backend/HttpError';
 
 export const config = {
   api: {
@@ -10,11 +13,20 @@ export const config = {
 
 const uploadFolderLocation = './public/images/products';
 
-export default function UploadHandler(
+export default async function UploadHandler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
   try {
+    const isAdmin = checkIsAdminFromValidateRequest(
+      await validateRequest(req, res),
+    );
+
+    // user is not Admin, throw an error
+    if (!isAdmin) {
+      throw new HttpError("You don't have privileges to do that", 400);
+    }
+
     const form = formidable({
       uploadDir: uploadFolderLocation,
       keepExtensions: true,
