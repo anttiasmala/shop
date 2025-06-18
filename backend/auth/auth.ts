@@ -1,11 +1,10 @@
 import type { IncomingMessage, ServerResponse } from 'http';
-import { TimeSpan } from './auth/index';
+import { TimeSpan, Auth } from './auth/index';
 import prisma from '~/prisma';
 import type { User, FrontendSession, GetUser } from '~/shared/types';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { HttpError } from '~/backend/HttpError';
 import { AuthAdapter } from './db-adapter';
-import { Auth } from './auth/index';
 
 const prismaAdapter = new AuthAdapter(prisma);
 

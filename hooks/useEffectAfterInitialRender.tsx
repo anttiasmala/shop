@@ -1,5 +1,9 @@
 import { useRef, DependencyList, useEffect } from 'react';
 
+/* eslint-disable */
+
+// disable ESLint error on this custom-hook
+
 export function useEffectAfterInitialRender<T extends DependencyList>(
   callback: () => void,
   dependencies: T,

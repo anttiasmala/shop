@@ -16,7 +16,7 @@ export function useGetProducts() {
 
 export function useGetProduct(id: string) {
   return useQuery({
-    queryKey: QueryAndMutationKeys.Product,
+    queryKey: [QueryAndMutationKeys.Product, id],
     queryFn: async () => {
       return (await axios.get(`/api/products/${id}`)).data as Product;
     },
