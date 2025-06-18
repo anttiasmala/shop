@@ -47,7 +47,7 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
 
 async function handleDELETE(req: NextApiRequest, res: NextApiResponse) {
   // the reason why these aren't checked in Handler function is due to not needed in GET request
-  // would make unnecessary traffic
+  // GET request is most likely sent fairly often. The check would be unnecessary most of the times
   const isAdmin = checkIsAdminFromValidateRequest(
     await validateRequest(req, res),
   );
@@ -77,7 +77,7 @@ async function handleDELETE(req: NextApiRequest, res: NextApiResponse) {
 
 async function handlePATCH(req: NextApiRequest, res: NextApiResponse) {
   // the reason why these aren't checked in Handler function is due to not needed in GET request
-  // would make unnecessary traffic
+  // GET request is most likely sent fairly often. The check would be unnecessary most of the times
   const isAdmin = checkIsAdminFromValidateRequest(
     await validateRequest(req, res),
   );
