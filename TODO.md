@@ -1,5 +1,3 @@
-1. Admin API -endpointteihin tarkistus, että käyttäjä on ADMIN. // WIP
-
 # Seuraavaksi
 
 1. Tee jokin järkevä etusivu nykyisen planeettakuvan tilalle
@@ -20,6 +18,8 @@
 11. Muokkaa virheet englanniksi ja muutenkin sivu englanniksi nyt. Myöhemmin voi lisätä suomen
 12. Lisää Authentication Modaliin jokin tieto, että kuka on kirjautunut sisään ja millä käyttäjällä
 13. Vanhojen Cart:ien poistaminen
+14. Jos käyttäjän cartUUID on virheellinen (heittää 404 Erroria /cart:ssa) laita jokin nappula, joka resetoi käyttäjän kärryn tiedot
+15. Vaihda vercel-build package.json:ssa virheen takia: prisma:warn In production, we recommend using `prisma generate --no-engine` (See: `prisma generate --help`)
 
 ### Ideoita
 
