@@ -3,6 +3,8 @@ import fs from 'fs/promises';
 import { handleError } from '~/backend/handleError';
 import { z } from 'zod';
 import { HttpError } from '~/backend/HttpError';
+import { validateRequest } from '~/backend/auth/auth';
+import { checkIsAdminFromValidateRequest } from '~/backend/utils';
 
 const PATH = './public/images/products';
 
@@ -11,6 +13,12 @@ export default async function Handler(
   res: NextApiResponse,
 ) {
   try {
+    // Gets user's data from its session token
+    const validatedRequest = await validateRequest(req, res);
+    if (!checkIsAdminFromValidateRequest(validatedRequest)) {
+      throw new HttpError("You don't have privileges to do that", 400);
+    }
+
     if (req.method === 'GET') {
       return await handleGET(req, res);
     }
