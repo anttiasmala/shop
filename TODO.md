@@ -1,4 +1,11 @@
 1. Admin API -endpointteihin tarkistus, että käyttäjä on ADMIN. // WIP
+
+# Seuraavaksi
+
+1. Tee jokin järkevä etusivu nykyisen planeettakuvan tilalle
+
+# TODO
+
 2. Järjestele koodia
 3. Ehkä jonkilainen menu, josta voisi kirjautua sisään ja ulos. Ehkä rekistöröityä. Siellä olisi kotisivulle ja kauppaan linkit
 4. Yhdistetään Cart ja User 1-1 relaatiolla
@@ -12,6 +19,7 @@
 10. Päivitä "käyttäjätili luotu onnistuneesti" pareemmaksi
 11. Muokkaa virheet englanniksi ja muutenkin sivu englanniksi nyt. Myöhemmin voi lisätä suomen
 12. Lisää Authentication Modaliin jokin tieto, että kuka on kirjautunut sisään ja millä käyttäjällä
+13. Vanhojen Cart:ien poistaminen
 
 ### Ideoita
 

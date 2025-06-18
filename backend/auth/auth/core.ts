@@ -5,7 +5,6 @@ import { generateUUID } from './crypto';
 import type { Cookie, CookieAttributes } from './cookie';
 
 import type {
-  User,
   DatabaseAdapter,
   Session,
   FrontendSession,
