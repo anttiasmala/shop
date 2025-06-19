@@ -85,7 +85,7 @@ export function NavBar({ user }: { user: GetUser }) {
     <div>
       <div className="flex h-16 w-full items-center justify-between bg-white shadow-lg">
         <Link
-          href={'/shop'}
+          href={'/'}
           className="ml-4 text-lg font-bold sm:ml-[15%] sm:text-xl"
         >
           MINIMONEY
@@ -99,12 +99,12 @@ export function NavBar({ user }: { user: GetUser }) {
             )}
           </button>
           <LinkElement
-            href={'/shop'}
+            href={'/'}
             className="mr-8 hidden hover:text-gray-600 sm:inline"
           >
             Home
           </LinkElement>
-          <LinkElement href={'/shop/products'} className="hidden sm:inline">
+          <LinkElement href={'/products'} className="hidden sm:inline">
             Shop
           </LinkElement>
         </div>
@@ -122,7 +122,7 @@ export function NavBar({ user }: { user: GetUser }) {
               user={user}
             />
           </div>
-          <Link href={'/shop/cart'} className="relative mr-10 sm:mr-0">
+          <Link href={'/cart'} className="relative mr-10 sm:mr-0">
             <span className="absolute top-1 left-0 flex rounded-full bg-red-500 p-1 pt-0 pb-0 text-xs text-white">
               <p>{productAmount}</p>
             </span>
@@ -140,10 +140,10 @@ function Menu({ isMenuOpen }: { isMenuOpen: boolean }) {
   return (
     <div className="h-24 w-full shadow-lg">
       <div className="w-full">
-        <LinkElement href={'/shop'} className="block p-3">
+        <LinkElement href={'/'} className="block p-3">
           Home
         </LinkElement>
-        <LinkElement href={'/shop/products'} className="block p-3 pt-0">
+        <LinkElement href={'/products'} className="block p-3 pt-0">
           Shop
         </LinkElement>
       </div>

@@ -52,7 +52,7 @@ export default function Register() {
     setIsAccountCreationSuccess(true);
     setTimeout(() => {
       queryClient.clear();
-      router.push('/shop').catch((e) => console.error(e));
+      router.push('/').catch((e) => console.error(e));
     }, 1000);
   }
 

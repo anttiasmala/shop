@@ -28,7 +28,7 @@ export default function Logout({
         }),
       );
       setTimeout(() => {
-        router.push('/shop').catch((e) => console.error(e));
+        router.push('/').catch((e) => console.error(e));
       }, 1000);
     },
   });
@@ -44,7 +44,7 @@ export default function Logout({
         });
       } catch (e) {
         console.error(e);
-        router.push('/shop').catch((e) => console.error(e));
+        router.push('/').catch((e) => console.error(e));
       }
     }
     void runThis();
@@ -52,7 +52,7 @@ export default function Logout({
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      router.push('/shop').catch((e) => console.error(e));
+      router.push('/').catch((e) => console.error(e));
     }, 10000);
 
     return () => clearInterval(timeout);
