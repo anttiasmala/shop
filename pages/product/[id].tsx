@@ -71,7 +71,7 @@ export default function HandleProduct({
                   src={product.image || '/images/products/image_base.png'}
                   width={1920}
                   height={1080}
-                  className="w-48 rounded-md"
+                  className="w-48 rounded-md object-contain"
                 />
               </div>
             </div>

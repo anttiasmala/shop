@@ -176,7 +176,7 @@ function ProductBlock({ product }: { product: Product }) {
               src={image || '/images/products/image_base.png'}
               width={1920}
               height={1080}
-              className="h-48 w-48 rounded-md"
+              className="h-48 w-48 rounded-md object-contain"
             />
           </Link>
         </div>

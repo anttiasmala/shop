@@ -164,7 +164,7 @@ function ProductBlock({ product }: { product: GetCart }) {
             src={image || '/images/products/image_base.png'}
             width={1920}
             height={1080}
-            className="w-24 rounded-md"
+            className="w-24 rounded-md object-contain"
           />
           <div className="flex items-center">
             <div className="ml-3">
