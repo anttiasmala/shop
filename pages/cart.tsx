@@ -36,7 +36,7 @@ export default function Cart({
       <div className="w-full">
         <NavBar user={user} />
       </div>
-      {products?.length === 0 ? (
+      {products?.length === 0 || products === undefined ? (
         <EmptyCart />
       ) : (
         <NonEmptyCart products={products} />
@@ -57,7 +57,7 @@ function EmptyCart() {
           Looks like you haven&apos;t added any products to your cart yet
         </p>
         <Link
-          href={'/shop/products'}
+          href={'/products'}
           className="mt-10 rounded-lg bg-black p-2 text-white"
         >
           Continue Shopping

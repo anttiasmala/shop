@@ -10,7 +10,7 @@ export function NavBarAdmin() {
     <div>
       <div className="flex h-16 w-full items-center justify-between bg-white shadow-lg">
         <Link
-          href={'/shop'}
+          href={'/'}
           className="ml-4 text-lg font-bold sm:ml-[15%] sm:text-xl"
         >
           MINIMONEY
@@ -24,7 +24,7 @@ export function NavBarAdmin() {
             )}
           </button>
           <LinkElement
-            href={'/shop/admin'}
+            href={'/admin'}
             className="hidden hover:text-gray-600 sm:inline"
           >
             Home Admin Page
@@ -41,10 +41,10 @@ function Menu({ isMenuOpen }: { isMenuOpen: boolean }) {
   return (
     <div className="h-24 w-full shadow-lg">
       <div className="w-full">
-        <LinkElement href={'/shop'} className="block p-3">
+        <LinkElement href={'/'} className="block p-3">
           Home
         </LinkElement>
-        <LinkElement href={'/shop/products'} className="block p-3 pt-0">
+        <LinkElement href={'/products'} className="block p-3 pt-0">
           Shop
         </LinkElement>
       </div>

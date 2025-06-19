@@ -16,7 +16,7 @@ export default function HandleProduct({
       <NavBar user={user} />
       <div className="flex w-full justify-center">
         <Link
-          href={'/shop'}
+          href={'/'}
           className="rounded-md border-4 border-black p-4 text-5xl font-bold"
         >
           Whoops! Nothing found!
