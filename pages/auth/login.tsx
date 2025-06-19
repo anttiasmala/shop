@@ -45,7 +45,7 @@ export default function Login() {
 
     onSuccess: () => {
       queryClient.clear();
-      router.push('/sop').catch((e) => console.error(e));
+      router.push('/').catch((e) => console.error(e));
 
       // set cartSetting's isLoggedIn to true
       window.localStorage.setItem(
