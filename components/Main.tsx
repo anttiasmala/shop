@@ -15,7 +15,7 @@ export function Main({
   return (
     <main className={twMerge('h-screen w-full bg-white', mainClassName)}>
       <div className={twMerge('flex w-full justify-center', firstDivClassName)}>
-        <div className={twMerge('w-full sm:max-w-1/2', secondDivClassName)}>
+        <div className={twMerge('w-full md:max-w-1/2', secondDivClassName)}>
           {children}
         </div>
       </div>

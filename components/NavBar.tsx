@@ -126,16 +126,16 @@ export function NavBar({ user }: { user: GetUser }) {
             {isMenuOpen ? (
               <span className="text-3xl font-bold">X</span>
             ) : (
-              <SvgMenu className="sm:hidden" width={30} height={30} />
+              <SvgMenu className="lg:hidden" width={30} height={30} />
             )}
           </button>
           <LinkElement
             href={'/'}
-            className="mr-8 hidden hover:text-gray-600 sm:inline"
+            className="mr-8 hidden hover:text-gray-600 lg:inline"
           >
             Home
           </LinkElement>
-          <LinkElement href={'/products'} className="hidden sm:inline">
+          <LinkElement href={'/products'} className="hidden lg:inline">
             Shop
           </LinkElement>
         </div>
@@ -214,7 +214,10 @@ function AuthModal({
 
   if (isUserLoggedIn(user)) {
     return (
-      <div className="absolute w-72 border-black bg-white" ref={ref}>
+      <div
+        className="absolute right-3 border-black bg-white sm:right-auto"
+        ref={ref}
+      >
         <div className="w-full">
           <Link href={'/auth/logout'} className="button-54 hover:bg-gray-500">
             Kirjaudu ulos
