@@ -2,9 +2,9 @@ import { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 
 const POSSIBLE_ERRORS = {
-  'unexpected token': 'JSON-muoto on virheellinen',
-  'is not valid json': 'JSON-muoto on virheellinen',
-  'user was not found on the server!': 'Käyttäjää ei ole rekistöröity',
+  'unexpected token': 'JSON format is invalid',
+  'is not valid json': 'JSON format is invalid',
+  'user was not found on the server!': 'User is not registered',
 } as const;
 
 type KnownErrorTexts = keyof typeof POSSIBLE_ERRORS;
@@ -12,8 +12,8 @@ type KnownErrorTexts = keyof typeof POSSIBLE_ERRORS;
 export function handleError(e: unknown) {
   if (e instanceof Error === false) {
     console.error(e);
-    toast('Tuntematon virhe');
-    return 'Tuntematon virhe';
+    toast('Unknown error');
+    return 'Unknown error';
   }
 
   if (e instanceof AxiosError) {
@@ -23,8 +23,8 @@ export function handleError(e: unknown) {
         : null;
 
     console.error('AxiosError happened', e.response?.data);
-    toast(errorText || 'Lähetetyssä pyynnössä palvelimelle tapahtui virhe ');
-    return errorText || 'Lähetetyssä pyynnössä palvelimelle tapahtui virhe ';
+    toast(errorText || 'In sent request happened an error');
+    return errorText || 'In sent request happened an error';
   }
 
   for (const [key, value] of Object.entries(POSSIBLE_ERRORS)) {
@@ -46,6 +46,6 @@ export function handleError(e: unknown) {
   }
 
   console.error(e);
-  toast('Palvelinvirhe');
-  return 'Palvelinvirhe';
+  toast('Server error');
+  return 'Server error';
 }
