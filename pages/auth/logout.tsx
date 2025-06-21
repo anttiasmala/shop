@@ -61,7 +61,7 @@ export default function Logout({
   return (
     <div className="h-screen w-full">
       <div className="mt-12 flex w-full justify-center">
-        <p className="text-5xl font-bold">
+        <p className="text-center text-5xl font-bold">
           Kirjaudutaan ulos<span className="loading-dots absolute"></span>
         </p>
       </div>
