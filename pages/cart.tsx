@@ -33,9 +33,7 @@ export default function Cart({
 
   return (
     <Main>
-      <div className="w-full">
-        <NavBar user={user} />
-      </div>
+      <NavBar user={user} />
       {products?.length === 0 || products === undefined ? (
         <EmptyCart />
       ) : (
@@ -48,7 +46,7 @@ export default function Cart({
 
 function EmptyCart() {
   return (
-    <div className="">
+    <div>
       <p className="p-4 text-3xl font-bold">Your Cart</p>
       <div className="mt-12 flex w-full flex-col items-center">
         <ShoppingBag className="size-16 text-gray-300" />

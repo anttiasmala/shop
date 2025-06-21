@@ -31,7 +31,7 @@ export default function Shop({
 function MainInformation() {
   return (
     <div className="w-full bg-gray-50">
-      <div className="ml-4 flex h-96 min-w-48 flex-col justify-center bg-gray-50 sm:ml-[15%]">
+      <div className="mt-4 ml-4 flex h-96 min-w-48 flex-col justify-center bg-gray-50 sm:ml-[15%]">
         <p className="text-2xl font-bold wrap-anywhere sm:text-5xl">
           Modern Essentials for Everyday Living
         </p>
