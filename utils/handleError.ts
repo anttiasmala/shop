@@ -5,6 +5,7 @@ const POSSIBLE_ERRORS = {
   'unexpected token': 'JSON format is invalid',
   'is not valid json': 'JSON format is invalid',
   'user was not found on the server!': 'User is not registered',
+  'password is invalid!': 'Password is invalid!',
 } as const;
 
 type KnownErrorTexts = keyof typeof POSSIBLE_ERRORS;
