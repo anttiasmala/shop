@@ -4,7 +4,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Input } from '~/components/Input';
-import { QueryAndMutationKeys } from '~/shared/types';
+import { Main } from '~/components/Main';
+import { NavBar } from '~/components/NavBar';
+import { GetUser, QueryAndMutationKeys } from '~/shared/types';
 import {
   emailSchema,
   firstNameSchema,
@@ -95,9 +97,10 @@ export default function Register() {
   }
 
   return (
-    <main className="h-screen w-full">
+    <Main>
+      <NavBar user={{} as GetUser} />
       <div className="flex h-full w-full flex-col items-center">
-        <p className="mb-6 text-center text-2xl font-bold">Register</p>
+        <p className="mt-4 mb-6 text-center text-2xl font-bold">Register</p>
         <form onSubmit={(e) => void handleSubmit(e)} className="w-72">
           <div className="mb-4">
             <label htmlFor="firstName" className="mb-2 font-bold">
@@ -198,7 +201,7 @@ export default function Register() {
           </Link>
         </div>
       </div>
-    </main>
+    </Main>
   );
 }
 

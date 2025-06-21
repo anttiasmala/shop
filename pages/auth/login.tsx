@@ -6,7 +6,13 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { validateRequest } from '~/backend/auth/auth';
 import { Input } from '~/components/Input';
-import { QueryAndMutationKeys, UserLoginDetails } from '~/shared/types';
+import { Main } from '~/components/Main';
+import { NavBar } from '~/components/NavBar';
+import {
+  GetUser,
+  QueryAndMutationKeys,
+  UserLoginDetails,
+} from '~/shared/types';
 import { emailSchema } from '~/shared/zodSchemas';
 import { handleError } from '~/utils/handleError';
 
@@ -97,9 +103,10 @@ export default function Login() {
   }
 
   return (
-    <main className="h-screen w-full">
+    <Main>
+      <NavBar user={{} as GetUser} />
       <div className="flex h-full w-full flex-col items-center">
-        <p className="mb-6 text-center text-2xl font-bold">Login</p>
+        <p className="mt-4 mb-6 text-center text-2xl font-bold">Login</p>
         <form onSubmit={(e) => void handleSubmit(e)} className="w-72">
           <div className="mb-4">
             <label htmlFor="email" className="mb-2 font-bold">
@@ -146,6 +153,6 @@ export default function Login() {
           </Link>
         </div>
       </div>
-    </main>
+    </Main>
   );
 }
