@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { HTMLAttributes, useEffect, useState } from 'react';
+import { HTMLAttributes, Ref, useEffect, useRef, useState } from 'react';
 import SvgMenu from '~/icons/menu';
 import SvgStoreBag from '~/icons/store_bag';
 import { twMerge } from 'tailwind-merge';
@@ -16,6 +16,9 @@ export function NavBar({ user }: { user: GetUser }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [productAmount, setProductAmount] = useState(0);
+
+  const authenticationModalRef = useRef<HTMLDivElement | null>(null);
+  const isInitialClick = useRef<boolean>(true);
 
   const { data: products } = useQuery({
     queryKey: QueryAndMutationKeys.NavBarProducts,
@@ -40,6 +43,34 @@ export function NavBar({ user }: { user: GetUser }) {
     }
     runThis();
   }, [products]);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      // check if e.target is Element typed so it will have .contains function
+      if (e.target instanceof Element) {
+        const isClickInModal = authenticationModalRef.current?.contains(
+          e.target,
+        );
+
+        if (isAuthModalOpen && !isClickInModal && !isInitialClick.current) {
+          setIsAuthModalOpen((prevValue) => !prevValue);
+        }
+        // set initial click back to false, because initial click has been done
+        if (isInitialClick.current) {
+          isInitialClick.current = !isInitialClick.current;
+        }
+      }
+    }
+    // if modal is open add the EventListener
+    if (isAuthModalOpen) {
+      document.body.addEventListener('click', handleClick);
+    }
+
+    // remove the EventListener when modal is closed / unmounts
+    return () => {
+      document.body.removeEventListener('click', handleClick);
+    };
+  }, [isAuthModalOpen]);
 
   useEffectAfterInitialRender(() => {
     async function runThis() {
@@ -112,7 +143,10 @@ export function NavBar({ user }: { user: GetUser }) {
           <div>
             <button
               className="mr-6"
-              onClick={() => setIsAuthModalOpen((prevValue) => !prevValue)}
+              onClick={() => {
+                setIsAuthModalOpen((prevValue) => !prevValue);
+                isInitialClick.current = true;
+              }}
             >
               <UserSVG className="size-8" />
             </button>
@@ -120,6 +154,7 @@ export function NavBar({ user }: { user: GetUser }) {
               isAuthModalOpen={isAuthModalOpen}
               closeModal={() => setIsAuthModalOpen(false)}
               user={user}
+              ref={authenticationModalRef}
             />
           </div>
           <Link href={'/cart'} className="relative mr-10 sm:mr-0">
@@ -166,10 +201,12 @@ function LinkElement({
 function AuthModal({
   isAuthModalOpen,
   user,
+  ref,
 }: {
   closeModal: () => void;
   isAuthModalOpen: boolean;
   user: GetUser;
+  ref?: Ref<HTMLDivElement>;
 }) {
   if (!isAuthModalOpen) {
     return null;
@@ -177,7 +214,7 @@ function AuthModal({
 
   if (isUserLoggedIn(user)) {
     return (
-      <div className="absolute w-72 border-black bg-white">
+      <div className="absolute w-72 border-black bg-white" ref={ref}>
         <div className="w-full">
           <Link href={'/auth/logout'} className="button-54 hover:bg-gray-500">
             Kirjaudu ulos
@@ -188,7 +225,10 @@ function AuthModal({
   }
 
   return (
-    <div className="absolute right-3 border-black bg-white sm:right-auto">
+    <div
+      className="absolute right-3 border-black bg-white sm:right-auto"
+      ref={ref}
+    >
       <div className="flex w-max flex-col">
         <Link href={'/auth/login'} className="button-54 hover:bg-gray-500">
           Kirjaudu sisään
