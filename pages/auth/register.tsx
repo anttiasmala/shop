@@ -61,6 +61,10 @@ export default function Register() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
+      document.getElementById('submitButton')?.focus();
+      setTimeout(() => {
+        document.getElementById('submitButton')?.blur();
+      }, 100);
       // clear the errors
       setErrors(EMPTY_ERRORS);
       // error found stop the logging process
@@ -176,6 +180,7 @@ export default function Register() {
           </div>
 
           <button
+            id="submitButton"
             type="submit"
             className={`button-54 w-full rounded bg-yellow-300 p-2 text-white`}
           >
