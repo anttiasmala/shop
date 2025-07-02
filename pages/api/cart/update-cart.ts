@@ -1,8 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { cartUtilFunctions, linkUserToCart } from '~/backend/cart/utils';
+import { z } from 'zod';
+import { cartUtilFunctions } from '~/backend/cart/utils';
 import { handleError } from '~/backend/handleError';
 import { HttpError } from '~/backend/HttpError';
-import { linkCartSchema, uuidSchema } from '~/shared/zodSchemas';
+import { uuidSchema } from '~/shared/zodSchemas';
 
 export default function LinkCartHandler(
   req: NextApiRequest,
@@ -23,13 +24,16 @@ export default function LinkCartHandler(
 
 // Updates the cart's expiration date
 function handlePOST(req: NextApiRequest, res: NextApiResponse) {
-  const parsedLinkCart = uuidSchema.safeParse(req.body.userCartUUID);
+  const updateCartSchema = z.object({
+    userCartUUID: uuidSchema,
+  });
+  const parsedLinkCart = updateCartSchema.safeParse(req.body);
   if (!parsedLinkCart.success) {
     console.log(parsedLinkCart.error);
     throw new HttpError('Invalid request body', 400);
   }
 
-  const userCartUUID = parsedLinkCart.data;
+  const { userCartUUID } = parsedLinkCart.data;
 
   // not awaited, not needed
   void cartUtilFunctions
