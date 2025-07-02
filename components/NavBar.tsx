@@ -234,7 +234,7 @@ function AuthModal({
     >
       <div className="flex w-max flex-col">
         <Link href={'/auth/login'} className="button-54 hover:bg-gray-500">
-          Log in
+          Login
         </Link>
         <Link
           href={'/auth/register'}
