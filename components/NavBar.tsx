@@ -220,7 +220,7 @@ function AuthModal({
       >
         <div className="w-full">
           <Link href={'/auth/logout'} className="button-54 hover:bg-gray-500">
-            Kirjaudu ulos
+            Log out
           </Link>
         </div>
       </div>
@@ -234,13 +234,13 @@ function AuthModal({
     >
       <div className="flex w-max flex-col">
         <Link href={'/auth/login'} className="button-54 hover:bg-gray-500">
-          Kirjaudu sisään
+          Log in
         </Link>
         <Link
           href={'/auth/register'}
           className="button-54 mt-3 hover:bg-gray-500"
         >
-          Rekistöröidy
+          Register
         </Link>
       </div>
     </div>
