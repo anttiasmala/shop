@@ -79,7 +79,7 @@ function WhyChooseUs() {
   return (
     <Container
       parentDivClassName="mt-15 flex justify-center"
-      className="flex w-max flex-col flex-wrap items-center"
+      className="flex w-full flex-col flex-wrap items-center"
     >
       <div className="mt-5">
         <p className="text-xl font-bold">Why Choose MINIMONEY</p>
