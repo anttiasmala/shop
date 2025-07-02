@@ -14,28 +14,29 @@ export const dateSchema = z
 
 export const firstNameSchema = z
   .string()
-  .min(1, 'Etunimi on pakollinen!')
-  .max(128, 'Etunimi on liian pitkä, maksimipituus on 128 merkkiä');
+  .min(1, 'First name is mandatory!')
+  .max(128, 'Firstname is too long, maximum length is 128 characters');
 
 export const lastNameSchema = z
   .string()
-  .min(1, 'Sukunimi on pakollinen!')
-  .max(128, 'Sukunimi on liian pitkä, maksimipituus on 128 merkkiä');
+  .min(1, 'Last name is mandatory!')
+  .max(128, 'Lastname is too long, maximum length is 128 characters');
 
 export const emailSchema = z
   .string()
-  .min(1, 'Sähköposti on pakollinen!')
-  .max(128, 'Sähköposti on liian pitkä, maksimipituus on 128 merkkiä')
-  .regex(emailRegex, 'Sähköposti on virheellinen')
+  .min(1, 'Email is mandatory!')
+  .max(128, 'Email is too long, maximum length is 128 characters')
+  .regex(emailRegex, 'Email is invalid')
   .transform((value) => value.toLowerCase());
 
 export const passwordSchema = z
   .string()
-  .min(1, 'Salasana on pakollinen!')
-  .max(128, 'Salasana on liian pitkä, maksimipituus on 128 merkkiä')
+  .min(1, 'Password is mandatory!')
+  .max(128, 'Password is too long, maximum length is 128 characters')
   .regex(
     passwordRegex,
-    'Salasanan täytyy olla vähintään 8 merkkiä pitkä, maksimissaan 128 merkkiä pitkä, sekä sisältää vähintään yksi iso kirjain, yksi pieni kirjain, yksi numero ja yksi erikoismerkki!',
+
+    'Password has to include at least 8 characters, it can be at maximum 128 characters long, it has to include at least one uppercase and lowercase letter, one number, and one special character!',
   );
 
 // PRODUCT
