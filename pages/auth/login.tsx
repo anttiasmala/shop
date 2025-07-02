@@ -69,7 +69,7 @@ export default function Login() {
     try {
       document.getElementById('submitButton')?.focus();
       setTimeout(() => {
-        document.getElementById('submitButton')?.blur();
+        document.getElementById('passwordField')?.focus();
       }, 100);
 
       // clear the errors
@@ -133,6 +133,7 @@ export default function Login() {
             </label>
             <Input
               type="password"
+              id="passwordField"
               autoComplete="off"
               className="w-full rounded border border-gray-300 p-2"
               value={password}

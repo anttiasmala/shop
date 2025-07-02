@@ -63,7 +63,7 @@ export default function Register() {
     try {
       document.getElementById('submitButton')?.focus();
       setTimeout(() => {
-        document.getElementById('submitButton')?.blur();
+        document.getElementById('passwordField')?.focus();
       }, 100);
       // clear the errors
       setErrors(EMPTY_ERRORS);
@@ -166,6 +166,7 @@ export default function Register() {
             </label>
             <Input
               type="password"
+              id="passwordField"
               autoComplete="off"
               className="w-full rounded border border-gray-300 p-2"
               value={formData.password}
