@@ -9,7 +9,7 @@ import {
 import { sessionSchema } from '~/shared/zodSchemas';
 
 declare global {
-  var prisma: undefined | PrismaClient; //eslint-disable-line no-var
+  var prisma: undefined | PrismaClient;
 }
 
 export class AuthAdapter implements DatabaseAdapter {
