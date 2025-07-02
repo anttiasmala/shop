@@ -4,7 +4,7 @@ import { TimeSpan } from '../auth/auth/date';
  * Links User's UUID and cart's userUUID field together
  */
 export async function linkUserToCart(cartUUID: string, userUUID: string) {
-  void cartUtilFunctions.deleteExpiredCarts();
+  void cartUtilFunctions.deleteExpiredCarts().catch((e) => console.error(e));
 
   await prisma.cart.update({
     where: {
@@ -17,7 +17,7 @@ export async function linkUserToCart(cartUUID: string, userUUID: string) {
 }
 
 export async function unLinkUserAndCart(cartUUID: string, userUUID: string) {
-  void cartUtilFunctions.deleteExpiredCarts();
+  void cartUtilFunctions.deleteExpiredCarts().catch((e) => console.error(e));
 
   await prisma.cart.update({
     where: {

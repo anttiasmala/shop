@@ -31,6 +31,13 @@ export default function Cart({
     retry: false,
   });
 
+  useEffect(() => {
+    const cartUUID = window.localStorage.getItem('cartUUID');
+    if (cartUUID) {
+      void axios.post('/api/cart/update-cart', { userCartUUID: cartUUID });
+    }
+  }, []);
+
   return (
     <Main>
       <NavBar user={user} />
