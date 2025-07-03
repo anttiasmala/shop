@@ -161,7 +161,7 @@ export default function Login() {
           <button
             id="submitButton"
             type="submit"
-            className={`button-54 w-full rounded bg-yellow-300 p-2 text-white`}
+            className={`button-54 button-54-submit-button w-full rounded bg-yellow-300 p-2 text-white`}
           >
             Login
           </button>
