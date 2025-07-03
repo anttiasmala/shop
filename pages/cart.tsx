@@ -34,7 +34,9 @@ export default function Cart({
   useEffect(() => {
     const cartUUID = window.localStorage.getItem('cartUUID');
     if (cartUUID) {
-      void axios.post('/api/cart/update-cart', { userCartUUID: cartUUID });
+      void axios
+        .post('/api/cart/update-cart', { userCartUUID: cartUUID })
+        .catch((e) => console.error(e));
     }
   }, []);
 
