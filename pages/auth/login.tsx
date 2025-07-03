@@ -92,7 +92,7 @@ export default function Login() {
     if (password.length <= 0) {
       setErrors((prevValue) => ({
         ...prevValue,
-        password: 'Salasana on pakollinen',
+        password: 'Password is mandatory',
       }));
       errorFound = true;
     }
