@@ -16,7 +16,13 @@ export default function PrivacyPolicy({
       <div className="flex w-full flex-col items-center">
         <p className="mt-4 text-4xl font-bold">Privacy Policy</p>
         <ul className="mt-4 mr-6 ml-6 list-decimal sm:mr-0 sm:ml-0">
-          <li>This is a test privacy policy. We don&apos;t collect any data</li>
+          <li>
+            This is a test privacy policy. When website is visited, a unique
+            anonymous UUID is created that is stored in server's database. If
+            user registers, first name, last name, email and password (crypted)
+            is stored into server's database. The cart's UUID is linked with the
+            user's data when registered / logged in
+          </li>
         </ul>
         <Footer />
       </div>
