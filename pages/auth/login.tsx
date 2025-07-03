@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { Eye, EyeOff } from 'lucide-react';
 import { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -40,6 +41,7 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState(EMPTY_ERRORS);
+  const [showPassword, setShowPassword] = useState(false);
 
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -107,6 +109,8 @@ export default function Login() {
     return errorFound;
   }
 
+  const EyeSVG = showPassword ? EyeOff : Eye;
+
   return (
     <Main>
       <NavBar user={{} as GetUser} />
@@ -131,14 +135,25 @@ export default function Login() {
             <label htmlFor="password" className="mb-2 font-bold">
               Password
             </label>
-            <Input
-              type="password"
-              id="passwordField"
-              autoComplete="off"
-              className="w-full rounded border border-gray-300 p-2"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div className="flex rounded border bg-gray-200 has-[input:focus]:outline-2">
+              <Input
+                type={showPassword ? 'text' : 'password'}
+                id="passwordField"
+                autoComplete="off"
+                className="w-full rounded border-0 bg-transparent p-2 focus:outline-0"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <div className="flex justify-center">
+                <button
+                  className="hover:text-gray-600"
+                  type="button"
+                  onClick={() => setShowPassword((prevValue) => !prevValue)}
+                >
+                  <EyeSVG className="size-8" />
+                </button>
+              </div>
+            </div>
             {errors.password && (
               <p className="mt-1 text-sm text-red-500">{errors.password}</p>
             )}
