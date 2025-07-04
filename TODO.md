@@ -13,7 +13,12 @@ Tee /pages/api:n alle admin-kansio ja siirrä list-images, products ja upload si
 8. Muokkaa virheet englanniksi ja muutenkin sivu englanniksi nyt. Myöhemmin voi lisätä suomen
 9. Lisää Authentication Modaliin jokin tieto, että kuka on kirjautunut sisään ja millä käyttäjällä
 10. Jos käyttäjän cartUUID on virheellinen (heittää 404 Erroria /cart:ssa) laita jokin nappula, joka resetoi käyttäjän kärryn tiedot
+11. /admin/products kun muokkaa tuotetta, enter-näppäin ei tunnu hyväksyvän muokkauksia kuten pitäisi
+12. Tarkista ja kokeile /admin/upload-images, että toimii. Lisää virheenkäsittelijät, tieto että kuva latautu palvelimelle yms
+13. Korjaa /admin-sivun "laatikot" ettei teksti tule yli, kun ruutua pienennetään
+14. Kun kuvan nimi muokataan tai kuva poistetaan /admin/list-images:ssa, päivitä kuvat muokkauksen / poistamisen jälkeen
 
 ### Ideoita
 
 1. Input tuotteen lukumäärään, että voi kirjoittaa haluamansa määrän?
+2. Lisää GIF-kuvat sallittvaiksi /admin/upload-images:iin?
