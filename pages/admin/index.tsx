@@ -52,7 +52,7 @@ function LinkElement({
     <Link
       href={href}
       className={twMerge(
-        'mr-8 h-32 w-64 rounded bg-gray-200 text-center hover:bg-gray-300',
+        'mr-8 h-auto min-h-32 w-64 rounded bg-gray-200 text-center hover:bg-gray-300',
         className,
       )}
     >
