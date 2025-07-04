@@ -3,7 +3,7 @@ import { HTMLAttributes, Ref, useEffect, useRef, useState } from 'react';
 import SvgMenu from '~/icons/menu';
 import SvgStoreBag from '~/icons/store_bag';
 import { twMerge } from 'tailwind-merge';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { GetCart, GetUser, QueryAndMutationKeys } from '~/shared/types';
 import { UserCheck, UserX } from 'lucide-react';
@@ -20,7 +20,7 @@ export function NavBar({ user }: { user: GetUser }) {
   const authenticationModalRef = useRef<HTMLDivElement | null>(null);
   const isInitialClick = useRef<boolean>(true);
 
-  const { data: products } = useQuery({
+  const { data: products, error: getCartError } = useQuery({
     queryKey: QueryAndMutationKeys.NavBarProducts,
     queryFn: async () => {
       const cartUUID = window.localStorage.getItem('cartUUID');
@@ -30,6 +30,20 @@ export function NavBar({ user }: { user: GetUser }) {
     refetchOnMount: false,
     retry: false,
   });
+
+  useEffect(() => {
+    // if cartUUID is invalid, create a new one
+    if (!getCartError) return;
+    console.log(getCartError);
+    if (getCartError instanceof AxiosError) {
+      if (getCartError.response?.data === 'Cart was not found on the server!') {
+        const randomUUID = crypto.randomUUID();
+        window.localStorage.setItem('cartUUID', randomUUID);
+
+        void axios.post(`/api/cart`, { cartUUID: randomUUID });
+      }
+    }
+  }, [getCartError]);
 
   useEffect(() => {
     function runThis() {
