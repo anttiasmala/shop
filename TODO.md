@@ -1,4 +1,6 @@
-# Seuraavaksi
+# WIP
+
+11. Korjaa /admin-sivun "laatikot" ettei teksti tule yli, kun ruutua pienennetään
 
 # TODO
 
@@ -11,8 +13,9 @@
 8. Jos käyttäjän cartUUID on virheellinen (heittää 404 Erroria /cart:ssa) laita jokin nappula, joka resetoi käyttäjän kärryn tiedot
 9. /admin/products kun muokkaa tuotetta, enter-näppäin ei tunnu hyväksyvän muokkauksia kuten pitäisi
 10. Tarkista ja kokeile /admin/upload-images, että toimii. Lisää virheenkäsittelijät, tieto että kuva latautu palvelimelle yms
-11. Korjaa /admin-sivun "laatikot" ettei teksti tule yli, kun ruutua pienennetään
-12. Kun kuvan nimi muokataan tai kuva poistetaan /admin/list-images:ssa, päivitä kuvat muokkauksen / poistamisen jälkeen
+11. Kun kuvan nimi muokataan tai kuva poistetaan /admin/list-images:ssa, päivitä kuvat muokkauksen / poistamisen jälkeen
+12. Jos tuote on asetettu kärryyn ja tuotetta yritetään poistaa tulee seuraava virhe `Foreign key constraint violated on the constraint: CartItem_productUUID_fkey`. Lisää kiertotapa ongelman korjaamiseksi. Esim. estä tuotteen löytyminen kaupasta tai sen lisääminen ostoskoriin. Esim. jokin "disable"-kenttä tietokantaan
+13. Lisää virheenkäsittely /admin/products:in Delete-requestille
 
 ### Ideoita
 
