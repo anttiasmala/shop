@@ -86,27 +86,31 @@ export default function AdminIndex() {
               </span>
             )}
           </p>
-          <button
-            className={`mt-3 w-48 rounded border bg-gray-300 p-2 hover:bg-gray-400 ${fileName ? 'hidden' : ''}`}
-            onClick={(e) => {
-              e.preventDefault();
-              document.getElementById('fileUploadInput')?.click();
-            }}
-          >
-            Select File
-          </button>
 
-          {fileName && (
+          {fileName ? (
             <button
               className="mt-3 w-48 rounded border bg-gray-300 p-2 hover:bg-gray-400"
               type="submit"
               onClick={() =>
                 void (async () => {
-                  await axios.post('/api/upload', inputRef.current?.files);
-                })
+                  await axios.post(
+                    '/api/admin/upload',
+                    inputRef.current?.files,
+                  );
+                })()
               }
             >
               Submit File
+            </button>
+          ) : (
+            <button
+              className={`mt-3 w-48 rounded border bg-gray-300 p-2 hover:bg-gray-400 ${fileName ? 'hidden' : ''}`}
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('fileUploadInput')?.click();
+              }}
+            >
+              Select File
             </button>
           )}
         </form>

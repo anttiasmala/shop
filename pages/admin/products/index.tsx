@@ -36,7 +36,7 @@ export default function ProductsIndex() {
   const { data: listOfImages } = useQuery({
     queryKey: QueryAndMutationKeys.Images,
     queryFn: async () => {
-      return (await axios.get(`/api/list-images`)).data as string[];
+      return (await axios.get(`/api/admin/list-images`)).data as string[];
     },
     refetchOnWindowFocus: false,
     refetchOnMount: true,
@@ -187,7 +187,7 @@ function EditModal({
   const { mutateAsync } = useMutation({
     mutationKey: ['editProductMutationKey'],
     mutationFn: async () =>
-      await axios.patch(`/api/products/${product.id}`, inputFields),
+      await axios.patch(`/api/admin/products/${product.id}`, inputFields),
     onSuccess: async () => {
       try {
         closeModal();
@@ -329,7 +329,7 @@ function DeleteModal({
 }) {
   const { mutateAsync } = useMutation({
     mutationKey: ['deleteProductMutationKey'],
-    mutationFn: () => axios.delete(`/api/products/${product.id}`),
+    mutationFn: () => axios.delete(`/api/admin/products/${product.id}`),
     onSuccess: async () => {
       try {
         closeModal();
@@ -403,7 +403,7 @@ function AddProduct({
 
   const { mutateAsync } = useMutation({
     mutationKey: ['addProductMutationKey'],
-    mutationFn: () => axios.post('/api/products', inputFields),
+    mutationFn: () => axios.post('/api/admin/products', inputFields),
     onSuccess: async () => {
       try {
         closeModal();

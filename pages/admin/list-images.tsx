@@ -18,7 +18,7 @@ export default function ListImages() {
   useEffect(() => {
     async function runThis() {
       const fetchedImages = (await (
-        await axios.get('/api/list-images')
+        await axios.get('/api/admin/list-images')
       ).data) as string[];
       setImages(fetchedImages);
     }
@@ -107,7 +107,7 @@ function EditModal({
       console.log(oldImageName, newImageName);
       const newAllImages = [...filteredImages, newImageName];
       console.log(newAllImages);
-      await axios.put('/api/list-images', newAllImages);
+      await axios.put('/api/admin/list-images', newAllImages);
       closeModal();
     } catch (e) {
       console.error(e);
@@ -167,7 +167,7 @@ function DeleteModal({
     e.preventDefault();
     try {
       console.log('Submit');
-      await axios.delete('/api/list-images', { data: imageName });
+      await axios.delete('/api/admin/list-images', { data: imageName });
       closeModal();
     } catch (e) {
       console.error(e);
