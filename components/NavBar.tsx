@@ -213,6 +213,8 @@ function AuthModal({
   }
 
   if (isUserLoggedIn(user)) {
+    // ref={ref}
+    // is for modal closing check. If click is in modal, do nothing, else close modal
     return (
       <div
         className="absolute right-3 border-black bg-white sm:right-auto"
