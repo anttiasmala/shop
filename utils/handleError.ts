@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 const POSSIBLE_ERRORS = {
   'unexpected token': 'JSON format is invalid',
   'is not valid json': 'JSON format is invalid',
-  'user was not found on the server!': 'User is not registered',
+  'user was not found on the server!': 'Email is not registered',
   'password is invalid!': 'Password is invalid!',
   'email was not unique!': 'Email was not unique',
   'product was not found on the server!':
