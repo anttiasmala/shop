@@ -19,7 +19,6 @@ export default function AdminIndex() {
   function handleSubmit(e: FormEvent<HTMLElement>) {
     e.preventDefault();
     try {
-      console.log();
       if (!inputRef.current?.files) {
         return;
       }
