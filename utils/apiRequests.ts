@@ -6,6 +6,7 @@ export function useGetProducts() {
   return useQuery({
     queryKey: QueryAndMutationKeys.Products,
     queryFn: async () => {
+      // this does not require Admin rights
       return (await axios.get(`/api/admin/products`)).data as Product[];
     },
     refetchOnWindowFocus: false,
