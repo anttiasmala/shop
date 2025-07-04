@@ -6,6 +6,9 @@ const POSSIBLE_ERRORS = {
   'is not valid json': 'JSON format is invalid',
   'user was not found on the server!': 'User is not registered',
   'password is invalid!': 'Password is invalid!',
+  'email was not unique!': 'Email was not unique',
+  'product was not found on the server!':
+    'Product was not found on the server!',
 } as const;
 
 type KnownErrorTexts = keyof typeof POSSIBLE_ERRORS;
