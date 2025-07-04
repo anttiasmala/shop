@@ -327,7 +327,7 @@ function DeleteModal({
   closeModal: () => void;
   queryClient: QueryClient;
 }) {
-  const { mutateAsync } = useMutation({
+  const { mutateAsync, error } = useMutation({
     mutationKey: ['deleteProductMutationKey'],
     mutationFn: () => axios.delete(`/api/admin/products/${product.id}`),
     onSuccess: async () => {
@@ -341,6 +341,12 @@ function DeleteModal({
       }
     },
   });
+
+  useEffect(() => {
+    if (!error) return;
+    console.error(error);
+  }, [error]);
+
   return (
     <div>
       <div className="fixed top-0 left-0 z-98 h-full w-full bg-black opacity-80" />
