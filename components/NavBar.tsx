@@ -217,13 +217,19 @@ function AuthModal({
     // is for modal closing check. If click is in modal, do nothing, else close modal
     return (
       <div
-        className="absolute right-3 border-black bg-white sm:right-auto"
+        className="absolute right-3 rounded border-black bg-gray-200 sm:right-auto"
         ref={ref}
       >
-        <div className="w-full">
-          <Link href={'/auth/logout'} className="button-54 hover:bg-gray-500">
-            Log out
-          </Link>
+        <div className="h-full w-full">
+          <p className="text-lg wrap-anywhere">
+            {user.firstName} {user.lastName}
+          </p>
+          <p className="text-lg wrap-anywhere">{user.email}</p>
+          <div className="mt-4">
+            <Link href={'/auth/logout'} className="button-54 hover:bg-gray-500">
+              Log out
+            </Link>
+          </div>
         </div>
       </div>
     );
