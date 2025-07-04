@@ -9,6 +9,7 @@ const POSSIBLE_ERRORS = {
   'email was not unique!': 'Email was not unique',
   'product was not found on the server!':
     'Product was not found on the server!',
+  'cart was not found on the server!': 'Cart was not found on the server!',
 } as const;
 
 type KnownErrorTexts = keyof typeof POSSIBLE_ERRORS;
