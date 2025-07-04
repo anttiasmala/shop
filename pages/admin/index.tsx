@@ -17,7 +17,7 @@ export default function AdminIndex({}: InferGetServerSidePropsType<
       <p className="mt-3 animate-[opacity_1200ms] text-center text-4xl font-bold">
         Admin Dashboard
       </p>
-      <div className="mt-5 grid w-96 grid-cols-3 sm:w-full">
+      <div className="mt-5 grid max-w-full grid-cols-3">
         <LinkElement
           href={'/admin/products'}
           title="Edit Products"
