@@ -373,7 +373,7 @@ function DeleteModal({
       'Product is most likely added to cart, so Foreign key constraint is violated. Use Cart icon in Actions to delete the product from carts',
     );
     closeModal();
-  }, [error]);
+  }, [error, closeModal]);
 
   return (
     <div>
