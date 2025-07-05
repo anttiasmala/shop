@@ -372,6 +372,7 @@ function DeleteModal({
     toast(
       'Product is most likely added to cart, so Foreign key constraint is violated. Use Cart icon in Actions to delete the product from carts',
     );
+    closeModal();
   }, [error]);
 
   return (
@@ -420,7 +421,10 @@ function DeleteProductFromCarts({
 }) {
   const { mutateAsync, error } = useMutation({
     mutationKey: ['deleteProductFromCartsMutationKey'],
-    mutationFn: () => axios.delete(`/api/admin/products/${product.id}`),
+    mutationFn: () =>
+      axios.post(`/api/admin/clear-product-from-carts`, {
+        productId: product.id,
+      }),
     onSuccess: async () => {
       try {
         closeModal();
@@ -446,7 +450,7 @@ function DeleteProductFromCarts({
           <label className="text-white">
             Delete the following product{' '}
             <span className="text-2xl font-bold">{product.title}</span> from all
-            of the users' cart?
+            of the users&apos; cart?
           </label>
           <p className="text-sm text-white">
             This is used to clear specific product from carts so the product can
