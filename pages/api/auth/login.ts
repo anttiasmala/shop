@@ -12,7 +12,15 @@ export default async function Login(req: NextApiRequest, res: NextApiResponse) {
       throw new HttpError('Invalid request method', 405);
     }
 
-    const loginDetails = loginDetailsSchema.parse(req.body);
+    const loginDetailsParse = loginDetailsSchema.safeParse(req.body);
+
+    if (loginDetailsParse.success === false) {
+      const invalidField =
+        loginDetailsParse.error.issues[0].path[0] || 'Email or password';
+      throw new HttpError(`${invalidField} is invalid!`, 400);
+    }
+
+    const loginDetails = loginDetailsParse.data;
 
     const userDetails = await prisma.user.findFirstOrThrow({
       where: {

@@ -17,7 +17,7 @@ export default function AdminIndex({}: InferGetServerSidePropsType<
       <p className="mt-3 animate-[opacity_1200ms] text-center text-4xl font-bold">
         Admin Dashboard
       </p>
-      <div className="mt-5 flex w-full">
+      <div className="mt-5 grid max-w-full grid-cols-3">
         <LinkElement
           href={'/admin/products'}
           title="Edit Products"
@@ -52,7 +52,7 @@ function LinkElement({
     <Link
       href={href}
       className={twMerge(
-        'mr-8 h-32 w-64 rounded bg-gray-200 text-center hover:bg-gray-300',
+        'm-1 h-auto min-h-32 w-auto rounded bg-gray-200 text-center hover:bg-gray-300',
         className,
       )}
     >

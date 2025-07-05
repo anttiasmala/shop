@@ -187,7 +187,7 @@ export const invalidSessionResultSchema = z.object({
 
 export const loginDetailsSchema = z.object({
   email: emailSchema,
-  password: passwordSchema,
+  password: z.string().min(1),
 });
 
 // LOCALSTORAGE

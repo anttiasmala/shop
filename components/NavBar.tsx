@@ -3,7 +3,7 @@ import { HTMLAttributes, Ref, useEffect, useRef, useState } from 'react';
 import SvgMenu from '~/icons/menu';
 import SvgStoreBag from '~/icons/store_bag';
 import { twMerge } from 'tailwind-merge';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { GetCart, GetUser, QueryAndMutationKeys } from '~/shared/types';
 import { UserCheck, UserX } from 'lucide-react';
@@ -20,7 +20,7 @@ export function NavBar({ user }: { user: GetUser }) {
   const authenticationModalRef = useRef<HTMLDivElement | null>(null);
   const isInitialClick = useRef<boolean>(true);
 
-  const { data: products } = useQuery({
+  const { data: products, error: getCartError } = useQuery({
     queryKey: QueryAndMutationKeys.NavBarProducts,
     queryFn: async () => {
       const cartUUID = window.localStorage.getItem('cartUUID');
@@ -30,6 +30,19 @@ export function NavBar({ user }: { user: GetUser }) {
     refetchOnMount: false,
     retry: false,
   });
+
+  useEffect(() => {
+    // if cartUUID is invalid, create a new one
+    if (!getCartError) return;
+    if (getCartError instanceof AxiosError) {
+      if (getCartError.response?.data === 'Cart was not found on the server!') {
+        const randomUUID = crypto.randomUUID();
+        window.localStorage.setItem('cartUUID', randomUUID);
+
+        void axios.post(`/api/cart`, { cartUUID: randomUUID });
+      }
+    }
+  }, [getCartError]);
 
   useEffect(() => {
     function runThis() {
@@ -213,15 +226,23 @@ function AuthModal({
   }
 
   if (isUserLoggedIn(user)) {
+    // ref={ref}
+    // is for modal closing check. If click is in modal, do nothing, else close modal
     return (
       <div
-        className="absolute right-3 border-black bg-white sm:right-auto"
+        className="absolute right-3 rounded border-black bg-gray-200 sm:right-auto"
         ref={ref}
       >
-        <div className="w-full">
-          <Link href={'/auth/logout'} className="button-54 hover:bg-gray-500">
-            Log out
-          </Link>
+        <div className="h-full w-full">
+          <p className="text-lg wrap-anywhere">
+            {user.firstName} {user.lastName}
+          </p>
+          <p className="text-lg wrap-anywhere">{user.email}</p>
+          <div className="mt-4">
+            <Link href={'/auth/logout'} className="button-54 hover:bg-gray-500">
+              Log out
+            </Link>
+          </div>
         </div>
       </div>
     );

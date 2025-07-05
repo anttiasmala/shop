@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import axios from 'axios';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, ShoppingCart, Trash2 } from 'lucide-react';
 import {
   Dispatch,
   HTMLAttributes,
@@ -22,6 +22,7 @@ import Image from 'next/image';
 
 import { getServerSidePropsAdminOnly as getServerSideProps } from '~/utils/getServerSideProps';
 import { Main } from '~/components/Main';
+import { toast } from 'react-toastify';
 
 /* ADMINS ONLY */
 export { getServerSideProps };
@@ -29,6 +30,8 @@ export { getServerSideProps };
 export default function ProductsIndex() {
   const [editModalData, setEditModalData] = useState<Product | undefined>();
   const [deleteModalData, setDeleteModalData] = useState<Product | undefined>();
+  const [deleteProductFromCartsModalData, setDeleteProductFromCartsModalData] =
+    useState<Product | undefined>();
   const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
 
   const queryClient = useQueryClient();
@@ -58,6 +61,9 @@ export default function ProductsIndex() {
           <ProductTable
             setDeleteModalData={setDeleteModalData}
             setEditModalData={setEditModalData}
+            setDeleteProductFromCartsModalData={
+              setDeleteProductFromCartsModalData
+            }
           />
           <button
             className="mt-4 rounded-md bg-black p-2 text-white"
@@ -83,6 +89,14 @@ export default function ProductsIndex() {
             />
           )}
 
+          {deleteProductFromCartsModalData && (
+            <DeleteProductFromCarts
+              product={deleteProductFromCartsModalData}
+              closeModal={() => setDeleteProductFromCartsModalData(undefined)}
+              queryClient={queryClient}
+            />
+          )}
+
           {isAddProductModalOpen && (
             <AddProduct
               closeModal={() => setIsAddProductModalOpen(false)}
@@ -99,9 +113,13 @@ export default function ProductsIndex() {
 function ProductTable({
   setDeleteModalData,
   setEditModalData,
+  setDeleteProductFromCartsModalData,
 }: {
   setEditModalData: Dispatch<SetStateAction<Product | undefined>>;
   setDeleteModalData: Dispatch<SetStateAction<Product | undefined>>;
+  setDeleteProductFromCartsModalData: Dispatch<
+    SetStateAction<Product | undefined>
+  >;
 }) {
   const { data: products } = useGetProducts();
 
@@ -145,6 +163,12 @@ function ProductTable({
                   onClick={() => setDeleteModalData(_product)}
                 >
                   <Trash2 />
+                </button>
+                <button
+                  className="m-2 border border-gray-500 p-2 hover:bg-gray-500"
+                  onClick={() => setDeleteProductFromCartsModalData(_product)}
+                >
+                  <ShoppingCart />
                 </button>
               </div>
             </Td>
@@ -327,7 +351,7 @@ function DeleteModal({
   closeModal: () => void;
   queryClient: QueryClient;
 }) {
-  const { mutateAsync } = useMutation({
+  const { mutateAsync, error } = useMutation({
     mutationKey: ['deleteProductMutationKey'],
     mutationFn: () => axios.delete(`/api/admin/products/${product.id}`),
     onSuccess: async () => {
@@ -341,6 +365,16 @@ function DeleteModal({
       }
     },
   });
+
+  useEffect(() => {
+    if (!error) return;
+    console.error(error);
+    toast(
+      'Product is most likely added to cart, so Foreign key constraint is violated. Use Cart icon in Actions to delete the product from carts',
+    );
+    closeModal();
+  }, [error, closeModal]);
+
   return (
     <div>
       <div className="fixed top-0 left-0 z-98 h-full w-full bg-black opacity-80" />
@@ -349,6 +383,79 @@ function DeleteModal({
           <label className="text-white">
             Delete <span className="font-bold">{product.title}</span>?
           </label>
+        </div>
+
+        <div className="flex justify-center">
+          <button
+            className="mt-4 mr-4 bg-blue-500 p-2 text-white"
+            onClick={closeModal}
+          >
+            Cancel
+          </button>
+          <button
+            className="mt-4 ml-4 bg-blue-500 p-2 text-white"
+            onClick={() => {
+              try {
+                void mutateAsync();
+              } catch (e) {
+                console.error(e);
+              }
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DeleteProductFromCarts({
+  closeModal,
+  product,
+  queryClient,
+}: {
+  product: Product;
+  closeModal: () => void;
+  queryClient: QueryClient;
+}) {
+  const { mutateAsync, error } = useMutation({
+    mutationKey: ['deleteProductFromCartsMutationKey'],
+    mutationFn: () =>
+      axios.post(`/api/admin/clear-product-from-carts`, {
+        productId: product.id,
+      }),
+    onSuccess: async () => {
+      try {
+        closeModal();
+        await queryClient.invalidateQueries({
+          queryKey: QueryAndMutationKeys.Products,
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (!error) return;
+    console.error(error);
+  }, [error]);
+
+  return (
+    <div>
+      <div className="fixed top-0 left-0 z-98 h-full w-full bg-black opacity-80" />
+      <div className="fixed top-[50%] left-[50%] z-99 translate-x-[-50%] translate-y-[-50%]">
+        <div className="flex flex-col rounded bg-black">
+          <label className="text-white">
+            Delete the following product{' '}
+            <span className="text-2xl font-bold">{product.title}</span> from all
+            of the users&apos; cart?
+          </label>
+          <p className="text-sm text-white">
+            This is used to clear specific product from carts so the product can
+            be deleted from the database
+          </p>
         </div>
 
         <div className="flex justify-center">

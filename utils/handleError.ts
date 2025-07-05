@@ -4,8 +4,12 @@ import { toast } from 'react-toastify';
 const POSSIBLE_ERRORS = {
   'unexpected token': 'JSON format is invalid',
   'is not valid json': 'JSON format is invalid',
-  'user was not found on the server!': 'User is not registered',
+  'user was not found on the server!': 'Email is not registered',
   'password is invalid!': 'Password is invalid!',
+  'email was not unique!': 'Email was not unique',
+  'product was not found on the server!':
+    'Product was not found on the server!',
+  'cart was not found on the server!': 'Cart was not found on the server!',
 } as const;
 
 type KnownErrorTexts = keyof typeof POSSIBLE_ERRORS;
