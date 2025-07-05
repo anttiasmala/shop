@@ -34,7 +34,6 @@ export function NavBar({ user }: { user: GetUser }) {
   useEffect(() => {
     // if cartUUID is invalid, create a new one
     if (!getCartError) return;
-    console.log(getCartError);
     if (getCartError instanceof AxiosError) {
       if (getCartError.response?.data === 'Cart was not found on the server!') {
         const randomUUID = crypto.randomUUID();
