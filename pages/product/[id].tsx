@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { ArrowLeft, Minus, Plus, ShoppingBagIcon } from 'lucide-react';
+import { ArrowLeft, Minus, Plus, ShoppingBagIcon, X } from 'lucide-react';
 import { InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Footer } from '~/components/Footer';
 import { Main } from '~/components/Main';
+import { Modal } from '~/components/Modal';
 import { NavBar } from '~/components/NavBar';
 import { useGetProduct } from '~/utils/apiRequests';
 import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
@@ -20,6 +21,7 @@ export default function HandleProduct({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [productId, setProductId] = useState('');
   const [selectedAmount, setSelectedAmount] = useState(0);
+  const [showZoomModal, setShowZoomModal] = useState(false);
 
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -65,14 +67,21 @@ export default function HandleProduct({
           <div className="flex flex-col items-center">
             <div className="m-3 mr-5 ml-5 flex flex-col items-center rounded border border-gray-100">
               <div className="m-5">
-                <Image
-                  priority={true}
-                  alt="SSD"
-                  src={product.image || '/images/products/image_base.png'}
-                  width={1920}
-                  height={1080}
-                  className="w-48 rounded-md object-contain"
-                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowZoomModal(true);
+                  }}
+                >
+                  <Image
+                    priority={true}
+                    alt="SSD"
+                    src={product.image || '/images/products/image_base.png'}
+                    width={1920}
+                    height={1080}
+                    className="w-48 rounded-md object-contain"
+                  />
+                </button>
               </div>
             </div>
             <div className="w-full bg-white">
@@ -139,6 +148,28 @@ export default function HandleProduct({
                 </div>
               </div>
             </div>
+            {showZoomModal && (
+              <Modal closeModal={() => setShowZoomModal(false)}>
+                <div className="absolute -top-24 -right-7">
+                  <button type="button" onClick={() => setShowZoomModal(false)}>
+                    <X className="size-24 text-white" />
+                  </button>
+                </div>
+                <a
+                  href={product.image || '/images/products/image_base.png'}
+                  target="_blank"
+                >
+                  <Image
+                    priority={true}
+                    alt="SSD"
+                    src={product.image || '/images/products/image_base.png'}
+                    blurDataURL="/images/products/image_base.png"
+                    width={1920}
+                    height={1080}
+                  />
+                </a>
+              </Modal>
+            )}
           </div>
         )}
       </div>
