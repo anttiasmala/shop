@@ -13,6 +13,8 @@
 9. Kun kuvan nimi muokataan tai kuva poistetaan /admin/list-images:ssa, päivitä kuvat muokkauksen / poistamisen jälkeen
 10. Jos tuote on asetettu kärryyn ja tuotetta yritetään poistaa tulee seuraava virhe `Foreign key constraint violated on the constraint: CartItem_productUUID_fkey`. Lisää kiertotapa ongelman korjaamiseksi. Esim. estä tuotteen löytyminen kaupasta tai sen lisääminen ostoskoriin. Esim. jokin "disable"-kenttä tietokantaan
 11. Lisää virheenkäsittely /admin/products:in Delete-requestille
+12. Jos käyttäjä yrittää lisätä kärryyn 0 tuotetta, anna virheilmoitus ettei ole mahdollista
+13. Lisää ALT-tekstikenttä tietokantaan, jotta ALT-teksti saadaan oikein <Image>:een
 
 ### Ideoita
 
