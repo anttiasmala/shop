@@ -149,7 +149,7 @@ export default function HandleProduct({
               </div>
             </div>
             {showZoomModal && (
-              <Modal>
+              <Modal closeModal={() => setShowZoomModal(false)}>
                 <div className="absolute -top-24 -right-7">
                   <button type="button" onClick={() => setShowZoomModal(false)}>
                     <X className="size-24 text-white" />

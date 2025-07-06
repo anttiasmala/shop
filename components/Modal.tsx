@@ -1,15 +1,20 @@
 import { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
+import { useKeyPress } from '~/hooks/useKeyPress';
 
 export function Modal({
   children,
   firstDivClassName,
   secondDivClassName,
+  closeModal,
 }: {
   children?: ReactNode;
   firstDivClassName?: string;
   secondDivClassName?: string;
+  closeModal: () => void;
 }) {
+  useKeyPress('Escape', closeModal);
+
   return (
     <>
       <div
