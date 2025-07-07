@@ -11,6 +11,7 @@ import { Main } from '~/components/Main';
 import { Modal } from '~/components/Modal';
 import { NavBar } from '~/components/NavBar';
 import { useGetProduct } from '~/utils/apiRequests';
+import { BASE_IMAGE_URL } from '~/utils/constants';
 import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
 
 // No login required
@@ -76,7 +77,7 @@ export default function HandleProduct({
                   <Image
                     priority={true}
                     alt="SSD"
-                    src={product.image || '/images/products/image_base.png'}
+                    src={product.image || BASE_IMAGE_URL}
                     width={1920}
                     height={1080}
                     className="w-48 rounded-md object-contain"
@@ -155,14 +156,11 @@ export default function HandleProduct({
                     <X className="size-24 text-white" />
                   </button>
                 </div>
-                <a
-                  href={product.image || '/images/products/image_base.png'}
-                  target="_blank"
-                >
+                <a href={product.image || BASE_IMAGE_URL} target="_blank">
                   <Image
                     priority={true}
                     alt="SSD"
-                    src={product.image || '/images/products/image_base.png'}
+                    src={product.image || BASE_IMAGE_URL}
                     blurDataURL="/images/products/image_base.png"
                     width={1920}
                     height={1080}
