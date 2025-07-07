@@ -28,10 +28,19 @@ export function useGetProduct(id: string) {
   });
 }
 
-export function useChangeProductAmount(productId: number, newAmount: number) {
+export function useChangeProductAmount({
+  productId,
+  newAmount,
+  userCartUUID,
+}: {
+  productId: number;
+  newAmount: number;
+  userCartUUID: string;
+}) {
   const data: PatchCartItem = {
     id: productId,
     amount: newAmount,
+    userCartUUID: userCartUUID,
   };
   return useMutation({
     mutationKey: QueryAndMutationKeys.ReduceProductAmount,
