@@ -16,7 +16,7 @@ export function Product({ product }: { product: ProductType }) {
     <div className="mt-8 flex justify-center">
       <div className="m-3 mr-5 ml-5 flex flex-col items-center justify-between rounded border border-gray-100 bg-gray-100">
         <div className="m-5">
-          <Link href={`/product/${id}` || '/images/products/image_base.png'}>
+          <Link href={`/product/${id}`}>
             <Image
               priority={true}
               alt="SSD"
