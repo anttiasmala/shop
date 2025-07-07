@@ -149,6 +149,7 @@ function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
 
 function ProductBlock({ product }: { product: GetCart }) {
   const [amountOfProduct, setAmountOfProduct] = useState(product.amount);
+  const [userCartUUID, setUserCartUUID] = useState('');
   const { image, title, price } = product.Product;
 
   const queryClient = useQueryClient();
@@ -157,10 +158,18 @@ function ProductBlock({ product }: { product: GetCart }) {
     setAmountOfProduct(product.amount);
   }, [product, setAmountOfProduct]);
 
-  const { mutateAsync } = useChangeProductAmount(
-    product.Product.id,
-    amountOfProduct,
-  );
+  useEffect(() => {
+    const cartUUID = localStorage.getItem('cartUUID');
+
+    // if cartUUID is found from localStorage, set userCartUUID to be it
+    if (cartUUID) setUserCartUUID(cartUUID);
+  }, []);
+
+  const { mutateAsync } = useChangeProductAmount({
+    productId: product.Product.id,
+    newAmount: amountOfProduct,
+    userCartUUID: userCartUUID,
+  });
 
   return (
     <div className="mt-8 flex justify-center">

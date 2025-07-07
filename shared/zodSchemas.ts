@@ -101,7 +101,9 @@ export const deleteCartItemSchema = z.object({
   productId: z.string(),
 });
 
-export const patchCartItemSchema = createCartItemSchema;
+export const patchCartItemSchema = createCartItemSchema.extend({
+  userCartUUID: uuidSchema,
+});
 
 // USER SCHEMAS
 

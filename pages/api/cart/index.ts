@@ -84,15 +84,22 @@ async function handlePATCH(req: NextApiRequest, res: NextApiResponse) {
     },
   });
 
+  const cartFromDatabase = await prisma.cart.findFirstOrThrow({
+    where: {
+      userCartUUID: cartItem.userCartUUID,
+    },
+  });
+
   const cartItemFromDatabase = await prisma.cartItem.findFirstOrThrow({
     where: {
       productUUID: product.uuid,
+      cartUUID: cartFromDatabase.uuid,
     },
   });
 
   const updatedCartItem = await prisma.cartItem.update({
     where: {
-      id: cartItemFromDatabase.id,
+      uuid: cartItemFromDatabase.uuid,
     },
     data: {
       amount: cartItem.amount,
