@@ -13,6 +13,7 @@ import { handleError } from '~/utils/handleError';
 import { InferGetServerSidePropsType } from 'next';
 import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
 import { Main } from '~/components/Main';
+import { BASE_IMAGE_URL } from '~/utils/constants';
 
 // Does not require login
 export { getServerSideProps };
@@ -168,7 +169,7 @@ function ProductBlock({ product }: { product: GetCart }) {
           <Image
             priority={true}
             alt={`${title}ProductImage`}
-            src={image || '/images/products/image_base.png'}
+            src={image || BASE_IMAGE_URL}
             width={1920}
             height={1080}
             className="w-24 rounded-md object-contain"

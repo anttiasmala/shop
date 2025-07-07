@@ -12,6 +12,7 @@ import SvgMagnifyingGlass from '~/icons/magnifying_glass';
 import SvgStoreBag from '~/icons/store_bag';
 import { Product, QueryAndMutationKeys } from '~/shared/types';
 import { useGetProducts } from '~/utils/apiRequests';
+import { BASE_IMAGE_URL } from '~/utils/constants';
 import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
 
 // No login required
@@ -176,7 +177,7 @@ function ProductBlock({ product }: { product: Product }) {
             <Image
               priority={true}
               alt="SSD"
-              src={image || '/images/products/image_base.png'}
+              src={image || BASE_IMAGE_URL}
               width={1920}
               height={1080}
               className="h-48 w-48 rounded-md object-contain"

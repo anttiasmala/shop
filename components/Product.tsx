@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { handleError } from '~/utils/handleError';
+import { BASE_IMAGE_URL } from '~/utils/constants';
 
 export function Product({ product }: { product: ProductType }) {
   const { image, title, price, id } = product;
@@ -20,7 +21,7 @@ export function Product({ product }: { product: ProductType }) {
             <Image
               priority={true}
               alt="SSD"
-              src={image || '/images/products/image_base.png'}
+              src={image || BASE_IMAGE_URL}
               width={1920}
               height={1080}
               className="h-48 w-48 rounded-md object-contain"
