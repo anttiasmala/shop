@@ -25,6 +25,15 @@ export default async function Handler(
 }
 
 async function handleGET(req: NextApiRequest, res: NextApiResponse) {
+  const isAdmin = checkIsAdminFromValidateRequest(
+    await validateRequest(req, res),
+  );
+
+  // user is not Admin, throw an error
+  if (!isAdmin) {
+    throw new HttpError("You don't have privileges to do that", 400);
+  }
+
   const queryId = req.query.id;
   if (queryId === undefined || typeof queryId !== 'string') {
     return res.status(400).send('ID is mandatory in query');
