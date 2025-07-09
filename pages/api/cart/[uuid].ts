@@ -157,6 +157,7 @@ async function handleDELETE(
   const cartItem = await prisma.cartItem.findFirst({
     where: {
       productUUID: product.uuid,
+      cartUUID: cart.uuid,
     },
   });
 
