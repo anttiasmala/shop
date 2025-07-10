@@ -44,7 +44,7 @@ export function Product({ product }: { product: ProductType }) {
                           amount: 1,
                         });
                         await queryClient.invalidateQueries({
-                          queryKey: QueryAndMutationKeys.NavBarProducts,
+                          queryKey: [QueryAndMutationKeys.NavBarProducts],
                         });
                         toast('Added products to your cart succesfully');
                       } catch (e) {
