@@ -43,7 +43,7 @@ export default function Cart({
 
   return (
     <Main>
-      <NavBar user={user} />
+      <NavBar user={user} productsFromParameter={products || []} />
       {products?.length === 0 || products === undefined ? (
         <EmptyCart />
       ) : (
@@ -190,9 +190,6 @@ function ProductBlock({ product }: { product: GetCart }) {
                       );
                       await mutateAsync();
                       await queryClient.invalidateQueries({
-                        queryKey: QueryAndMutationKeys.NavBarProducts,
-                      });
-                      await queryClient.invalidateQueries({
                         queryKey: QueryAndMutationKeys.CartProducts,
                       });
                     } catch (e) {
@@ -211,9 +208,6 @@ function ProductBlock({ product }: { product: GetCart }) {
                     try {
                       setAmountOfProduct((prevValue) => prevValue + 1);
                       await mutateAsync();
-                      await queryClient.invalidateQueries({
-                        queryKey: QueryAndMutationKeys.NavBarProducts,
-                      });
                       await queryClient.invalidateQueries({
                         queryKey: QueryAndMutationKeys.CartProducts,
                       });
@@ -237,9 +231,6 @@ function ProductBlock({ product }: { product: GetCart }) {
                         data: {
                           productId: product.Product.id.toString(),
                         },
-                      });
-                      await queryClient.invalidateQueries({
-                        queryKey: QueryAndMutationKeys.NavBarProducts,
                       });
                       await queryClient.invalidateQueries({
                         queryKey: QueryAndMutationKeys.CartProducts,

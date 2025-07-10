@@ -200,7 +200,7 @@ function ProductBlock({ product }: { product: Product }) {
                           amount: 1,
                         });
                         await queryClient.invalidateQueries({
-                          queryKey: QueryAndMutationKeys.NavBarProducts,
+                          queryKey: [QueryAndMutationKeys.NavBarProducts],
                         });
                         toast('Added products to your cart succesfully');
                       } catch (e) {
