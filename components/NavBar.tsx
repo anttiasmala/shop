@@ -12,7 +12,13 @@ import { handleError } from '~/utils/handleError';
 import { useEffectAfterInitialRender } from '~/hooks/useEffectAfterInitialRender';
 import { cartSettingsSchema } from '~/shared/zodSchemas';
 
-export function NavBar({ user }: { user: GetUser }) {
+export function NavBar({
+  user,
+  productsFromParameter,
+}: {
+  user: GetUser;
+  productsFromParameter?: GetCart[];
+}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [productAmount, setProductAmount] = useState(0);
@@ -21,8 +27,11 @@ export function NavBar({ user }: { user: GetUser }) {
   const isInitialClick = useRef<boolean>(true);
 
   const { data: products, error: getCartError } = useQuery({
-    queryKey: QueryAndMutationKeys.NavBarProducts,
+    queryKey: [QueryAndMutationKeys.NavBarProducts, productsFromParameter],
     queryFn: async () => {
+      // productsFromParameter is value given from anotherfile as an argument
+      // for example in /pages/cart.tsx. This will make GET request to be sent only once
+      if (productsFromParameter) return 0;
       const cartUUID = window.localStorage.getItem('cartUUID');
       return (await axios.get(`/api/cart/${cartUUID}`)).data as GetCart[];
     },
@@ -46,6 +55,17 @@ export function NavBar({ user }: { user: GetUser }) {
 
   useEffect(() => {
     function runThis() {
+      if (productsFromParameter) {
+        let amountOfItems = 0;
+        for (const item of productsFromParameter || []) {
+          if (item.amount) {
+            amountOfItems += item.amount;
+          }
+        }
+        setProductAmount(amountOfItems);
+        return;
+      }
+
       let amountOfItems = 0;
       for (const item of products || []) {
         if (item.amount) {
@@ -55,7 +75,7 @@ export function NavBar({ user }: { user: GetUser }) {
       setProductAmount(amountOfItems);
     }
     runThis();
-  }, [products]);
+  }, [products, productsFromParameter]);
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {

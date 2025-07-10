@@ -43,7 +43,7 @@ export default function Cart({
 
   return (
     <Main>
-      <NavBar user={user} />
+      <NavBar user={user} productsFromParameter={products || []} />
       {products?.length === 0 || products === undefined ? (
         <EmptyCart />
       ) : (
