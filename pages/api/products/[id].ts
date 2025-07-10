@@ -1,9 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { validateRequest } from '~/backend/auth/auth';
-import { HttpError } from '~/backend/HttpError';
-import { checkIsAdminFromValidateRequest } from '~/backend/utils';
 import prisma from '~/prisma';
-import { patchProductSchema } from '~/shared/zodSchemas';
 
 export default async function Handler(
   req: NextApiRequest,
