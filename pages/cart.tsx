@@ -76,12 +76,22 @@ function EmptyCart() {
 }
 
 function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
+  const [sortedProducts, setSortedProducts] = useState<GetCart[]>([]);
   const [subTotal, setSubTotal] = useState(0);
   const [shippingFee, setShippingFee] = useState(0);
   const [tax, setTax] = useState(0);
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
+    // sorts products from oldest -> latest
+    setSortedProducts(
+      products
+        ?.slice(0)
+        .sort(
+          (a, b) =>
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+        ) || [],
+    );
     let _subtotal = 0;
     for (const product of products || []) {
       _subtotal += Number(product.Product.price) * product.amount;
@@ -93,13 +103,13 @@ function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
     setTotal(_subtotal + (_subtotal >= 50 ? 0 : 4.9));
   }, [products]);
 
-  if (!products) {
+  if (!sortedProducts) {
     return null;
   }
   return (
     <div>
       <div className="flex flex-col items-center">
-        {products.map((_product, _index) => {
+        {sortedProducts.map((_product, _index) => {
           return (
             <ProductBlock product={_product} key={`productBlock${_index}`} />
           );
