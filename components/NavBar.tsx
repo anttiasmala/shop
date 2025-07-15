@@ -31,7 +31,7 @@ export function NavBar({
     queryFn: async () => {
       // productsFromParameter is value given from anotherfile as an argument
       // for example in /pages/cart.tsx. This will make GET request to be sent only once
-      if (productsFromParameter) return 0;
+      if (productsFromParameter) return [];
       const cartUUID = window.localStorage.getItem('cartUUID');
       return (await axios.get(`/api/cart/${cartUUID}`)).data as GetCart[];
     },
