@@ -26,7 +26,9 @@ export type Product = z.infer<typeof productSchema>;
 
 export type Cart = z.infer<typeof cartSchema>;
 
-export type GetCart = { amount: number } & { Product: Product };
+export type GetCart = { amount: number; createdAt: Date; updatedAt: Date } & {
+  Product: Product;
+};
 
 // CART ITEM
 
