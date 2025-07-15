@@ -10,6 +10,7 @@ import { Footer } from '~/components/Footer';
 import { Main } from '~/components/Main';
 import { Modal } from '~/components/Modal';
 import { NavBar } from '~/components/NavBar';
+import { QueryAndMutationKeys } from '~/shared/types';
 import { useGetProduct } from '~/utils/apiRequests';
 import { BASE_IMAGE_URL } from '~/utils/constants';
 import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
@@ -134,7 +135,7 @@ export default function HandleProduct({
                             amount: selectedAmount,
                           });
                           await queryClient.invalidateQueries({
-                            queryKey: ['NavBarProducts'],
+                            queryKey: [QueryAndMutationKeys.NavBarProducts],
                           });
                           toast('Added products to your cart succesfully');
                         } catch (e) {

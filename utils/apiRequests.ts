@@ -7,7 +7,7 @@ export function useGetProducts() {
     queryKey: QueryAndMutationKeys.Products,
     queryFn: async () => {
       // this does not require Admin rights
-      return (await axios.get(`/api/admin/products`)).data as Product[];
+      return (await axios.get(`/api/products`)).data as Product[];
     },
     refetchOnWindowFocus: false,
     refetchOnMount: false,
@@ -19,7 +19,7 @@ export function useGetProduct(id: string) {
   return useQuery({
     queryKey: [QueryAndMutationKeys.Product, id],
     queryFn: async () => {
-      return (await axios.get(`/api/admin/products/${id}`)).data as Product;
+      return (await axios.get(`/api/products/${id}`)).data as Product;
     },
     refetchOnWindowFocus: false,
     refetchOnMount: false,

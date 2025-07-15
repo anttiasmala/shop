@@ -61,6 +61,8 @@ export const patchProductSchema = createProductSchema;
 export const cartSchema = productSchema
   .extend({
     amount: z.number(),
+    createdAt: z.date(),
+    updatedAt: z.date(),
   })
   .array();
 
