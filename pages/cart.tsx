@@ -14,6 +14,7 @@ import { InferGetServerSidePropsType } from 'next';
 import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
 import { Main } from '~/components/Main';
 import { BASE_IMAGE_URL } from '~/utils/constants';
+import { useEffectAfterInitialRender } from '~/hooks/useEffectAfterInitialRender';
 
 // Does not require login
 export { getServerSideProps };
@@ -32,7 +33,7 @@ export default function Cart({
     retry: false,
   });
 
-  useEffect(() => {
+  useEffectAfterInitialRender(() => {
     const cartUUID = window.localStorage.getItem('cartUUID');
     if (cartUUID) {
       void axios
@@ -43,7 +44,7 @@ export default function Cart({
 
   return (
     <Main>
-      <NavBar user={user} />
+      <NavBar user={user} productsFromParameter={products || []} />
       {products?.length === 0 || products === undefined ? (
         <EmptyCart />
       ) : (
@@ -76,25 +77,24 @@ function EmptyCart() {
 }
 
 function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
+  const [sortedProducts, setSortedProducts] = useState<GetCart[]>([]);
   const [subTotal, setSubTotal] = useState(0);
   const [shippingFee, setShippingFee] = useState(0);
   const [tax, setTax] = useState(0);
   const [total, setTotal] = useState(0);
 
-  const { data } = useQuery({
-    queryKey: QueryAndMutationKeys.UpdateCartTotalAmount,
-    queryFn: async () => {
-      const cartUUID = window.localStorage.getItem('cartUUID');
-      return (await axios.get(`/api/cart/${cartUUID}`)).data as GetCart[];
-    },
-    refetchOnWindowFocus: false,
-    refetchOnMount: true,
-    retry: false,
-  });
-
   useEffect(() => {
+    // sorts products from oldest -> latest
+    setSortedProducts(
+      products
+        ?.slice(0)
+        .sort(
+          (a, b) =>
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+        ) || [],
+    );
     let _subtotal = 0;
-    for (const product of data || []) {
+    for (const product of products || []) {
       _subtotal += Number(product.Product.price) * product.amount;
     }
     // eslint-disable-next-line
@@ -102,15 +102,15 @@ function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
     setSubTotal(_subtotal);
     setTax(_subtotal * 0.255);
     setTotal(_subtotal + (_subtotal >= 50 ? 0 : 4.9));
-  }, [data]);
+  }, [products]);
 
-  if (!products) {
+  if (!sortedProducts) {
     return null;
   }
   return (
     <div>
       <div className="flex flex-col items-center">
-        {products.map((_product, _index) => {
+        {sortedProducts.map((_product, _index) => {
           return (
             <ProductBlock product={_product} key={`productBlock${_index}`} />
           );
@@ -201,10 +201,7 @@ function ProductBlock({ product }: { product: GetCart }) {
                       );
                       await mutateAsync();
                       await queryClient.invalidateQueries({
-                        queryKey: QueryAndMutationKeys.NavBarProducts,
-                      });
-                      await queryClient.invalidateQueries({
-                        queryKey: QueryAndMutationKeys.UpdateCartTotalAmount,
+                        queryKey: QueryAndMutationKeys.CartProducts,
                       });
                     } catch (e) {
                       handleError(e);
@@ -223,10 +220,7 @@ function ProductBlock({ product }: { product: GetCart }) {
                       setAmountOfProduct((prevValue) => prevValue + 1);
                       await mutateAsync();
                       await queryClient.invalidateQueries({
-                        queryKey: QueryAndMutationKeys.NavBarProducts,
-                      });
-                      await queryClient.invalidateQueries({
-                        queryKey: QueryAndMutationKeys.UpdateCartTotalAmount,
+                        queryKey: QueryAndMutationKeys.CartProducts,
                       });
                     } catch (e) {
                       handleError(e);
@@ -248,12 +242,6 @@ function ProductBlock({ product }: { product: GetCart }) {
                         data: {
                           productId: product.Product.id.toString(),
                         },
-                      });
-                      await queryClient.invalidateQueries({
-                        queryKey: QueryAndMutationKeys.NavBarProducts,
-                      });
-                      await queryClient.invalidateQueries({
-                        queryKey: QueryAndMutationKeys.UpdateCartTotalAmount,
                       });
                       await queryClient.invalidateQueries({
                         queryKey: QueryAndMutationKeys.CartProducts,
