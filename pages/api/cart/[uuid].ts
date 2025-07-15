@@ -89,46 +89,25 @@ async function handlePOST(
     },
   });
 
-  const productExists = await prisma.cartItem.findFirst({
+  const upsertedItem = await prisma.cartItem.upsert({
     where: {
-      productUUID: product.uuid,
-      cartUUID: cart.uuid,
+      cartUUID_productUUID: {
+        productUUID: product.uuid,
+        cartUUID: cart.uuid,
+      },
     },
-  });
-
-  if (productExists) {
-    const updatedItem = await updateExistingCartItem(
-      productExists.id,
-      productExists.amount,
-      productToBeAdded.amount,
-    );
-
-    return res.status(200).json(updatedItem);
-  }
-
-  const createdItem = await prisma.cartItem.create({
-    data: {
+    create: {
       cartUUID: cart.uuid,
       productUUID: product.uuid,
       amount: productToBeAdded.amount,
     },
-  });
-  return res.status(200).json(createdItem);
-}
-
-async function updateExistingCartItem(
-  id: number,
-  amountBeforeUpdate: number,
-  amountToBeAdded: number,
-) {
-  await prisma.cartItem.update({
-    where: {
-      id,
-    },
-    data: {
-      amount: amountBeforeUpdate + amountToBeAdded,
+    update: {
+      amount: {
+        increment: productToBeAdded.amount,
+      },
     },
   });
+  return res.status(200).json(upsertedItem);
 }
 
 async function handleDELETE(
