@@ -189,48 +189,53 @@ function ProductBlock({ product }: { product: GetCart }) {
               <p className="w-24">${price}</p>
             </div>
             <div className="flex">
-              <button
-                onClick={() => {
-                  void (async () => {
-                    try {
-                      if (amountOfProduct === 1) {
-                        return;
+              <div className="flex items-center">
+                <button
+                  onClick={() => {
+                    void (async () => {
+                      try {
+                        if (amountOfProduct === 1) {
+                          return;
+                        }
+                        setAmountOfProduct((prevValue) =>
+                          prevValue === 0 ? 0 : prevValue - 1,
+                        );
+                        await mutateAsync();
+                        await queryClient.invalidateQueries({
+                          queryKey: QueryAndMutationKeys.CartProducts,
+                        });
+                      } catch (e) {
+                        handleError(e);
                       }
-                      setAmountOfProduct((prevValue) =>
-                        prevValue === 0 ? 0 : prevValue - 1,
-                      );
-                      await mutateAsync();
-                      await queryClient.invalidateQueries({
-                        queryKey: QueryAndMutationKeys.CartProducts,
-                      });
-                    } catch (e) {
-                      handleError(e);
-                    }
-                  })();
-                }}
-                className="border border-gray-100"
-              >
-                <Minus className="w-4" />
-              </button>
+                    })();
+                  }}
+                  className="flex size-6 items-center justify-center border border-gray-100 hover:bg-gray-300"
+                >
+                  <Minus className="w-4" />
+                </button>
+              </div>
               <p className="p-6 pt-2 pb-2">{amountOfProduct}</p>
-              <button
-                onClick={() => {
-                  void (async () => {
-                    try {
-                      setAmountOfProduct((prevValue) => prevValue + 1);
-                      await mutateAsync();
-                      await queryClient.invalidateQueries({
-                        queryKey: QueryAndMutationKeys.CartProducts,
-                      });
-                    } catch (e) {
-                      handleError(e);
-                    }
-                  })();
-                }}
-                className="border border-gray-100"
-              >
-                <Plus className="w-4" />
-              </button>
+
+              <div className="flex items-center">
+                <button
+                  onClick={() => {
+                    void (async () => {
+                      try {
+                        setAmountOfProduct((prevValue) => prevValue + 1);
+                        await mutateAsync();
+                        await queryClient.invalidateQueries({
+                          queryKey: QueryAndMutationKeys.CartProducts,
+                        });
+                      } catch (e) {
+                        handleError(e);
+                      }
+                    })();
+                  }}
+                  className="flex size-6 items-center justify-center border border-gray-100 hover:bg-gray-300"
+                >
+                  <Plus className="w-4" />
+                </button>
+              </div>
 
               <button
                 className="ml-8"
