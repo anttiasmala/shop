@@ -127,7 +127,10 @@ export default function HandleProduct({
                     onClick={() => {
                       void (async () => {
                         try {
-                          if (selectedAmount === 0) return;
+                          if (selectedAmount === 0) {
+                            toast("You can't add 0 products");
+                            return;
+                          }
                           const cartUUID =
                             window.localStorage.getItem('cartUUID');
                           await axios.post(`/api/cart/${cartUUID}`, {
