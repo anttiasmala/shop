@@ -52,6 +52,8 @@ async function handleGET(
     },
     select: {
       amount: true,
+      createdAt: true,
+      updatedAt: true,
       Product: {
         omit: {
           createdAt: true,
