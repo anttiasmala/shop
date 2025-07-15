@@ -36,7 +36,7 @@ export function NavBar({
       return (await axios.get(`/api/cart/${cartUUID}`)).data as GetCart[];
     },
     refetchOnWindowFocus: false,
-    refetchOnMount: false,
+    refetchOnMount: true,
     retry: false,
   });
 
