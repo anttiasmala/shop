@@ -149,7 +149,10 @@ function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
 
 function ProductBlock({ product }: { product: GetCart }) {
   const [amountOfProduct, setAmountOfProduct] = useState(product.amount);
-  const amountOfProductBeforeBlur = useRef(product.amount);
+  const [amountOfProductBeforeBlur, setAmountOfProductBeforeBlur] = useState(
+    product.amount,
+  );
+
   const [userCartUUID, setUserCartUUID] = useState('');
   const { image, title, price } = product.Product;
 
@@ -226,17 +229,18 @@ function ProductBlock({ product }: { product: GetCart }) {
 
                   setAmountOfProduct(Number(parsedNumber));
                 }}
+                onFocus={() => {
+                  setAmountOfProductBeforeBlur(amountOfProduct);
+                }}
                 onBlur={() => {
                   void (async () => {
                     // this will prevent request sent to backend if amount of products were same
                     // so for example if user just click the input and clicks out without changing anything
-                    if (amountOfProductBeforeBlur.current === amountOfProduct)
-                      return;
+                    if (amountOfProductBeforeBlur === amountOfProduct) return;
                     await mutateAsync();
                     await queryClient.invalidateQueries({
                       queryKey: QueryAndMutationKeys.CartProducts,
                     });
-                    amountOfProductBeforeBlur.current = amountOfProduct;
                   })();
                 }}
                 value={amountOfProduct}
