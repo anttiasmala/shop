@@ -98,11 +98,10 @@ async function handlePATCH(req: NextApiRequest, res: NextApiResponse) {
   });
 
   if (cartItem.amount === 0) {
-    // here deletion
-    // for now just return
     await prisma.cartItem.delete({
       where: {
         uuid: cartItemFromDatabase.uuid,
+        productUUID: product.uuid,
       },
     });
     res.status(200).end();
