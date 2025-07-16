@@ -149,6 +149,10 @@ function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
 
 function ProductBlock({ product }: { product: GetCart }) {
   const [amountOfProduct, setAmountOfProduct] = useState(product.amount);
+  const [amountOfProductBeforeBlur, setAmountOfProductBeforeBlur] = useState(
+    product.amount,
+  );
+
   const [userCartUUID, setUserCartUUID] = useState('');
   const { image, title, price } = product.Product;
 
@@ -194,9 +198,6 @@ function ProductBlock({ product }: { product: GetCart }) {
                   onClick={() => {
                     void (async () => {
                       try {
-                        if (amountOfProduct === 1) {
-                          return;
-                        }
                         setAmountOfProduct((prevValue) =>
                           prevValue === 0 ? 0 : prevValue - 1,
                         );
@@ -214,7 +215,31 @@ function ProductBlock({ product }: { product: GetCart }) {
                   <Minus className="w-4" />
                 </button>
               </div>
-              <p className="p-6 pt-2 pb-2">{amountOfProduct}</p>
+              <input
+                className="w-12 rounded border border-black pl-2"
+                onChange={(e) => {
+                  const numericRegex = /-?\d+(\.\d+)?/g;
+                  const parsedNumber =
+                    e.currentTarget.value.match(numericRegex);
+
+                  setAmountOfProduct(Number(parsedNumber));
+                }}
+                onFocus={() => {
+                  setAmountOfProductBeforeBlur(amountOfProduct);
+                }}
+                onBlur={() => {
+                  void (async () => {
+                    // this will prevent request sent to backend if amount of products were same
+                    // so for example if user just click the input and clicks out without changing anything
+                    if (amountOfProductBeforeBlur === amountOfProduct) return;
+                    await mutateAsync();
+                    await queryClient.invalidateQueries({
+                      queryKey: QueryAndMutationKeys.CartProducts,
+                    });
+                  })();
+                }}
+                value={amountOfProduct}
+              />
 
               <div className="flex items-center">
                 <button
