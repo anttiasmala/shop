@@ -194,9 +194,11 @@ function ProductBlock({ product }: { product: GetCart }) {
                   onClick={() => {
                     void (async () => {
                       try {
+                        /*
                         if (amountOfProduct === 1) {
                           return;
                         }
+                        */
                         setAmountOfProduct((prevValue) =>
                           prevValue === 0 ? 0 : prevValue - 1,
                         );
@@ -214,7 +216,25 @@ function ProductBlock({ product }: { product: GetCart }) {
                   <Minus className="w-4" />
                 </button>
               </div>
-              <p className="p-6 pt-2 pb-2">{amountOfProduct}</p>
+              <input
+                className="w-12 p-2"
+                onChange={(e) => {
+                  const numericRegex = /-?\d+(\.\d+)?/g;
+                  const parsedNumber =
+                    e.currentTarget.value.match(numericRegex);
+
+                  setAmountOfProduct(Number(parsedNumber));
+                }}
+                onBlur={() => {
+                  void (async () => {
+                    await mutateAsync();
+                    await queryClient.invalidateQueries({
+                      queryKey: QueryAndMutationKeys.CartProducts,
+                    });
+                  })();
+                }}
+                value={amountOfProduct}
+              />
 
               <div className="flex items-center">
                 <button
