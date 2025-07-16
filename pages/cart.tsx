@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Footer } from '~/components/Footer';
 import { NavBar } from '~/components/NavBar';
@@ -149,6 +149,7 @@ function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
 
 function ProductBlock({ product }: { product: GetCart }) {
   const [amountOfProduct, setAmountOfProduct] = useState(product.amount);
+  const amountOfProductBeforeBlur = useRef(product.amount);
   const [userCartUUID, setUserCartUUID] = useState('');
   const { image, title, price } = product.Product;
 
@@ -217,7 +218,7 @@ function ProductBlock({ product }: { product: GetCart }) {
                 </button>
               </div>
               <input
-                className="w-12 p-2"
+                className="w-12 rounded border border-black pl-2"
                 onChange={(e) => {
                   const numericRegex = /-?\d+(\.\d+)?/g;
                   const parsedNumber =
@@ -227,10 +228,15 @@ function ProductBlock({ product }: { product: GetCart }) {
                 }}
                 onBlur={() => {
                   void (async () => {
+                    // this will prevent request sent to backend if amount of products were same
+                    // so for example if user just click the input and clicks out without changing anything
+                    if (amountOfProductBeforeBlur.current === amountOfProduct)
+                      return;
                     await mutateAsync();
                     await queryClient.invalidateQueries({
                       queryKey: QueryAndMutationKeys.CartProducts,
                     });
+                    amountOfProductBeforeBlur.current = amountOfProduct;
                   })();
                 }}
                 value={amountOfProduct}
