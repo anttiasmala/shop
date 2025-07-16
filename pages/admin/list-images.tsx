@@ -45,7 +45,7 @@ export default function ListImages() {
                 src={`/images/products/${_image}`}
                 width={1920}
                 height={1080}
-                className="size-48"
+                className="size-48 object-contain"
               />
               <p className="wrap-anywhere">{_image}</p>
               <div>
