@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { EditIcon, Trash2, X } from 'lucide-react';
 import Image from 'next/image';
@@ -15,16 +16,24 @@ export default function ListImages() {
   const [editModalData, setEditModalData] = useState('');
   const [deleteModalData, setDeleteModalData] = useState('');
 
+  const { data: fetchedImages, refetch } = useQuery({
+    queryKey: ['ListImages'],
+    queryFn: async () => {
+      return (await axios.get('/api/admin/list-images')).data as string[];
+    },
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    retry: false,
+  });
+
   useEffect(() => {
     async function runThis() {
-      const fetchedImages = (await (
-        await axios.get('/api/admin/list-images')
-      ).data) as string[];
-      setImages(fetchedImages);
+      await refetch();
+      setImages(fetchedImages || []);
     }
 
     void runThis();
-  }, []);
+  }, [fetchedImages, refetch]);
 
   return (
     <Main>
