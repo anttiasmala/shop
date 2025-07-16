@@ -198,11 +198,6 @@ function ProductBlock({ product }: { product: GetCart }) {
                   onClick={() => {
                     void (async () => {
                       try {
-                        /*
-                        if (amountOfProduct === 1) {
-                          return;
-                        }
-                        */
                         setAmountOfProduct((prevValue) =>
                           prevValue === 0 ? 0 : prevValue - 1,
                         );
