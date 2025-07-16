@@ -149,6 +149,10 @@ function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
 
 function ProductBlock({ product }: { product: GetCart }) {
   const [amountOfProduct, setAmountOfProduct] = useState(product.amount);
+  const [amountOfProductBeforeBlur, setAmountOfProductBeforeBlur] = useState(
+    product.amount,
+  );
+
   const [userCartUUID, setUserCartUUID] = useState('');
   const { image, title, price } = product.Product;
 
@@ -189,48 +193,74 @@ function ProductBlock({ product }: { product: GetCart }) {
               <p className="w-24">${price}</p>
             </div>
             <div className="flex">
-              <button
-                onClick={() => {
-                  void (async () => {
-                    try {
-                      if (amountOfProduct === 1) {
-                        return;
+              <div className="flex items-center">
+                <button
+                  onClick={() => {
+                    void (async () => {
+                      try {
+                        setAmountOfProduct((prevValue) =>
+                          prevValue === 0 ? 0 : prevValue - 1,
+                        );
+                        await mutateAsync();
+                        await queryClient.invalidateQueries({
+                          queryKey: QueryAndMutationKeys.CartProducts,
+                        });
+                      } catch (e) {
+                        handleError(e);
                       }
-                      setAmountOfProduct((prevValue) =>
-                        prevValue === 0 ? 0 : prevValue - 1,
-                      );
-                      await mutateAsync();
-                      await queryClient.invalidateQueries({
-                        queryKey: QueryAndMutationKeys.CartProducts,
-                      });
-                    } catch (e) {
-                      handleError(e);
-                    }
-                  })();
+                    })();
+                  }}
+                  className="flex size-6 items-center justify-center border border-gray-100 hover:bg-gray-300"
+                >
+                  <Minus className="w-4" />
+                </button>
+              </div>
+              <input
+                className="w-12 rounded border border-black pl-2"
+                onChange={(e) => {
+                  const numericRegex = /-?\d+(\.\d+)?/g;
+                  const parsedNumber =
+                    e.currentTarget.value.match(numericRegex);
+
+                  setAmountOfProduct(Number(parsedNumber));
                 }}
-                className="border border-gray-100"
-              >
-                <Minus className="w-4" />
-              </button>
-              <p className="p-6 pt-2 pb-2">{amountOfProduct}</p>
-              <button
-                onClick={() => {
+                onFocus={() => {
+                  setAmountOfProductBeforeBlur(amountOfProduct);
+                }}
+                onBlur={() => {
                   void (async () => {
-                    try {
-                      setAmountOfProduct((prevValue) => prevValue + 1);
-                      await mutateAsync();
-                      await queryClient.invalidateQueries({
-                        queryKey: QueryAndMutationKeys.CartProducts,
-                      });
-                    } catch (e) {
-                      handleError(e);
-                    }
+                    // this will prevent request sent to backend if amount of products were same
+                    // so for example if user just click the input and clicks out without changing anything
+                    if (amountOfProductBeforeBlur === amountOfProduct) return;
+                    await mutateAsync();
+                    await queryClient.invalidateQueries({
+                      queryKey: QueryAndMutationKeys.CartProducts,
+                    });
                   })();
                 }}
-                className="border border-gray-100"
-              >
-                <Plus className="w-4" />
-              </button>
+                value={amountOfProduct}
+              />
+
+              <div className="flex items-center">
+                <button
+                  onClick={() => {
+                    void (async () => {
+                      try {
+                        setAmountOfProduct((prevValue) => prevValue + 1);
+                        await mutateAsync();
+                        await queryClient.invalidateQueries({
+                          queryKey: QueryAndMutationKeys.CartProducts,
+                        });
+                      } catch (e) {
+                        handleError(e);
+                      }
+                    })();
+                  }}
+                  className="flex size-6 items-center justify-center border border-gray-100 hover:bg-gray-300"
+                >
+                  <Plus className="w-4" />
+                </button>
+              </div>
 
               <button
                 className="ml-8"

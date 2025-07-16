@@ -97,6 +97,17 @@ async function handlePATCH(req: NextApiRequest, res: NextApiResponse) {
     },
   });
 
+  if (cartItem.amount <= 0) {
+    await prisma.cartItem.delete({
+      where: {
+        uuid: cartItemFromDatabase.uuid,
+        productUUID: product.uuid,
+      },
+    });
+    res.status(200).end();
+    return;
+  }
+
   const updatedCartItem = await prisma.cartItem.update({
     where: {
       uuid: cartItemFromDatabase.uuid,

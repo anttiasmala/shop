@@ -103,7 +103,9 @@ export const deleteCartItemSchema = z.object({
   productId: z.string(),
 });
 
-export const patchCartItemSchema = createCartItemSchema.extend({
+export const patchCartItemSchema = z.object({
+  id: z.number().min(1, 'ID is mandatory!'),
+  amount: z.number(),
   userCartUUID: uuidSchema,
 });
 
