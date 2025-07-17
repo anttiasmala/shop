@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { EditIcon, Trash2, X } from 'lucide-react';
 import Image from 'next/image';
@@ -6,6 +6,7 @@ import { FormEvent, useEffect, useState } from 'react';
 import { Input } from '~/components/Input';
 import { Main } from '~/components/Main';
 import { NavBarAdmin } from '~/components/NavBarAdmin';
+import { QueryAndMutationKeys } from '~/shared/types';
 import { getServerSidePropsAdminOnly as getServerSideProps } from '~/utils/getServerSideProps';
 
 /* ADMINS ONLY */
@@ -16,8 +17,10 @@ export default function ListImages() {
   const [editModalData, setEditModalData] = useState('');
   const [deleteModalData, setDeleteModalData] = useState('');
 
+  const queryClient = useQueryClient();
+
   const { data: fetchedImages, refetch } = useQuery({
-    queryKey: ['ListImages'],
+    queryKey: QueryAndMutationKeys.ListImages,
     queryFn: async () => {
       return (await axios.get('/api/admin/list-images')).data as string[];
     },
@@ -80,6 +83,7 @@ export default function ListImages() {
           closeModal={() => setEditModalData('')}
           imageName={editModalData}
           allImages={images}
+          queryClient={queryClient}
         />
       )}
       {deleteModalData && (
@@ -96,10 +100,12 @@ function EditModal({
   imageName,
   closeModal,
   allImages,
+  queryClient,
 }: {
   imageName: string;
   closeModal: () => void;
   allImages: string[];
+  queryClient: QueryClient;
 }) {
   const [newImageName, setNewImageName] = useState(imageName);
 
@@ -117,6 +123,9 @@ function EditModal({
       const newAllImages = [...filteredImages, newImageName];
       console.log(newAllImages);
       await axios.put('/api/admin/list-images', newAllImages);
+      await queryClient.invalidateQueries({
+        queryKey: QueryAndMutationKeys.ListImages,
+      });
       closeModal();
     } catch (e) {
       console.error(e);
