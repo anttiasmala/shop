@@ -90,6 +90,7 @@ export default function ListImages() {
         <DeleteModal
           closeModal={() => setDeleteModalData('')}
           imageName={deleteModalData}
+          queryClient={queryClient}
         />
       )}
     </Main>
@@ -177,15 +178,20 @@ function EditModal({
 function DeleteModal({
   imageName,
   closeModal,
+  queryClient,
 }: {
   imageName: string;
   closeModal: () => void;
+  queryClient: QueryClient;
 }) {
   async function handleSubmit(e: FormEvent<HTMLElement>) {
     e.preventDefault();
     try {
       console.log('Submit');
       await axios.delete('/api/admin/list-images', { data: imageName });
+      await queryClient.invalidateQueries({
+        queryKey: QueryAndMutationKeys.ListImages,
+      });
       closeModal();
     } catch (e) {
       console.error(e);
