@@ -46,7 +46,7 @@ export default function ListImages() {
           return (
             <div
               key={`imageDiv_${_index}`}
-              className="flex w-96 flex-col items-center border"
+              className="flex w-full flex-col items-center border sm:w-72"
             >
               <Image
                 priority={true}
