@@ -8,6 +8,7 @@ import { Main } from '~/components/Main';
 import { Modal } from '~/components/Modal';
 import { NavBarAdmin } from '~/components/NavBarAdmin';
 import { QueryAndMutationKeys } from '~/shared/types';
+import { BASE_IMAGE_URL } from '~/utils/constants';
 import { getServerSidePropsAdminOnly as getServerSideProps } from '~/utils/getServerSideProps';
 
 /* ADMINS ONLY */
@@ -17,6 +18,7 @@ export default function ListImages() {
   const [images, setImages] = useState<string[]>([]);
   const [editModalData, setEditModalData] = useState('');
   const [deleteModalData, setDeleteModalData] = useState('');
+  const [zoomedImageModalData, setZoomedImageModalData] = useState('');
 
   const queryClient = useQueryClient();
 
@@ -52,14 +54,20 @@ export default function ListImages() {
               key={`imageDiv_${_index}`}
               className="flex w-full flex-col items-center border sm:w-72"
             >
-              <Image
-                priority={true}
-                alt="image"
-                src={`/images/products/${_image}`}
-                width={1920}
-                height={1080}
-                className="size-48 object-contain"
-              />
+              <button
+                onClick={() =>
+                  setZoomedImageModalData(`/images/products/${_image}`)
+                }
+              >
+                <Image
+                  priority={true}
+                  alt="image"
+                  src={`/images/products/${_image}`}
+                  width={1920}
+                  height={1080}
+                  className="size-48 object-contain"
+                />
+              </button>
               <p className="wrap-anywhere">{_image}</p>
               <div>
                 <button
@@ -92,6 +100,12 @@ export default function ListImages() {
           closeModal={() => setDeleteModalData('')}
           imageName={deleteModalData}
           queryClient={queryClient}
+        />
+      )}
+      {zoomedImageModalData && (
+        <ZoomImageModal
+          closeModal={() => setZoomedImageModalData('')}
+          imageHref={zoomedImageModalData}
         />
       )}
     </Main>
@@ -224,6 +238,34 @@ function DeleteModal({
           </div>
         </form>
       </div>
+    </Modal>
+  );
+}
+
+function ZoomImageModal({
+  closeModal,
+  imageHref,
+}: {
+  closeModal: () => void;
+  imageHref: string;
+}) {
+  return (
+    <Modal closeModal={() => closeModal()}>
+      <div className="absolute -top-24 -right-7 z-10">
+        <button type="button" onClick={() => closeModal()}>
+          <X className="size-24 text-white" />
+        </button>
+      </div>
+      <a href={imageHref || BASE_IMAGE_URL} target="_blank" className="z-0">
+        <Image
+          priority={true}
+          alt="SSD"
+          src={imageHref || BASE_IMAGE_URL}
+          blurDataURL="/images/products/image_base.png"
+          width={1920}
+          height={1080}
+        />
+      </a>
     </Modal>
   );
 }
