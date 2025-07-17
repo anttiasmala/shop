@@ -249,6 +249,7 @@ function ZoomImageModal({
   closeModal: () => void;
   imageHref: string;
 }) {
+  /* Starting at row 260 is kinda of a workaround. Check if it really works */
   return (
     <Modal closeModal={() => closeModal()}>
       <div className="absolute -top-24 -right-7 z-10">
@@ -256,16 +257,19 @@ function ZoomImageModal({
           <X className="size-24 text-white" />
         </button>
       </div>
-      <a href={imageHref || BASE_IMAGE_URL} target="_blank" className="z-0">
-        <Image
-          priority={true}
-          alt="SSD"
-          src={imageHref || BASE_IMAGE_URL}
-          blurDataURL="/images/products/image_base.png"
-          width={1920}
-          height={1080}
-        />
-      </a>
+      <div className="overflow-auto sm:h-[52rem]">
+        <a href={imageHref || BASE_IMAGE_URL} target="_blank" className="">
+          <Image
+            priority={true}
+            alt="SSD"
+            src={imageHref || BASE_IMAGE_URL}
+            blurDataURL="/images/products/image_base.png"
+            className="object-contain"
+            width={1920}
+            height={1080}
+          />
+        </a>
+      </div>
     </Modal>
   );
 }
