@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { FormEvent, useEffect, useState } from 'react';
 import { Input } from '~/components/Input';
 import { Main } from '~/components/Main';
+import { Modal } from '~/components/Modal';
 import { NavBarAdmin } from '~/components/NavBarAdmin';
 import { QueryAndMutationKeys } from '~/shared/types';
 import { getServerSidePropsAdminOnly as getServerSideProps } from '~/utils/getServerSideProps';
@@ -134,44 +135,39 @@ function EditModal({
   }
 
   return (
-    <div className="fixed inset-0 h-full w-full bg-black/90">
-      <div className="fixed top-1/2 left-4 sm:left-1/2">
-        <button
-          className="absolute -top-4 right-0 text-white hover:border"
-          onClick={() => closeModal()}
-        >
-          <X className="size-8" />
-        </button>
-        <div>
-          <form
-            className="flex flex-col"
-            onSubmit={(e) => void handleSubmit(e)}
-          >
-            <label className="text-white">Image Name:</label>
-            <Input
-              className="w-72"
-              value={newImageName}
-              onChange={(e) => setNewImageName(e.target.value)}
-            />
-            <div className="mt-4 flex w-full justify-center">
-              <button
-                className="mr-4 w-20 rounded-lg border text-white hover:bg-gray-500"
-                type="button"
-                onClick={() => closeModal()}
-              >
-                Cancel
-              </button>
-              <button
-                className="w-20 rounded-lg border text-white hover:bg-gray-500"
-                type="submit"
-              >
-                Submit
-              </button>
-            </div>
-          </form>
-        </div>
+    <Modal closeModal={() => closeModal()} firstDivClassName="opacity-90">
+      <button
+        className="absolute -top-4 right-0 text-white hover:border"
+        onClick={() => closeModal()}
+      >
+        <X className="size-8" />
+      </button>
+      <div>
+        <form className="flex flex-col" onSubmit={(e) => void handleSubmit(e)}>
+          <label className="text-white">Image Name:</label>
+          <Input
+            className="w-72"
+            value={newImageName}
+            onChange={(e) => setNewImageName(e.target.value)}
+          />
+          <div className="mt-4 flex w-full justify-center">
+            <button
+              className="mr-4 w-20 rounded-lg border text-white hover:bg-gray-500"
+              type="button"
+              onClick={() => closeModal()}
+            >
+              Cancel
+            </button>
+            <button
+              className="w-20 rounded-lg border text-white hover:bg-gray-500"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
       </div>
-    </div>
+    </Modal>
   );
 }
 
