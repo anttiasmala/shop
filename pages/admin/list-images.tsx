@@ -15,14 +15,13 @@ import { getServerSidePropsAdminOnly as getServerSideProps } from '~/utils/getSe
 export { getServerSideProps };
 
 export default function ListImages() {
-  const [images, setImages] = useState<string[]>([]);
   const [editModalData, setEditModalData] = useState('');
   const [deleteModalData, setDeleteModalData] = useState('');
   const [zoomedImageModalData, setZoomedImageModalData] = useState('');
 
   const queryClient = useQueryClient();
 
-  const { data: fetchedImages, refetch } = useQuery({
+  const { data: images } = useQuery({
     queryKey: QueryAndMutationKeys.ListImages,
     queryFn: async () => {
       return (await axios.get('/api/admin/list-images')).data as string[];
@@ -32,15 +31,6 @@ export default function ListImages() {
     retry: false,
   });
 
-  useEffect(() => {
-    async function runThis() {
-      await refetch();
-      setImages(fetchedImages || []);
-    }
-
-    void runThis();
-  }, [fetchedImages, refetch]);
-
   return (
     <Main>
       <NavBarAdmin />
@@ -48,7 +38,7 @@ export default function ListImages() {
         List Images
       </p>
       <div className="mt-5 flex w-full flex-wrap">
-        {images.map((_image, _index) => {
+        {images?.map((_image, _index) => {
           return (
             <div
               key={`imageDiv_${_index}`}
@@ -91,7 +81,7 @@ export default function ListImages() {
         <EditModal
           closeModal={() => setEditModalData('')}
           imageName={editModalData}
-          allImages={images}
+          allImages={images || []}
           queryClient={queryClient}
         />
       )}
@@ -249,7 +239,7 @@ function ZoomImageModal({
   closeModal: () => void;
   imageHref: string;
 }) {
-  /* Starting at row 260 is kinda of a workaround. Check if it really works */
+  /* Starting at row 260 is kinda of a workaround. Check if it really works   */
   return (
     <Modal closeModal={() => closeModal()}>
       <div className="absolute -top-24 -right-7 z-10">
