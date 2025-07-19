@@ -96,6 +96,7 @@ export const QueryAndMutationKeys = {
   Products: ['products'],
   Product: ['product'],
   Images: ['images'],
+  ListImages: ['ListImages'],
   UpdateCartTotalAmount: ['updateCartTotalAmount'],
   Login: ['login'],
   Register: ['register'],
