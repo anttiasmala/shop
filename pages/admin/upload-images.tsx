@@ -1,13 +1,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { X } from 'lucide-react';
-import { FormEvent, useRef, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Main } from '~/components/Main';
 import { NavBarAdmin } from '~/components/NavBarAdmin';
 import { QueryAndMutationKeys } from '~/shared/types';
 
 import { getServerSidePropsAdminOnly as getServerSideProps } from '~/utils/getServerSideProps';
+import { handleError } from '~/utils/handleError';
 
 /* ADMINS ONLY */
 export { getServerSideProps };
@@ -20,14 +21,14 @@ export default function AdminIndex() {
 
   const queryClient = useQueryClient();
 
-  const { mutateAsync } = useMutation({
+  const { mutateAsync, error } = useMutation({
     mutationKey: QueryAndMutationKeys.UploadImage,
     mutationFn: async () =>
       await axios.post('/api/admin/upload', inputRef.current?.files),
     onSuccess: async () => {
       try {
         queryClient.clear();
-        toast('Image added succesfully!');
+        toast('Image uploaded succesfully!');
         const input = document.getElementById(
           'fileUploadInput',
         ) as HTMLInputElement;
@@ -39,13 +40,17 @@ export default function AdminIndex() {
     },
   });
 
-  function handleSubmit(e: FormEvent<HTMLElement>) {
+  useEffect(() => {
+    if (!error) return;
+    handleError(error);
+  }, [error]);
+
+  async function handleSubmit(e: FormEvent<HTMLElement>) {
     e.preventDefault();
     try {
       if (!inputRef.current?.files) {
         return;
       }
-
       if (
         ACCEPTED_FILE_TYPES.includes(inputRef.current.files[0].type) === false
       ) {
@@ -53,6 +58,7 @@ export default function AdminIndex() {
         return;
       }
       console.log(inputRef.current.files[0].type);
+      await mutateAsync();
     } catch (e) {
       console.error(e);
     }
@@ -114,11 +120,6 @@ export default function AdminIndex() {
             <button
               className="mt-3 w-48 rounded border bg-gray-300 p-2 hover:bg-gray-400"
               type="submit"
-              onClick={() =>
-                void (async () => {
-                  await mutateAsync();
-                })()
-              }
             >
               Submit File
             </button>
