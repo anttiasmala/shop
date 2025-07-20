@@ -2,14 +2,11 @@ import { z } from 'zod';
 import { emailRegex, passwordRegex } from './regexPatterns';
 
 // MISC SCHEMAS
-export const uuidSchema = z
-  .string({ message: 'Invalid UUID! It should be given as a string!' })
-  .uuid('UUID pattern was invalid!');
+export const uuidSchema = z.uuid('UUID pattern was invalid!');
 
-export const dateSchema = z
-  .string()
+export const dateSchema = z.iso
+  .datetime({ error: 'Given date is invalid!' })
   .min(1, 'Date is mandatory!')
-  .datetime({ message: 'Given date is invalid!' })
   .pipe(z.coerce.date());
 
 export const firstNameSchema = z
@@ -136,7 +133,7 @@ export const getUserSchema = fullUserSchema
     createdAt: true,
     updatedAt: true,
   })
-  .merge(userSchema);
+  .extend(userSchema);
 
 export const createUserSchema = userSchema.extend({
   password: passwordSchema,
