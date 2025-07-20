@@ -2,7 +2,7 @@ import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { EditIcon, Trash2, X } from 'lucide-react';
 import Image from 'next/image';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { Input } from '~/components/Input';
 import { Main } from '~/components/Main';
 import { Modal } from '~/components/Modal';

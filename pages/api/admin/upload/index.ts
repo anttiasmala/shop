@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import formidable, { errors as FormidableErrors } from 'formidable';
+import formidable from 'formidable';
 import fs from 'fs';
 import { checkIsAdminFromValidateRequest } from '~/backend/utils';
 import { validateRequest } from '~/backend/auth/auth';
@@ -81,6 +81,8 @@ export default async function UploadHandler(
       form.parse(req, (e, _, files) => {
         if (e) {
           // Reference: https://github.com/node-formidable/formidable/issues/972#issuecomment-2442784495
+          // CHECK THIS, could Zod be added here?
+          /* eslint-disable */
           if (typeof e === 'object' && 'code' in e && 'httpCode' in e) {
             if (
               e.code === FormidableErrorCodes.biggerThanMaxFileSize ||
@@ -90,6 +92,7 @@ export default async function UploadHandler(
               return resolve();
             }
           }
+          /* eslint-enable */
           console.error('Error parsing form:', e);
           res.status(500).json({ error: 'File upload failed.' });
           resolve();

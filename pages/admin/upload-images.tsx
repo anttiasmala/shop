@@ -25,7 +25,7 @@ export default function AdminIndex() {
     mutationKey: QueryAndMutationKeys.UploadImage,
     mutationFn: async () =>
       await axios.post('/api/admin/upload', inputRef.current?.files),
-    onSuccess: async () => {
+    onSuccess: () => {
       try {
         queryClient.clear();
         toast('Image uploaded succesfully!');
@@ -73,7 +73,7 @@ export default function AdminIndex() {
       <div className="mt-5 flex w-full justify-center">
         <form
           className="flex flex-col items-center"
-          onSubmit={(e) => handleSubmit(e)}
+          onSubmit={(e) => void (async () => await handleSubmit(e))}
         >
           <label htmlFor="filename">Choose an image you want to upload</label>
           <input
