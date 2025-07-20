@@ -50,6 +50,11 @@ export const productSchema = z.object({
   category: z.string(),
 });
 
+export const adminProductSchema = productSchema.extend({
+  createdAt: z.date(),
+  updatedAt: z.date(),
+});
+
 export const createProductSchema = productSchema.omit({
   id: true,
 });
