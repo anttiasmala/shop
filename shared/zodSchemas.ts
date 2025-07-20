@@ -133,7 +133,7 @@ export const getUserSchema = fullUserSchema
     createdAt: true,
     updatedAt: true,
   })
-  .extend(userSchema);
+  .extend(userSchema.shape);
 
 export const createUserSchema = userSchema.extend({
   password: passwordSchema,

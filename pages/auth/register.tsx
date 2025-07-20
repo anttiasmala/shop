@@ -83,15 +83,15 @@ export default function Register() {
   /** If returns true all good, if false errors have been found */
   function checkFields() {
     const firstName =
-      firstNameSchema.safeParse(formData.firstName).error?.errors[0].message ??
+      firstNameSchema.safeParse(formData.firstName).error?.issues[0].message ??
       '';
     const lastName =
-      lastNameSchema.safeParse(formData.lastName).error?.errors[0].message ??
+      lastNameSchema.safeParse(formData.lastName).error?.issues[0].message ??
       '';
     const email =
-      emailSchema.safeParse(formData.email).error?.errors[0].message ?? '';
+      emailSchema.safeParse(formData.email).error?.issues[0].message ?? '';
     const password =
-      passwordSchema.safeParse(formData.password).error?.errors[0].message ??
+      passwordSchema.safeParse(formData.password).error?.issues[0].message ??
       '';
     setErrors(() => ({ firstName, lastName, email, password }));
 
