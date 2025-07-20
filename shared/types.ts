@@ -97,6 +97,7 @@ export const QueryAndMutationKeys = {
   Product: ['product'],
   Images: ['images'],
   ListImages: ['ListImages'],
+  UploadImage: ['UploadImage'],
   UpdateCartTotalAmount: ['updateCartTotalAmount'],
   Login: ['login'],
   Register: ['register'],
@@ -221,3 +222,48 @@ export type KeyboardEventKeys =
   | 'F12'
   | 'Num Lock'
   | 'Scroll Lock';
+
+export const FormidableErrorCodes: Record<
+  | 'missingPlugin'
+  | 'pluginFunction'
+  | 'aborted'
+  | 'noParser'
+  | 'uninitializedParser'
+  | 'filenameNotString'
+  | 'maxFieldsSizeExceeded'
+  | 'maxFieldsExceeded'
+  | 'smallerThanMinFileSize'
+  | 'biggerThanTotalMaxFileSize'
+  | 'noEmptyFiles'
+  | 'missingContentType'
+  | 'malformedMultipart'
+  | 'missingMultipartBoundary'
+  | 'unknownTransferEncoding'
+  | 'maxFilesExceeded'
+  | 'maxTotalFileSize'
+  | 'biggerThanMaxFileSize'
+  | 'pluginFailed'
+  | 'cannotCreateDir',
+  number
+> = {
+  missingPlugin: 1000,
+  pluginFunction: 1001,
+  aborted: 1002,
+  noParser: 1003,
+  uninitializedParser: 1004,
+  filenameNotString: 1005,
+  maxFieldsSizeExceeded: 1006,
+  maxFieldsExceeded: 1007,
+  smallerThanMinFileSize: 1008,
+  maxTotalFileSize: 1009,
+  biggerThanTotalMaxFileSize: 1009,
+  noEmptyFiles: 1010,
+  missingContentType: 1011,
+  malformedMultipart: 1012,
+  missingMultipartBoundary: 1013,
+  unknownTransferEncoding: 1014,
+  maxFilesExceeded: 1015,
+  biggerThanMaxFileSize: 1016,
+  pluginFailed: 1017,
+  cannotCreateDir: 1018,
+};

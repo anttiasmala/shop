@@ -10,6 +10,8 @@ const POSSIBLE_ERRORS = {
   'product was not found on the server!':
     'Product was not found on the server!',
   'cart was not found on the server!': 'Cart was not found on the server!',
+  'file exists in database already': 'File exists in database already',
+  'invalid file type': 'Invalid file type',
 } as const;
 
 type KnownErrorTexts = keyof typeof POSSIBLE_ERRORS;
