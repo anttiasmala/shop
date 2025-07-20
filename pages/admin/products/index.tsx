@@ -358,6 +358,7 @@ function EditModal({
             <button
               className="mt-4 mr-4 bg-blue-500 p-2 text-white"
               onClick={closeModal}
+              type="button"
             >
               Cancel
             </button>
