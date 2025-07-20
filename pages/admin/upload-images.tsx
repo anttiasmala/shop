@@ -73,7 +73,7 @@ export default function AdminIndex() {
       <div className="mt-5 flex w-full justify-center">
         <form
           className="flex flex-col items-center"
-          onSubmit={(e) => void (async () => await handleSubmit(e))}
+          onSubmit={(e) => void handleSubmit(e)}
         >
           <label htmlFor="filename">Choose an image you want to upload</label>
           <input

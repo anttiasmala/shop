@@ -99,7 +99,6 @@ export default async function UploadHandler(
         }
 
         const uploadedFile = Object.keys(files).length > 0;
-        console.log(uploadedFile);
         if (!uploadedFile) {
           if (UPLOAD_ERROR) {
             res.status(400).send(UPLOAD_ERROR);
