@@ -1,9 +1,11 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { X } from 'lucide-react';
 import { FormEvent, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Main } from '~/components/Main';
 import { NavBarAdmin } from '~/components/NavBarAdmin';
+import { QueryAndMutationKeys } from '~/shared/types';
 
 import { getServerSidePropsAdminOnly as getServerSideProps } from '~/utils/getServerSideProps';
 
@@ -15,6 +17,27 @@ const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpeg'];
 export default function AdminIndex() {
   const [fileName, setFileName] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const queryClient = useQueryClient();
+
+  const { mutateAsync } = useMutation({
+    mutationKey: QueryAndMutationKeys.UploadImage,
+    mutationFn: async () =>
+      await axios.post('/api/admin/upload', inputRef.current?.files),
+    onSuccess: async () => {
+      try {
+        queryClient.clear();
+        toast('Image added succesfully!');
+        const input = document.getElementById(
+          'fileUploadInput',
+        ) as HTMLInputElement;
+        input.value = '';
+        setFileName('');
+      } catch (e) {
+        console.error(e);
+      }
+    },
+  });
 
   function handleSubmit(e: FormEvent<HTMLElement>) {
     e.preventDefault();
@@ -93,10 +116,7 @@ export default function AdminIndex() {
               type="submit"
               onClick={() =>
                 void (async () => {
-                  await axios.post(
-                    '/api/admin/upload',
-                    inputRef.current?.files,
-                  );
+                  await mutateAsync();
                 })()
               }
             >
