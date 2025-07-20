@@ -17,7 +17,6 @@ import { twMerge } from 'tailwind-merge';
 import { Input } from '~/components/Input';
 import { NavBarAdmin } from '~/components/NavBarAdmin';
 import { AdminProduct, Product, QueryAndMutationKeys } from '~/shared/types';
-import { useGetProducts } from '~/utils/apiRequests';
 import Image from 'next/image';
 
 import { getServerSidePropsAdminOnly as getServerSideProps } from '~/utils/getServerSideProps';
