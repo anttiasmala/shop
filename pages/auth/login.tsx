@@ -101,7 +101,7 @@ export default function Login() {
     if (emailParse.success === false) {
       setErrors((prevValue) => ({
         ...prevValue,
-        email: emailParse.error.errors[0].message,
+        email: emailParse.error.issues[0].message,
       }));
       errorFound = true;
     }
