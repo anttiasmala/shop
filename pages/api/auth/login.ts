@@ -16,7 +16,8 @@ export default async function Login(req: NextApiRequest, res: NextApiResponse) {
 
     if (loginDetailsParse.success === false) {
       const invalidField =
-        loginDetailsParse.error.issues[0].path[0] || 'Email or password';
+        loginDetailsParse.error.issues[0].path[0].toString() ||
+        'Email or password';
       throw new HttpError(`${invalidField} is invalid!`, 400);
     }
 
