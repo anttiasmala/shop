@@ -24,7 +24,6 @@ export function NavBar({
   const [productAmount, setProductAmount] = useState(0);
 
   const authenticationModalRef = useRef<HTMLDivElement | null>(null);
-  const isInitialClick = useRef<boolean>(true);
 
   const { data: products, error: getCartError } = useQuery({
     queryKey: [QueryAndMutationKeys.NavBarProducts, productsFromParameter],
@@ -85,13 +84,10 @@ export function NavBar({
           e.target,
         );
 
-        if (isAuthModalOpen && !isClickInModal && !isInitialClick.current) {
+        if (isAuthModalOpen && !isClickInModal) {
           setIsAuthModalOpen((prevValue) => !prevValue);
         }
         // set initial click back to false, because initial click has been done
-        if (isInitialClick.current) {
-          isInitialClick.current = !isInitialClick.current;
-        }
       }
     }
     // if modal is open add the EventListener
@@ -176,9 +172,9 @@ export function NavBar({
           <div>
             <button
               className="mr-6"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 setIsAuthModalOpen((prevValue) => !prevValue);
-                isInitialClick.current = true;
               }}
             >
               <UserSVG className="size-8" />
@@ -258,7 +254,10 @@ function AuthModal({
             {user.firstName} {user.lastName}
           </p>
           <p className="text-lg wrap-anywhere">{user.email}</p>
-          <div className="mt-4">
+          <div className="mt-4 flex flex-col">
+            <Link href={'/admin'} className="button-54 mb-2 hover:bg-gray-500">
+              Admin
+            </Link>
             <Link href={'/auth/logout'} className="button-54 hover:bg-gray-500">
               Log out
             </Link>
