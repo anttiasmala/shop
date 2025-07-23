@@ -12,5 +12,4 @@
 
 ### Ideoita
 
-1. Input tuotteen lukumäärään, että voi kirjoittaa haluamansa määrän?
-2. Lisää GIF-kuvat sallittvaiksi /admin/upload-images:iin?
+1. Lisää GIF-kuvat sallittvaiksi /admin/upload-images:iin?
