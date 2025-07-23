@@ -9,7 +9,7 @@ import { handleError } from '~/utils/handleError';
 import { BASE_IMAGE_URL } from '~/utils/constants';
 
 export function Product({ product }: { product: ProductType }) {
-  const { image, title, price, id } = product;
+  const { image, title, price, id, altText } = product;
 
   const queryClient = useQueryClient();
 
@@ -20,7 +20,7 @@ export function Product({ product }: { product: ProductType }) {
           <Link href={`/product/${id}`}>
             <Image
               priority={true}
-              alt="SSD"
+              alt={altText}
               src={image || BASE_IMAGE_URL}
               width={1920}
               height={1080}

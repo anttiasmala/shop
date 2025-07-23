@@ -162,7 +162,7 @@ export default function Products({
 
 function ProductBlock({ product }: { product: Product }) {
   const queryClient = useQueryClient();
-  const { id, image, title, price } = product;
+  const { id, image, title, price, altText } = product;
 
   return (
     <div className="mt-8 flex justify-center">
@@ -176,7 +176,7 @@ function ProductBlock({ product }: { product: Product }) {
           >
             <Image
               priority={true}
-              alt="SSD"
+              alt={altText}
               src={image || BASE_IMAGE_URL}
               width={1920}
               height={1080}
