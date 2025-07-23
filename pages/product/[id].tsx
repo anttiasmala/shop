@@ -3,6 +3,7 @@ import axios from 'axios';
 import { ArrowLeft, Minus, Plus, ShoppingBagIcon, X } from 'lucide-react';
 import { InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -98,9 +99,13 @@ export default function HandleProduct({
                 <p className="mt-3 text-gray-500">{product.description}</p>
                 <div className="mt-3">
                   <p className="text-sm text-gray-500">Category:</p>
-                  <p className="mt-2 w-max rounded-full bg-gray-200 p-1">
-                    {product.category}
-                  </p>
+                  <div className="mt-2 w-max rounded-full bg-gray-200 p-1">
+                    <Link
+                      href={`/products?selectedCategories=${product.category}`}
+                    >
+                      {product.category}
+                    </Link>
+                  </div>
                 </div>
               </div>
               <div className="flex w-full justify-center border-t border-t-gray-200">
