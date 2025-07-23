@@ -16,13 +16,13 @@ import {
 import { twMerge } from 'tailwind-merge';
 import { Input } from '~/components/Input';
 import { NavBarAdmin } from '~/components/NavBarAdmin';
-import { Product, QueryAndMutationKeys } from '~/shared/types';
-import { useGetProducts } from '~/utils/apiRequests';
+import { AdminProduct, Product, QueryAndMutationKeys } from '~/shared/types';
 import Image from 'next/image';
 
 import { getServerSidePropsAdminOnly as getServerSideProps } from '~/utils/getServerSideProps';
 import { Main } from '~/components/Main';
 import { toast } from 'react-toastify';
+import { BASE_IMAGE_URL } from '~/utils/constants';
 
 /* ADMINS ONLY */
 export { getServerSideProps };
@@ -121,10 +121,29 @@ function ProductTable({
     SetStateAction<Product | undefined>
   >;
 }) {
-  const { data: products } = useGetProducts();
+  const [sortedProducts, setSortedProducts] = useState<AdminProduct[]>([]);
+
+  const { data: products } = useQuery({
+    queryKey: QueryAndMutationKeys.AdminProducts,
+    queryFn: async () => {
+      return (await axios.get(`/api/admin/products`)).data as AdminProduct[];
+    },
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    retry: false,
+  });
 
   useEffect(() => {
     console.log(products);
+    setSortedProducts(
+      products
+        ?.slice(0)
+        .sort(
+          (a, b) =>
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+        ) || [],
+    );
+    setSortedProducts(products || []);
   }, [products]);
 
   return (
@@ -140,15 +159,24 @@ function ProductTable({
         </tr>
       </thead>
       <tbody className="border-4 border-black">
-        {products?.map((_product, _index) => (
+        {sortedProducts?.map((_product, _index) => (
           <tr
             key={`product_${_index}`}
-            className={` ${_index % 2 == 0 ? 'bg-gray-200' : 'bg-gray-300'}`}
+            className={`${_index % 2 == 0 ? 'bg-gray-200' : 'bg-gray-300'}`}
           >
             <Td>{_product.title}</Td>
             <Td>{_product.description}</Td>
             <Td>{_product.price}</Td>
-            <Td>{_product.image}</Td>
+            <Td>
+              <Image
+                priority={true}
+                alt={_product.title}
+                src={_product.image || BASE_IMAGE_URL}
+                width={1920}
+                height={1080}
+                className="w-80 min-w-40 rounded-md object-contain"
+              />
+            </Td>
             <Td>{_product.category}</Td>
             <Td>
               <div className="flex">
@@ -216,7 +244,7 @@ function EditModal({
       try {
         closeModal();
         await queryClient.invalidateQueries({
-          queryKey: QueryAndMutationKeys.Products,
+          queryKey: QueryAndMutationKeys.AdminProducts,
         });
       } catch (e) {
         console.error(e);
@@ -329,6 +357,7 @@ function EditModal({
             <button
               className="mt-4 mr-4 bg-blue-500 p-2 text-white"
               onClick={closeModal}
+              type="button"
             >
               Cancel
             </button>
@@ -358,7 +387,7 @@ function DeleteModal({
       try {
         closeModal();
         await queryClient.invalidateQueries({
-          queryKey: QueryAndMutationKeys.Products,
+          queryKey: QueryAndMutationKeys.AdminProducts,
         });
       } catch (e) {
         console.error(e);
@@ -429,7 +458,7 @@ function DeleteProductFromCarts({
       try {
         closeModal();
         await queryClient.invalidateQueries({
-          queryKey: QueryAndMutationKeys.Products,
+          queryKey: QueryAndMutationKeys.AdminProducts,
         });
       } catch (e) {
         console.error(e);
@@ -515,7 +544,7 @@ function AddProduct({
       try {
         closeModal();
         await queryClient.invalidateQueries({
-          queryKey: QueryAndMutationKeys.Products,
+          queryKey: QueryAndMutationKeys.AdminProducts,
         });
       } catch (e) {
         console.error(e);
