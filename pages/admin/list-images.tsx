@@ -253,7 +253,7 @@ function ZoomImageModal({
             priority={true}
             alt="SSD"
             src={imageHref || BASE_IMAGE_URL}
-            blurDataURL="/images/products/image_base.png"
+            blurDataURL={BASE_IMAGE_URL}
             className="object-contain"
             width={1920}
             height={1080}
