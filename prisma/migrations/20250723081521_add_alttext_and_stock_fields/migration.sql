@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Product" ADD COLUMN     "altText" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "stock" INTEGER NOT NULL DEFAULT 0;
