@@ -41,6 +41,8 @@ model Product {
     uuid        String   @unique @default(uuid())
     title       String
     description String
+    altText     String   @default("")
+    stock       Int      @default(0)
     price       String
     image       String
     category    String
