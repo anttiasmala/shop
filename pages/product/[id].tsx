@@ -3,6 +3,7 @@ import axios from 'axios';
 import { ArrowLeft, Minus, Plus, ShoppingBagIcon, X } from 'lucide-react';
 import { InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -10,7 +11,7 @@ import { Footer } from '~/components/Footer';
 import { Main } from '~/components/Main';
 import { Modal } from '~/components/Modal';
 import { NavBar } from '~/components/NavBar';
-import { QueryAndMutationKeys } from '~/shared/types';
+import { Product, QueryAndMutationKeys } from '~/shared/types';
 import { useGetProduct } from '~/utils/apiRequests';
 import { BASE_IMAGE_URL } from '~/utils/constants';
 import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
@@ -23,7 +24,9 @@ export default function HandleProduct({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [productId, setProductId] = useState('');
   const [selectedAmount, setSelectedAmount] = useState(0);
-  const [showZoomModal, setShowZoomModal] = useState(false);
+  const [showZoomModalData, setShowZoomModalData] = useState<
+    Product | undefined
+  >(undefined);
 
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -72,12 +75,12 @@ export default function HandleProduct({
                 <button
                   type="button"
                   onClick={() => {
-                    setShowZoomModal(true);
+                    setShowZoomModalData(product);
                   }}
                 >
                   <Image
                     priority={true}
-                    alt="SSD"
+                    alt={product.altText}
                     src={product.image || BASE_IMAGE_URL}
                     width={1920}
                     height={1080}
@@ -96,9 +99,13 @@ export default function HandleProduct({
                 <p className="mt-3 text-gray-500">{product.description}</p>
                 <div className="mt-3">
                   <p className="text-sm text-gray-500">Category:</p>
-                  <p className="mt-2 w-max rounded-full bg-gray-200 p-1">
-                    {product.category}
-                  </p>
+                  <div className="mt-2 w-max rounded-full bg-gray-200 p-1">
+                    <Link
+                      href={`/products?selectedCategories=${product.category}`}
+                    >
+                      {product.category}
+                    </Link>
+                  </div>
                 </div>
               </div>
               <div className="flex w-full justify-center border-t border-t-gray-200">
@@ -153,17 +160,20 @@ export default function HandleProduct({
                 </div>
               </div>
             </div>
-            {showZoomModal && (
-              <Modal closeModal={() => setShowZoomModal(false)}>
+            {showZoomModalData && (
+              <Modal closeModal={() => setShowZoomModalData(undefined)}>
                 <div className="absolute -top-24 -right-7">
-                  <button type="button" onClick={() => setShowZoomModal(false)}>
+                  <button
+                    type="button"
+                    onClick={() => setShowZoomModalData(undefined)}
+                  >
                     <X className="size-24 text-white" />
                   </button>
                 </div>
                 <a href={product.image || BASE_IMAGE_URL} target="_blank">
                   <Image
                     priority={true}
-                    alt="SSD"
+                    alt={product.altText}
                     src={product.image || BASE_IMAGE_URL}
                     blurDataURL="/images/products/image_base.png"
                     width={1920}

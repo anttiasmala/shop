@@ -3,6 +3,7 @@ import axios from 'axios';
 import { InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Footer } from '~/components/Footer';
@@ -37,6 +38,21 @@ export default function Products({
   >('default');
 
   const { data: products } = useGetProducts();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    if (
+      router.query.selectedCategories &&
+      typeof router.query.selectedCategories === 'string'
+    ) {
+      const splitByComma = router.query.selectedCategories.split(',');
+
+      setCategoryTerm((prevValue) => prevValue.concat(splitByComma));
+      return;
+    }
+    setCategoryTerm([]);
+  }, [router.isReady, router.query.selectedCategories]);
 
   useEffect(() => {
     console.log(products);
@@ -119,6 +135,7 @@ export default function Products({
                           );
                         }
                       }}
+                      checked={categoryTerm.includes(_category) ? true : false}
                     />
                     <span className="ml-1 cursor-pointer select-none">
                       {_category}
