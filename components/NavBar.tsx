@@ -255,9 +255,14 @@ function AuthModal({
           </p>
           <p className="text-lg wrap-anywhere">{user.email}</p>
           <div className="mt-4 flex flex-col">
-            <Link href={'/admin'} className="button-54 mb-2 hover:bg-gray-500">
-              Admin
-            </Link>
+            {user.role === 'ADMIN' && (
+              <Link
+                href={'/admin'}
+                className="button-54 mb-2 hover:bg-gray-500"
+              >
+                Admin
+              </Link>
+            )}
             <Link href={'/auth/logout'} className="button-54 hover:bg-gray-500">
               Log out
             </Link>

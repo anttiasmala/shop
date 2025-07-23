@@ -1,9 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { Eye, EyeOff } from 'lucide-react';
+import { GetServerSidePropsContext } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { validateRequest } from '~/backend/auth/auth';
 import { Input } from '~/components/Input';
 import { Main } from '~/components/Main';
 import { NavBar } from '~/components/NavBar';
@@ -22,6 +24,22 @@ const EMPTY_FORM = {
   email: '',
   password: '',
 };
+
+// ran in backend!
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const cookieData = await validateRequest(context.req, context.res);
+  if (!cookieData.user || !cookieData.session.isLoggedIn) {
+    return {
+      props: {},
+    };
+  }
+  return {
+    redirect: {
+      permanent: false,
+      destination: '/',
+    },
+  };
+}
 
 const EMPTY_ERRORS = EMPTY_FORM;
 

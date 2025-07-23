@@ -154,7 +154,7 @@ function ProductBlock({ product }: { product: GetCart }) {
   );
 
   const [userCartUUID, setUserCartUUID] = useState('');
-  const { image, title, price } = product.Product;
+  const { image, title, price, altText } = product.Product;
 
   const queryClient = useQueryClient();
 
@@ -181,7 +181,7 @@ function ProductBlock({ product }: { product: GetCart }) {
         <div className="flex bg-white">
           <Image
             priority={true}
-            alt={`${title}ProductImage`}
+            alt={`${altText}`}
             src={image || BASE_IMAGE_URL}
             width={1920}
             height={1080}
