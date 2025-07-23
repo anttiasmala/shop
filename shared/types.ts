@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import {
+  adminProductSchema,
   cartSchema,
   cartSettingsSchema,
   createSessionSchema,
@@ -21,6 +22,8 @@ import {
 
 // PRODUCT
 export type Product = z.infer<typeof productSchema>;
+
+export type AdminProduct = z.infer<typeof adminProductSchema>;
 
 // CART
 
@@ -98,6 +101,7 @@ export const QueryAndMutationKeys = {
   Images: ['images'],
   ListImages: ['ListImages'],
   UploadImage: ['UploadImage'],
+  AdminProducts: ['AdminProducts'],
   UpdateCartTotalAmount: ['updateCartTotalAmount'],
   Login: ['login'],
   Register: ['register'],

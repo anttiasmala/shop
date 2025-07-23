@@ -36,12 +36,7 @@ async function handleGET(req: NextApiRequest, res: NextApiResponse) {
     throw new HttpError("You don't have privileges to do that", 400);
   }
 
-  const products = await prisma.product.findMany({
-    omit: {
-      createdAt: true,
-      updatedAt: true,
-    },
-  });
+  const products = await prisma.product.findMany();
 
   return res.status(200).json(products);
 }
