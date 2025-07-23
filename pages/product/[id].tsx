@@ -10,7 +10,7 @@ import { Footer } from '~/components/Footer';
 import { Main } from '~/components/Main';
 import { Modal } from '~/components/Modal';
 import { NavBar } from '~/components/NavBar';
-import { QueryAndMutationKeys } from '~/shared/types';
+import { Product, QueryAndMutationKeys } from '~/shared/types';
 import { useGetProduct } from '~/utils/apiRequests';
 import { BASE_IMAGE_URL } from '~/utils/constants';
 import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
@@ -23,7 +23,9 @@ export default function HandleProduct({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [productId, setProductId] = useState('');
   const [selectedAmount, setSelectedAmount] = useState(0);
-  const [showZoomModal, setShowZoomModal] = useState(false);
+  const [showZoomModalData, setShowZoomModalData] = useState<
+    Product | undefined
+  >(undefined);
 
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -72,12 +74,12 @@ export default function HandleProduct({
                 <button
                   type="button"
                   onClick={() => {
-                    setShowZoomModal(true);
+                    setShowZoomModalData(product);
                   }}
                 >
                   <Image
                     priority={true}
-                    alt="SSD"
+                    alt={product.altText}
                     src={product.image || BASE_IMAGE_URL}
                     width={1920}
                     height={1080}
@@ -153,17 +155,20 @@ export default function HandleProduct({
                 </div>
               </div>
             </div>
-            {showZoomModal && (
-              <Modal closeModal={() => setShowZoomModal(false)}>
+            {showZoomModalData && (
+              <Modal closeModal={() => setShowZoomModalData(undefined)}>
                 <div className="absolute -top-24 -right-7">
-                  <button type="button" onClick={() => setShowZoomModal(false)}>
+                  <button
+                    type="button"
+                    onClick={() => setShowZoomModalData(undefined)}
+                  >
                     <X className="size-24 text-white" />
                   </button>
                 </div>
                 <a href={product.image || BASE_IMAGE_URL} target="_blank">
                   <Image
                     priority={true}
-                    alt="SSD"
+                    alt={product.altText}
                     src={product.image || BASE_IMAGE_URL}
                     blurDataURL="/images/products/image_base.png"
                     width={1920}
