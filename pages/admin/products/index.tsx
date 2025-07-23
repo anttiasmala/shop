@@ -564,6 +564,8 @@ function AddProduct({
   const [inputFields, setInputFields] = useState({
     title: '',
     description: '',
+    altText: '',
+    stock: 0,
     price: '',
     image: '',
     category: '',
@@ -620,6 +622,31 @@ function AddProduct({
                 }))
               }
               value={inputFields.description}
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="text-white">Alt text:</label>
+            <Input
+              onChange={(e) =>
+                setInputFields((prevValue) => ({
+                  ...prevValue,
+                  altText: e.target.value,
+                }))
+              }
+              value={inputFields.altText}
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="text-white">Stock:</label>
+            <Input
+              type="number"
+              onChange={(e) =>
+                setInputFields((prevValue) => ({
+                  ...prevValue,
+                  stock: Number(e.target.value),
+                }))
+              }
+              value={inputFields.stock}
             />
           </div>
           <div className="flex flex-col">
