@@ -42,6 +42,7 @@ export default async function Login(req: NextApiRequest, res: NextApiResponse) {
 
     const sessionUUID = await logUserIn(userDetails.uuid);
 
+    // this detemines if session is long or short in user's Cookies
     res
       .appendHeader(
         'Set-cookie',
@@ -55,6 +56,7 @@ export default async function Login(req: NextApiRequest, res: NextApiResponse) {
 }
 
 export async function logUserIn(userUUID: string) {
+  // this determines if session is long or short in database
   const { uuid: sessionUUID } = await authLong.createSession(userUUID);
 
   return sessionUUID;
