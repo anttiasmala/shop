@@ -142,7 +142,7 @@ function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
           <div className="flex w-full justify-center">
             <Link
               href={'/cart/checkout'}
-              className="mt-4 w-48 rounded-md bg-black p-2 text-white"
+              className="mt-4 flex w-48 justify-center rounded-md bg-black p-2 text-white"
             >
               Checkout
             </Link>
