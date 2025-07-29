@@ -108,12 +108,15 @@ async function handlePATCH(req: NextApiRequest, res: NextApiResponse) {
     return;
   }
 
+  const newAmount =
+    cartItem.amount > product.stock ? product.stock : cartItem.amount;
+
   const updatedCartItem = await prisma.cartItem.update({
     where: {
       uuid: cartItemFromDatabase.uuid,
     },
     data: {
-      amount: cartItem.amount,
+      amount: newAmount,
     },
   });
 
