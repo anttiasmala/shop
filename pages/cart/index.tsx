@@ -140,9 +140,12 @@ function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
             </p>
           </div>
           <div className="flex w-full justify-center">
-            <button className="mt-4 w-48 rounded-md bg-black p-2 text-white">
+            <Link
+              href={'/cart/checkout'}
+              className="mt-4 w-48 rounded-md bg-black p-2 text-white"
+            >
               Checkout
-            </button>
+            </Link>
           </div>
         </div>
       </div>
