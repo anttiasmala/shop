@@ -229,13 +229,17 @@ function ProductBlock({ product }: { product: GetCart }) {
                 }}
                 onBlur={() => {
                   void (async () => {
-                    // this will prevent request sent to backend if amount of products were same
-                    // so for example if user just click the input and clicks out without changing anything
-                    if (amountOfProductBeforeBlur === amountOfProduct) return;
-                    await mutateAsync();
-                    await queryClient.invalidateQueries({
-                      queryKey: QueryAndMutationKeys.CartProducts,
-                    });
+                    try {
+                      // this will prevent request sent to backend if amount of products were same
+                      // so for example if user just click the input and clicks out without changing anything
+                      if (amountOfProductBeforeBlur === amountOfProduct) return;
+                      await mutateAsync();
+                      await queryClient.invalidateQueries({
+                        queryKey: QueryAndMutationKeys.CartProducts,
+                      });
+                    } catch (e) {
+                      handleError(e);
+                    }
                   })();
                 }}
                 value={amountOfProduct}
@@ -253,6 +257,9 @@ function ProductBlock({ product }: { product: GetCart }) {
                         });
                       } catch (e) {
                         handleError(e);
+                        await queryClient.invalidateQueries({
+                          queryKey: QueryAndMutationKeys.CartProducts,
+                        });
                       }
                     })();
                   }}
