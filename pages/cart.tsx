@@ -8,7 +8,10 @@ import { toast } from 'react-toastify';
 import { Footer } from '~/components/Footer';
 import { NavBar } from '~/components/NavBar';
 import { GetCart, QueryAndMutationKeys } from '~/shared/types';
-import { useChangeProductAmount } from '~/utils/apiRequests';
+import {
+  refetchCartProducts,
+  useChangeProductAmount,
+} from '~/utils/apiRequests';
 import { handleError } from '~/utils/handleError';
 import { InferGetServerSidePropsType } from 'next';
 import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
@@ -202,9 +205,7 @@ function ProductBlock({ product }: { product: GetCart }) {
                           prevValue === 0 ? 0 : prevValue - 1,
                         );
                         await mutateAsync();
-                        await queryClient.invalidateQueries({
-                          queryKey: QueryAndMutationKeys.CartProducts,
-                        });
+                        await refetchCartProducts(queryClient);
                       } catch (e) {
                         handleError(e);
                       }
@@ -234,9 +235,7 @@ function ProductBlock({ product }: { product: GetCart }) {
                       // so for example if user just click the input and clicks out without changing anything
                       if (amountOfProductBeforeBlur === amountOfProduct) return;
                       await mutateAsync();
-                      await queryClient.invalidateQueries({
-                        queryKey: QueryAndMutationKeys.CartProducts,
-                      });
+                      await refetchCartProducts(queryClient);
                     } catch (e) {
                       handleError(e);
                     }
@@ -252,14 +251,10 @@ function ProductBlock({ product }: { product: GetCart }) {
                       try {
                         setAmountOfProduct((prevValue) => prevValue + 1);
                         await mutateAsync();
-                        await queryClient.invalidateQueries({
-                          queryKey: QueryAndMutationKeys.CartProducts,
-                        });
+                        await refetchCartProducts(queryClient);
                       } catch (e) {
                         handleError(e);
-                        await queryClient.invalidateQueries({
-                          queryKey: QueryAndMutationKeys.CartProducts,
-                        });
+                        await refetchCartProducts(queryClient);
                       }
                     })();
                   }}
@@ -280,9 +275,7 @@ function ProductBlock({ product }: { product: GetCart }) {
                           productId: product.Product.id.toString(),
                         },
                       });
-                      await queryClient.invalidateQueries({
-                        queryKey: QueryAndMutationKeys.CartProducts,
-                      });
+                      await refetchCartProducts(queryClient);
                       toast('Removed product from your cart succesfully');
                     } catch (e) {
                       handleError(e);
