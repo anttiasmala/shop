@@ -108,6 +108,10 @@ async function handlePATCH(req: NextApiRequest, res: NextApiResponse) {
     return;
   }
 
+  if (cartItem.amount > product.stock) {
+    throw new HttpError('Maximum amount of products reached!', 400);
+  }
+
   const newAmount =
     cartItem.amount > product.stock ? product.stock : cartItem.amount;
 
