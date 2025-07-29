@@ -1,9 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { uuid } from 'zod';
 import { handleError } from '~/backend/handleError';
 import { HttpError } from '~/backend/HttpError';
 import prisma from '~/prisma';
-import { GetCart } from '~/shared/types';
 import {
   createCartItemSchema,
   deleteCartItemSchema,
