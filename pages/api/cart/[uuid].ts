@@ -59,12 +59,18 @@ async function handleGET(
           createdAt: true,
           updatedAt: true,
           uuid: true,
+          stock: true,
         },
       },
     },
   });
 
-  return res.status(200).json(cartItems);
+  const clonedCartItems = structuredClone(cartItems);
+  const newCartItems = clonedCartItems.map((clonedCartItem) => {
+    return { ...clonedCartItem, whenRequestSent: new Date() };
+  });
+
+  return res.status(200).json(newCartItems);
 }
 
 async function handlePOST(
@@ -80,7 +86,7 @@ async function handlePOST(
   const productToBeAdded = requestBodyParse.data;
   const product = await prisma.product.findFirstOrThrow({
     where: {
-      id: requestBodyParse.data.id,
+      id: productToBeAdded.id,
     },
   });
   const cart = await prisma.cart.findFirstOrThrow({
@@ -89,25 +95,49 @@ async function handlePOST(
     },
   });
 
-  const upsertedItem = await prisma.cartItem.upsert({
+  const cartItem = await prisma.cartItem.findFirst({
     where: {
-      cartUUID_productUUID: {
-        productUUID: product.uuid,
-        cartUUID: cart.uuid,
-      },
-    },
-    create: {
       cartUUID: cart.uuid,
       productUUID: product.uuid,
-      amount: productToBeAdded.amount,
-    },
-    update: {
-      amount: {
-        increment: productToBeAdded.amount,
-      },
     },
   });
-  return res.status(200).json(upsertedItem);
+
+  // cartItem does not exist, create a new one
+  if (!cartItem) {
+    const amount =
+      productToBeAdded.amount > product.stock
+        ? product.stock
+        : productToBeAdded.amount;
+    const createdItem = await prisma.cartItem.create({
+      data: {
+        amount,
+        cartUUID: cart.uuid,
+        productUUID: product.uuid,
+      },
+    });
+    return res.status(200).json(createdItem);
+  }
+  if (cartItem.amount + productToBeAdded.amount > product.stock) {
+    throw new HttpError('Maximum amount of products reached!', 400);
+  }
+
+  const newAmount =
+    cartItem.amount + productToBeAdded.amount >= product.stock
+      ? product.stock
+      : cartItem.amount + 1;
+
+  const updatedItem = await prisma.cartItem.update({
+    where: {
+      cartUUID_productUUID: {
+        cartUUID: cart.uuid,
+        productUUID: product.uuid,
+      },
+    },
+    data: {
+      amount: newAmount,
+    },
+  });
+  return res.status(200).json(updatedItem);
 }
 
 async function handleDELETE(

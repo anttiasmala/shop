@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { QueryClient, useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { PatchCartItem, Product, QueryAndMutationKeys } from '~/shared/types';
 
@@ -47,5 +47,11 @@ export function useChangeProductAmount({
     mutationFn: async () => {
       return (await axios.patch(`/api/cart/`, data)).data as Product;
     },
+  });
+}
+
+export async function refetchCartProducts(queryClient: QueryClient) {
+  await queryClient.invalidateQueries({
+    queryKey: QueryAndMutationKeys.CartProducts,
   });
 }
