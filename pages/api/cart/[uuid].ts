@@ -104,22 +104,27 @@ async function handlePOST(
 
   // cartItem does not exist, create a new one
   if (!cartItem) {
+    const amount =
+      productToBeAdded.amount > product.stock
+        ? product.stock
+        : productToBeAdded.amount;
     const createdItem = await prisma.cartItem.create({
       data: {
-        amount: productToBeAdded.amount,
+        amount,
         cartUUID: cart.uuid,
         productUUID: product.uuid,
       },
     });
     return res.status(200).json(createdItem);
   }
-
-  if (cartItem.amount + 1 > product.stock) {
+  if (cartItem.amount + productToBeAdded.amount > product.stock) {
     throw new HttpError('Maximum amount of products reached!', 400);
   }
 
   const newAmount =
-    cartItem.amount >= product.stock ? product.stock : cartItem.amount + 1;
+    cartItem.amount + productToBeAdded.amount >= product.stock
+      ? product.stock
+      : cartItem.amount + 1;
 
   const updatedItem = await prisma.cartItem.update({
     where: {
