@@ -18,6 +18,8 @@ CREATE TABLE "OrderItem" (
     "productUUID" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
     "priceAtPurchase" DECIMAL(65,30) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "OrderItem_pkey" PRIMARY KEY ("id")
 );

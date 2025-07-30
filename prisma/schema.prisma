@@ -65,11 +65,13 @@ model Order {
 }
 
 model OrderItem {
-    id              Int     @id @default(autoincrement())
+    id              Int      @id @default(autoincrement())
     orderUUID       String
     productUUID     String
     quantity        Int
     priceAtPurchase Decimal
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
 
     Product Product @relation(fields: [productUUID], references: [uuid])
     Order   Order   @relation(fields: [orderUUID], references: [uuid])
