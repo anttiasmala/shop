@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction } from 'react';
-import { Input } from '../Input';
 import { PAYMENT } from '~/pages/cart/checkout';
 
 export function Payment({

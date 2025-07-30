@@ -33,12 +33,6 @@ export type PAYMENT = {
   paymentMethod: 'FooBarPayment' | 'HelloWorldPay' | (string & {});
 };
 
-const FIELD_ERRORS = {
-  firstName: '',
-  lastName: '',
-  email: '',
-};
-
 export default function Checkout({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
