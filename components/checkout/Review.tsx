@@ -1,5 +1,9 @@
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
 import { Dispatch, SetStateAction } from 'react';
 import { DELIVERY_METHOD, PAYMENT } from '~/pages/cart/checkout';
+import { QueryAndMutationKeys } from '~/shared/types';
+import { handleError } from '~/utils/handleError';
 
 const DELIVERY_METHOD_PARSER = {
   FooBarPost: 'Foo Bar Post',
@@ -36,6 +40,17 @@ export function Review({
     >
   >;
 }) {
+  const { mutateAsync } = useMutation({
+    mutationKey: QueryAndMutationKeys.Checkout,
+    mutationFn: async () =>
+      await axios.post(`/api/checkout`, {
+        ...userDetailsFields,
+        ...addressInfoFields,
+        ...deliveryMethodFields,
+        ...paymentFields,
+      }),
+  });
+
   return (
     <div>
       <div className="flex flex-col justify-start">
@@ -115,6 +130,13 @@ export function Review({
           <button
             className="button-54 ml-3 w-36 bg-gray-500 hover:bg-gray-600"
             type="button"
+            onClick={() => {
+              try {
+                mutateAsync();
+              } catch (e) {
+                handleError(e);
+              }
+            }}
           >
             Purchase
           </button>
