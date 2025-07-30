@@ -49,7 +49,30 @@ model Product {
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
 
-    CartItem CartItem[]
+    CartItem  CartItem[]
+    OrderItem OrderItem[]
+}
+
+model Order {
+    id          Int         @id @default(autoincrement())
+    uuid        String      @unique @default(uuid())
+    userUUID    String?     @unique
+    status      String
+    totalAmount Decimal
+    createdAt   DateTime    @default(now())
+    updatedAt   DateTime    @updatedAt
+    OrderItem   OrderItem[]
+}
+
+model OrderItem {
+    id              Int     @id @default(autoincrement())
+    orderUUID       String
+    productUUID     String
+    quantity        Int
+    priceAtPurchase Decimal
+
+    Product Product @relation(fields: [productUUID], references: [uuid])
+    Order   Order   @relation(fields: [orderUUID], references: [uuid])
 }
 
 model Cart {
