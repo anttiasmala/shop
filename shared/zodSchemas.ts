@@ -113,6 +113,25 @@ export const patchCartItemSchema = z.object({
   userCartUUID: uuidSchema,
 });
 
+// CHECKOUT
+
+export const fullCheckout = z.object({
+  firstName: firstNameSchema,
+  lastName: lastNameSchema,
+  email: emailSchema,
+  address: z.string().min(1),
+  zipCode: z.string().min(1),
+  postalServiceLocation: z.string().min(1),
+  deliveryMethod: z.union([
+    z.literal('FooBarPost'),
+    z.literal('HelloWorldDelivery'),
+  ]),
+  paymentMethod: z.union([
+    z.literal('HelloWorldPay'),
+    z.literal('FooBarPayment'),
+  ]),
+});
+
 // USER SCHEMAS
 
 export const fullUserSchema = z.object({

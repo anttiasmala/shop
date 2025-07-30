@@ -7,6 +7,7 @@ import {
   createUserSchema,
   deleteCartItemSchema,
   frontendSessionSchema,
+  fullCheckoutSchema,
   fullSessionSchema,
   fullUserSchema,
   getSessionSchema,
@@ -43,6 +44,10 @@ export type GetCart = {
 export type PatchCartItem = z.infer<typeof patchCartItemSchema>;
 
 export type DeleteCartItem = z.infer<typeof deleteCartItemSchema>;
+
+// CHECKOUT
+
+export type FullCheckout = z.infer<typeof fullCheckoutSchema>;
 
 // USER
 
