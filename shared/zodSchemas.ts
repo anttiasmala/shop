@@ -115,7 +115,7 @@ export const patchCartItemSchema = z.object({
 
 // CHECKOUT
 
-export const fullCheckout = z.object({
+export const fullCheckoutSchema = z.object({
   firstName: firstNameSchema,
   lastName: lastNameSchema,
   email: emailSchema,
