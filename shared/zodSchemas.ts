@@ -60,6 +60,11 @@ export const createProductSchema = productSchema.omit({
 
 export const patchProductSchema = createProductSchema;
 
+// used for example in requests in "/components/Review.tsx"
+export const cartItemProductSchema = productSchema.omit({
+  stock: true,
+});
+
 // CART
 
 export const cartSchema = productSchema
@@ -119,9 +124,13 @@ export const fullCheckoutSchema = z.object({
   firstName: firstNameSchema,
   lastName: lastNameSchema,
   email: emailSchema,
-  address: z.string().min(1),
-  zipCode: z.string().min(1),
-  postalServiceLocation: z.string().min(1),
+  address: z.string().min(1, 'Address is required'),
+  zipCode: z
+    .string()
+    .regex(/^\d{5}$/, 'Invalid zip code format (must be 5 digits)'),
+  postalServiceLocation: z
+    .string()
+    .min(1, 'Postal service location is required'),
   deliveryMethod: z.union([
     z.literal('FooBarPost'),
     z.literal('HelloWorldDelivery'),
@@ -131,6 +140,19 @@ export const fullCheckoutSchema = z.object({
     z.literal('FooBarPayment'),
   ]),
 });
+
+export const cartCheckoutSchema = z.object({
+  amount: z.number(),
+  createdAt: dateSchema,
+  updatedAt: dateSchema,
+  Product: cartItemProductSchema,
+  whenRequestSent: dateSchema,
+});
+
+export const cartProductsCheckoutSchema = z.record(
+  z.string(),
+  cartCheckoutSchema,
+);
 
 // USER SCHEMAS
 

@@ -109,6 +109,8 @@ export const QueryAndMutationKeys = {
   Products: ['products'],
   Product: ['product'],
   Checkout: ['checkout'],
+  // used to get cart's data to Review.tsx
+  ReviewCartProducts: ['reviewCartProducts'],
   Images: ['images'],
   ListImages: ['ListImages'],
   UploadImage: ['UploadImage'],
