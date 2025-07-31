@@ -56,7 +56,7 @@ model Product {
 model Order {
     id          Int         @id @default(autoincrement())
     uuid        String      @unique @default(uuid())
-    userUUID    String?     @unique
+    userUUID    String?
     status      String
     totalAmount Decimal
     createdAt   DateTime    @default(now())
