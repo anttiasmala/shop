@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { DELIVERY_METHOD, PAYMENT } from '~/pages/cart/checkout';
 import { GetCart, QueryAndMutationKeys } from '~/shared/types';
 import { handleError } from '~/utils/handleError';
@@ -77,10 +77,6 @@ export function Review({
       }, 1000);
     },
   });
-
-  useEffect(() => {
-    console.log(products);
-  }, [products]);
 
   return (
     <div>
