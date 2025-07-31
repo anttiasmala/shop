@@ -1,8 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { DELIVERY_METHOD, PAYMENT } from '~/pages/cart/checkout';
-import { QueryAndMutationKeys } from '~/shared/types';
+import { GetCart, QueryAndMutationKeys } from '~/shared/types';
 import { handleError } from '~/utils/handleError';
 
 const DELIVERY_METHOD_PARSER = {
@@ -40,16 +40,36 @@ export function Review({
     >
   >;
 }) {
+  const { data: products } = useQuery({
+    queryKey: QueryAndMutationKeys.ReviewCartProducts,
+    queryFn: async () => {
+      const cartUUID = window.localStorage.getItem('cartUUID');
+      return (await axios.get(`/api/cart/${cartUUID}`)).data as GetCart[];
+    },
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+    retry: false,
+  });
+
   const { mutateAsync } = useMutation({
     mutationKey: QueryAndMutationKeys.Checkout,
     mutationFn: async () =>
       await axios.post(`/api/checkout`, {
-        ...userDetailsFields,
-        ...addressInfoFields,
-        ...deliveryMethodFields,
-        ...paymentFields,
+        purchaseDetails: {
+          ...userDetailsFields,
+          ...addressInfoFields,
+          ...deliveryMethodFields,
+          ...paymentFields,
+        },
+        cartItems: {
+          ...products,
+        },
       }),
   });
+
+  useEffect(() => {
+    console.log(products);
+  }, [products]);
 
   return (
     <div>
