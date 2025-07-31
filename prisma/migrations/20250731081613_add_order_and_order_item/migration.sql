@@ -27,9 +27,6 @@ CREATE TABLE "OrderItem" (
 -- CreateIndex
 CREATE UNIQUE INDEX "Order_uuid_key" ON "Order"("uuid");
 
--- CreateIndex
-CREATE UNIQUE INDEX "Order_userUUID_key" ON "Order"("userUUID");
-
 -- AddForeignKey
 ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_productUUID_fkey" FOREIGN KEY ("productUUID") REFERENCES "Product"("uuid") ON DELETE RESTRICT ON UPDATE CASCADE;
 
