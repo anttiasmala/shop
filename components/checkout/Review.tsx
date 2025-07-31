@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { Dispatch, SetStateAction, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { DELIVERY_METHOD, PAYMENT } from '~/pages/cart/checkout';
 import { GetCart, QueryAndMutationKeys } from '~/shared/types';
 import { handleError } from '~/utils/handleError';
@@ -40,6 +41,10 @@ export function Review({
     >
   >;
 }) {
+  const [isRequestSuccessful, setIsRequestSuccessful] = useState(false);
+
+  const router = useRouter();
+
   const { data: products } = useQuery({
     queryKey: QueryAndMutationKeys.ReviewCartProducts,
     queryFn: async () => {
@@ -65,6 +70,12 @@ export function Review({
           ...products,
         },
       }),
+    onSuccess: () => {
+      setIsRequestSuccessful(true);
+      setTimeout(() => {
+        router.push('/').catch((e) => console.error(e));
+      }, 1000);
+    },
   });
 
   useEffect(() => {
@@ -162,6 +173,16 @@ export function Review({
           </button>
         </div>
       </div>
+      {isRequestSuccessful && (
+        <div>
+          <div className="fixed top-0 left-0 z-99 h-full w-full bg-black opacity-80"></div>
+          <div className="absolute top-1/2 left-1/2 z-100 grid h-50 w-max -translate-x-1/2 -translate-y-1/2 items-center rounded-lg border-4 border-yellow-800 bg-gray-500 -bg-conic-0">
+            <p className="text-center text-2xl wrap-anywhere">
+              Purchase done succesfully!
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
