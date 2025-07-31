@@ -46,6 +46,19 @@ export default async function Handler(
       },
     });
 
+    await prisma.orderUserDetails.create({
+      data: {
+        userUUID: `${user && user.uuid ? user.uuid : ''}`,
+        address: purchaseDetailsParse.data.address,
+        email: purchaseDetailsParse.data.email,
+        firstName: purchaseDetailsParse.data.firstName,
+        lastName: purchaseDetailsParse.data.lastName,
+        orderUUID: order.uuid,
+        postalServiceLocation: purchaseDetailsParse.data.postalServiceLocation,
+        zipCode: purchaseDetailsParse.data.zipCode,
+      },
+    });
+
     for (const [_, value] of Object.entries(cartItemsParse.data)) {
       const product = await prisma.product.findFirst({
         where: {
