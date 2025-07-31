@@ -159,7 +159,7 @@ export function Review({
             type="button"
             onClick={() => {
               try {
-                mutateAsync();
+                void mutateAsync();
               } catch (e) {
                 handleError(e);
               }
