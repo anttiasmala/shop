@@ -13,17 +13,18 @@ enum Roles {
 }
 
 model User {
-    id        Int       @id @default(autoincrement())
-    uuid      String    @unique @default(uuid())
-    firstName String
-    lastName  String
-    email     String    @unique
-    password  String
-    createdAt DateTime  @default(now())
-    updatedAt DateTime  @updatedAt
-    Session   Session[]
-    role      Roles     @default(USER)
-    Cart      Cart[]
+    id               Int                @id @default(autoincrement())
+    uuid             String             @unique @default(uuid())
+    firstName        String
+    lastName         String
+    email            String             @unique
+    password         String
+    createdAt        DateTime           @default(now())
+    updatedAt        DateTime           @updatedAt
+    Session          Session[]
+    role             Roles              @default(USER)
+    Cart             Cart[]
+    OrderUserDetails OrderUserDetails[]
 }
 
 model Session {
@@ -62,6 +63,8 @@ model Order {
     createdAt   DateTime    @default(now())
     updatedAt   DateTime    @updatedAt
     OrderItem   OrderItem[]
+    Receipt     Receipt?
+    Payment     Payment[]
 }
 
 model OrderItem {
@@ -75,6 +78,54 @@ model OrderItem {
 
     Product Product @relation(fields: [productUUID], references: [uuid])
     Order   Order   @relation(fields: [orderUUID], references: [uuid])
+}
+
+model OrderUserDetails {
+    id                    Int     @id @default(autoincrement())
+    userUUID              String?
+    orderUUID             String  @unique
+    firstName             String
+    lastName              String
+    email                 String
+    address               String
+    postalServiceLocation String
+    zipCode               String
+    User                  User?   @relation(fields: [userUUID], references: [uuid])
+}
+
+model Receipt {
+    id            Int      @id @default(autoincrement())
+    orderUUID     String   @unique
+    receiptNumber String   @unique
+    issuedAt      DateTime
+    taxAmount     Decimal
+    currency      String
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+
+    Order Order @relation(fields: [orderUUID], references: [uuid])
+}
+
+model Payment {
+    id            Int      @id @default(autoincrement())
+    orderUUID     String
+    paymentMethod String
+    transactionId String?
+    amount        Decimal
+    status        String
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+
+    Order Order @relation(fields: [orderUUID], references: [uuid])
+}
+
+model ShippingAddress {
+    id                    Int     @id @default(autoincrement())
+    userUUID              String?
+    orderUUID             String  @unique
+    address               String
+    postalServiceLocation String
+    zipCode               String
 }
 
 model Cart {
