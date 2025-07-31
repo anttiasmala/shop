@@ -59,7 +59,7 @@ export default async function Handler(
 
       await prisma.orderItem.create({
         data: {
-          priceAtPurchase: Number(value.Product.price) * value.amount,
+          priceAtPurchase: Number(value.Product.price),
           quantity: value.amount,
           productUUID: product.uuid,
           orderUUID: order.uuid,
