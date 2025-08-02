@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { QueryAndMutationKeys } from '~/shared/types';
 import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
 
@@ -11,8 +11,6 @@ export { getServerSideProps };
 export default function Logout({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const firstRender = useRef(true);
-
   const router = useRouter();
   const { mutateAsync } = useMutation({
     mutationKey: QueryAndMutationKeys.Logout,
@@ -49,7 +47,7 @@ export default function Logout({
       }
     }
     void runThis();
-  }, []);
+  }, [mutateAsync, router, user.uuid]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {

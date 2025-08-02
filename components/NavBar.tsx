@@ -136,7 +136,7 @@ export function NavBar({
       }
     }
     void runThis();
-  }, []);
+  }, [user.uuid]);
 
   const UserSVG = isUserLoggedIn(user) ? UserCheck : UserX;
 
