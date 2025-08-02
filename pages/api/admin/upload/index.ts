@@ -13,7 +13,7 @@ export const config = {
   },
 };
 
-const uploadFolderLocation = './public/images/products';
+const uploadFolderLocation = `${process.cwd()}/public/images/products`;
 
 export default async function UploadHandler(
   req: NextApiRequest,
