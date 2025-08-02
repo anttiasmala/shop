@@ -136,7 +136,12 @@ function NonEmptyCart({ products }: { products: GetCart[] | undefined }) {
             </p>
           </div>
           <div className="flex w-full justify-center">
-            <button className="mt-4 w-48 rounded-md bg-black p-2 text-white">
+            <button
+              className="mt-4 w-48 rounded-md bg-black p-2 text-white"
+              onClick={() => {
+                toast('Not in use yet!');
+              }}
+            >
               Checkout
             </button>
           </div>
