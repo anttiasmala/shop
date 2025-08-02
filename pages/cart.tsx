@@ -14,7 +14,6 @@ import { InferGetServerSidePropsType } from 'next';
 import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
 import { Main } from '~/components/Main';
 import { BASE_IMAGE_URL } from '~/utils/constants';
-import { useEffectAfterInitialRender } from '~/hooks/useEffectAfterInitialRender';
 
 // Does not require login
 export { getServerSideProps };
@@ -33,7 +32,7 @@ export default function Cart({
     retry: false,
   });
 
-  useEffectAfterInitialRender(() => {
+  useEffect(() => {
     const cartUUID = window.localStorage.getItem('cartUUID');
     if (cartUUID) {
       void axios

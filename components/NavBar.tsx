@@ -9,7 +9,6 @@ import { GetCart, GetUser, QueryAndMutationKeys } from '~/shared/types';
 import { UserCheck, UserX } from 'lucide-react';
 import { isUserLoggedIn } from '~/utils/utils';
 import { handleError } from '~/utils/handleError';
-import { useEffectAfterInitialRender } from '~/hooks/useEffectAfterInitialRender';
 import { cartSettingsSchema } from '~/shared/zodSchemas';
 
 export function NavBar({
@@ -101,7 +100,7 @@ export function NavBar({
     };
   }, [isAuthModalOpen]);
 
-  useEffectAfterInitialRender(() => {
+  useEffect(() => {
     async function runThis() {
       try {
         const cartSettings = window.localStorage.getItem('cartSettings');
