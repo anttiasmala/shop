@@ -9,6 +9,7 @@
 5. /admin/products kun muokkaa tuotetta, enter-näppäin ei tunnu hyväksyvän muokkauksia kuten pitäisi
 6. Lisää virheenkäsittely /admin/products:in Delete-requestille
 7. Lisää ALT-tekstikenttä tietokantaan, jotta ALT-teksti saadaan oikein <Image>:een
+8. Lisää Tanstack Pending ja lisää button-elementteihin Disabled, jos pending on päällä / disabloi requestien lähettäminen jottei turhaan lähetetä requesteja
 
 ### Ideoita
 
