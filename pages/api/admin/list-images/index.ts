@@ -6,7 +6,7 @@ import { HttpError } from '~/backend/HttpError';
 import { validateRequest } from '~/backend/auth/auth';
 import { checkIsAdminFromValidateRequest } from '~/backend/utils';
 
-const PATH = './public/images/products';
+const PATH = `${process.cwd()}/public/images/products`;
 
 export default async function Handler(
   req: NextApiRequest,
