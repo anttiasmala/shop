@@ -15,6 +15,7 @@ import { Product, QueryAndMutationKeys } from '~/shared/types';
 import { useGetProducts } from '~/utils/apiRequests';
 import { BASE_IMAGE_URL } from '~/utils/constants';
 import { getServerSidePropsNoLoginRequired as getServerSideProps } from '~/utils/getServerSideProps';
+import { handleError } from '~/utils/handleError';
 
 // No login required
 export { getServerSideProps };
@@ -221,7 +222,7 @@ function ProductBlock({ product }: { product: Product }) {
                         });
                         toast('Added products to your cart succesfully');
                       } catch (e) {
-                        console.error(e);
+                        handleError(e);
                       }
                     })();
                   }}

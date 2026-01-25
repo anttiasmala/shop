@@ -29,7 +29,12 @@ export type AdminProduct = z.infer<typeof adminProductSchema>;
 
 export type Cart = z.infer<typeof cartSchema>;
 
-export type GetCart = { amount: number; createdAt: Date; updatedAt: Date } & {
+export type GetCart = {
+  amount: number;
+  createdAt: Date;
+  updatedAt: Date;
+  whenRequestSent?: Date;
+} & {
   Product: Product;
 };
 

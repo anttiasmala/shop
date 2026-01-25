@@ -108,12 +108,19 @@ async function handlePATCH(req: NextApiRequest, res: NextApiResponse) {
     return;
   }
 
+  if (cartItem.amount > product.stock) {
+    throw new HttpError('Maximum amount of products reached!', 400);
+  }
+
+  const newAmount =
+    cartItem.amount > product.stock ? product.stock : cartItem.amount;
+
   const updatedCartItem = await prisma.cartItem.update({
     where: {
       uuid: cartItemFromDatabase.uuid,
     },
     data: {
-      amount: cartItem.amount,
+      amount: newAmount,
     },
   });
 
